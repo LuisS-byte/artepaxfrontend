@@ -1,0 +1,169 @@
+/* ══════════════════════════════════════════════════════════
+   PAGOS — Cola de cobranza e interacción
+   Queue items, filter chips, detail pills, metadata.
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Filter chips ────────────────────────────────────── */
+
+.pag-filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+}
+
+.pag-chip {
+    border: 1px solid var(--neutral-200);
+    background: var(--neutral-0);
+    color: var(--neutral-700);
+    border-radius: 999px;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.pag-chip:hover,
+.pag-chip.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--white);
+}
+
+/* ── Queue stats ─────────────────────────────────────── */
+
+.pag-queue-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-lg);
+}
+
+/* ── Queue list ──────────────────────────────────────── */
+
+.pag-queue-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-lg);
+}
+
+.pag-queue-item {
+    width: 100%;
+    text-align: left;
+    border: 1px solid var(--neutral-200);
+    background: var(--neutral-0);
+    border-radius: var(--rounded-lg);
+    padding: var(--spacing-md);
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.pag-queue-item:hover,
+.pag-queue-item.active {
+    border-color: rgba(21, 101, 192, 0.35);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+.pag-queue-item-top {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    align-items: flex-start;
+}
+
+.pag-queue-item-top strong {
+    display: block;
+    color: var(--text);
+}
+
+.pag-queue-id {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--text-light);
+}
+
+.pag-queue-metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+    font-size: 0.82rem;
+    color: var(--neutral-700);
+}
+
+.pag-queue-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    align-items: center;
+    margin-top: var(--spacing-md);
+}
+
+.pag-queue-helper {
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.pag-queue-helper.warning {
+    color: var(--warning-text);
+}
+
+.pag-queue-helper.success {
+    color: var(--success-text);
+}
+
+.pag-queue-cta {
+    font-size: 0.78rem;
+    color: var(--accent);
+    font-weight: 700;
+}
+
+/* ── Detail pills ────────────────────────────────────── */
+
+.pag-detail-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+}
+
+.pag-detail-header-main {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    align-items: flex-start;
+}
+
+.pag-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.45rem 0.75rem;
+    border-radius: 999px;
+    background: var(--neutral-50);
+    border: 1px solid var(--neutral-200);
+    color: var(--neutral-700);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.pag-pill--warning {
+    background: var(--warning-bg);
+    border-color: var(--warning-border);
+    color: var(--warning-text);
+}
+
+.pag-pill--success {
+    background: var(--success-bg);
+    border-color: var(--success-border);
+    color: var(--success-text);
+}
+
+.pag-pill--info {
+    background: rgba(21,101,192,0.06);
+    border-color: rgba(21,101,192,0.2);
+    color: var(--info, #1565C0);
+}

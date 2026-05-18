@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario | Artepax Fiesta</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="inventario.css">
+    <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+</head>
+<body>
+
+    <div class="app-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar-container"></aside>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-wrapper">
+            <!-- TOPBAR -->
+            <header class="topbar">
+                <div class="breadcrumbs">
+                    <a href="../../index.html">Inicio</a>
+                    <span class="separator">/</span>
+                    <span class="current">Inventario</span>
+                </div>
+                <div class="topbar-actions">
+                    <div class="user-info">
+                        <span class="user-name">Administrador</span>
+                        <div class="user-avatar">AD</div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <header class="module-header">
+                    <div class="header-info">
+                        <h1>Control de Inventario</h1>
+                        <p>Stock, catálogo y movimientos.</p>
+                    </div>
+                    <div class="header-actions inventory-actions">
+                        <button class="btn btn-primary inventory-action-btn inventory-action-btn--primary" onclick="abrirDrawerMovimiento('entrada')">
+                                <i data-lucide="arrow-down"></i> Registrar Entrada
+                        </button>
+                        <button class="btn btn-outline inventory-action-btn" onclick="abrirDrawerMovimiento('salida')">
+                                <i data-lucide="arrow-up"></i> Registrar Salida
+                        </button>
+                        <button class="btn btn-outline inventory-action-btn" onclick="abrirDrawerMovimiento('ajuste')">
+                                <i data-lucide="rotate-ccw"></i> Registrar Ajuste
+                        </button>
+                    </div>
+                </header>
+
+                <div class="inventory-summary">
+                    <div class="inventory-kpi-grid">
+                        <article class="inventory-kpi-card success">
+                            <span class="inventory-kpi-icon"><i data-lucide="check-circle"></i></span>
+                            <span class="inventory-kpi-label">Disponible</span>
+                            <strong class="inventory-kpi-value" id="inv-total-disponible">0</strong>
+                            <span class="inventory-kpi-foot">Operativo hoy</span>
+                        </article>
+                        <article class="inventory-kpi-card info">
+                            <span class="inventory-kpi-icon"><i data-lucide="calendar"></i></span>
+                            <span class="inventory-kpi-label">Reservado</span>
+                            <strong class="inventory-kpi-value" id="inv-total-reservado">0</strong>
+                            <span class="inventory-kpi-foot">Comprometido en eventos</span>
+                        </article>
+                        <article class="inventory-kpi-card warning">
+                            <span class="inventory-kpi-icon"><i data-lucide="alert-triangle"></i></span>
+                            <span class="inventory-kpi-label">Stock crítico</span>
+                            <strong class="inventory-kpi-value" id="inv-stock-critico">0</strong>
+                            <span class="inventory-kpi-foot">Requiere atención</span>
+                        </article>
+                        <article class="inventory-kpi-card">
+                            <span class="inventory-kpi-icon"><i data-lucide="package"></i></span>
+                            <span class="inventory-kpi-label">Productos</span>
+                            <strong class="inventory-kpi-value" id="inv-total-productos">0</strong>
+                            <span class="inventory-kpi-foot">Catálogo total</span>
+                        </article>
+                    </div>
+                </div>
+
+                <!-- TABS -->
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="stock" onclick="cambiarTab('stock')">
+                        <i data-lucide="activity"></i> Stock / Riesgo
+                    </button>
+                    <button class="tab-btn" data-tab="productos" onclick="cambiarTab('productos')">
+                        <i data-lucide="archive"></i> Catálogo
+                    </button>
+                    <button class="tab-btn" data-tab="movimientos" onclick="cambiarTab('movimientos')">
+                        <i data-lucide="audit"></i> Movimientos / Auditoría
+                    </button>
+                </div>
+
+                <!-- CONTENT SECTIONS -->
+                <section class="content-section">
+                    <div id="alert-box" class="alert hidden"></div>
+
+                    <!-- TAB: STOCK / RIESGO -->
+                    <div id="view-stock" class="card">
+                        <div class="section-header">
+                            <div>
+                                <h2>Stock operativo</h2>
+                                <p class="section-note">Disponibilidad real, reservas activas y alertas de riesgo para operar sin sorpresas.</p>
+                            </div>
+                        </div>
+
+                        <!-- PRIORITY STRIP: productos que requieren atención -->
+                        <div id="priority-strip" class="priority-strip hidden">
+                            <div class="priority-strip-header">
+                                <i data-lucide="bell"></i>
+                                <span class="priority-strip-title">Productos que requieren atención</span>
+                            </div>
+                            <div id="priority-strip-body" class="priority-strip-body"></div>
+                        </div>
+
+                        <button type="button" class="filter-bar-toggle hidden" onclick="toggleFilterBar('stock-filter-bar')">
+                            <i data-lucide="sliders-horizontal"></i> Filtros
+                        </button>
+                        <div class="filter-bar collapsible" id="stock-filter-bar">
+                            <div class="search-box search-box--clearable">
+                                <span class="search-icon"><i data-lucide="search"></i></span>
+                                <input type="text" id="search-stock" placeholder="Buscar producto..." autocomplete="off">
+                                <button type="button" class="search-clear-btn" id="search-stock-clear" onclick="limpiarBusquedaStock()" aria-label="Limpiar búsqueda">
+                                    <i data-lucide="x"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="active-filters" id="active-filters-stock"></div>
+
+                        <div class="table-wrapper sticky-header">
+                            <table class="data-table" id="data-table-stock">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th class="text-center">Disponible</th>
+                                        <th class="text-center">Reservado</th>
+                                        <th class="text-center">Total</th>
+                                        <th class="text-center">Mínimo</th>
+                                        <th class="col-stock">Riesgo</th>
+                                        <th class="col-fecha-corta text-right">Precio</th>
+                                        <th class="col-monto-right">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabla-stock">
+                                    <tr>
+                                        <td colspan="8" class="loading-state">
+                                            <div class="spinner"></div>
+                                            Cargando stock...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB: CATÁLOGO -->
+                    <div id="view-productos" class="card hidden">
+                        <div class="section-header">
+                            <div>
+                                <h2>Catálogo de Productos</h2>
+                                <p class="section-note" style="margin-top: 0.25rem;">
+                                    Administración del catálogo: nombre, descripción, precio y stock mínimo.
+                                    El stock físico se ajusta desde <a href="#" onclick="cambiarTab('stock'); return false;" class="link-inline">Stock / Riesgo</a> o ingresando movimientos.
+                                </p>
+                            </div>
+                            <button class="btn btn-primary" onclick="abrirDrawerProductoCrear()">
+                                <i data-lucide="package-plus"></i> Nuevo Producto
+                            </button>
+                        </div>
+
+                        <div class="products-overview">
+                            <div class="product-kpi-card">
+                                <span class="product-kpi-label">Total</span>
+                                <strong class="product-kpi-value" id="productos-total">0</strong>
+                            </div>
+                            <div class="product-kpi-card success">
+                                <span class="product-kpi-label">Activos</span>
+                                <strong class="product-kpi-value" id="productos-activos">0</strong>
+                            </div>
+                            <div class="product-kpi-card warning">
+                                <span class="product-kpi-label">Inactivos</span>
+                                <strong class="product-kpi-value" id="productos-inactivos">0</strong>
+                            </div>
+                            <div class="product-kpi-card info">
+                                <span class="product-kpi-label">Stock crítico</span>
+                                <strong class="product-kpi-value" id="productos-criticos">0</strong>
+                            </div>
+                        </div>
+
+                        <button type="button" class="filter-bar-toggle hidden" onclick="toggleFilterBar('productos-filter-bar')">
+                            <i data-lucide="sliders-horizontal"></i> Filtros
+                        </button>
+                        <div class="filter-bar collapsible" id="productos-filter-bar">
+                            <div class="search-box search-box--clearable">
+                                <span class="search-icon"><i data-lucide="search"></i></span>
+                                <input type="text" id="search-productos" placeholder="Buscar por nombre o descripción..." autocomplete="off">
+                                <button type="button" class="search-clear-btn" id="search-productos-clear" onclick="limpiarBusquedaProductos()" aria-label="Limpiar búsqueda">
+                                    <i data-lucide="x"></i>
+                                </button>
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label">Estado</label>
+                                <select id="filter-estado-producto" class="input-field" onchange="aplicarRenderProductos()">
+                                    <option value="todos">Todos</option>
+                                    <option value="ACTIVO">Activos</option>
+                                    <option value="INACTIVO">Inactivos</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="active-filters" id="active-filters-productos"></div>
+
+                        <div class="table-wrapper sticky-header">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th class="text-center">Disponible</th>
+                                        <th class="text-right">Precio Unit.</th>
+                                        <th class="text-center">Stock Mínimo</th>
+                                        <th class="col-monto">Estado</th>
+                                        <th class="col-acciones-table">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabla-productos">
+                                    <tr>
+                                        <td colspan="6" class="loading-state">
+                                            <div class="spinner"></div>
+                                            Cargando productos...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="catalog-footnote">
+                            <i data-lucide="info"></i>
+                            Los cambios de stock físico se gestionan desde la vista <a href="#" onclick="cambiarTab('stock'); return false;">Stock / Riesgo</a> mediante Entradas, Salidas y Ajustes.
+                        </div>
+                    </div>
+
+                    <!-- TAB: MOVIMIENTOS / AUDITORÍA -->
+                    <div id="view-movimientos" class="card hidden">
+                        <div class="section-header">
+                            <div>
+                                <h2>Historial de movimientos</h2>
+                                <p class="section-note">Auditá entradas, salidas, ajustes y consumos vinculados a eventos. Rastreá cambios, orígenes y responsables.</p>
+                            </div>
+                        </div>
+
+                        <!-- AUDIT SUMMARY BAR -->
+                        <div class="audit-summary" id="audit-summary-bar">
+                            <div class="audit-summary-stat">
+                                <span class="audit-summary-label">Total</span>
+                                <strong class="audit-summary-value" id="audit-total-mov">0</strong>
+                            </div>
+                            <div class="audit-summary-stat audit-summary-stat--in">
+                                <span class="audit-summary-label">Entradas</span>
+                                <strong class="audit-summary-value" id="audit-total-entradas">0</strong>
+                            </div>
+                            <div class="audit-summary-stat audit-summary-stat--out">
+                                <span class="audit-summary-label">Salidas</span>
+                                <strong class="audit-summary-value" id="audit-total-salidas">0</strong>
+                            </div>
+                            <div class="audit-summary-stat audit-summary-stat--event">
+                                <span class="audit-summary-label">Vinculados a eventos</span>
+                                <strong class="audit-summary-value" id="audit-total-eventos">0</strong>
+                            </div>
+                        </div>
+
+                        <!-- SUB-TABS -->
+                        <div class="sub-tabs">
+                            <button class="sub-tab-btn active" data-subtab="todos" onclick="cambiarSubTab('todos')">
+                                <i data-lucide="list"></i> Todos los Movimientos
+                            </button>
+                            <button class="sub-tab-btn" data-subtab="producto" onclick="cambiarSubTab('producto')">
+                                <i data-lucide="search"></i> Por Producto
+                            </button>
+                        </div>
+
+                        <!-- SUB-TAB: TODOS -->
+                        <div id="mov-view-todos">
+                            <button type="button" class="filter-bar-toggle hidden" onclick="toggleFilterBar('mov-filter-bar')">
+                                <i data-lucide="sliders-horizontal"></i> Filtros
+                            </button>
+                            <div class="filter-bar collapsible" id="mov-filter-bar">
+                                <div class="filter-group">
+                                    <label class="filter-label">Tipo</label>
+                                    <select id="filter-tipo-mov" class="input-field" onchange="aplicarRenderMovimientosGlobales()">
+                                        <option value="">Todos</option>
+                                        <option value="ENTRADA">Entrada</option>
+                                        <option value="SALIDA">Salida</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label class="filter-label">Origen</label>
+                                    <select id="filter-origen-mov" class="input-field" onchange="aplicarRenderMovimientosGlobales()">
+                                        <option value="">Todos</option>
+                                        <option value="REPOSICION">Reposición</option>
+                                        <option value="AJUSTE_MANUAL">Ajuste Manual</option>
+                                        <option value="DAÑO">Daño</option>
+                                        <option value="PERDIDA">Pérdida</option>
+                                        <option value="EVENTO">Evento</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label class="filter-label">Desde</label>
+                                    <div class="date-input-wrapper">
+                                        <span class="date-icon"><i data-lucide="calendar"></i></span>
+                                        <input type="text" id="filter-fecha-desde" class="input-field date-picker" placeholder="Desde fecha..." onchange="aplicarRenderMovimientosGlobales()" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="filter-group">
+                                    <label class="filter-label">Hasta</label>
+                                    <div class="date-input-wrapper">
+                                        <span class="date-icon"><i data-lucide="calendar"></i></span>
+                                        <input type="text" id="filter-fecha-hasta" class="input-field date-picker" placeholder="Hasta fecha..." onchange="aplicarRenderMovimientosGlobales()" autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="active-filters" id="active-filters-mov"></div>
+
+                                <div class="table-wrapper sticky-header">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Fecha / Hora</th>
+                                                <th>Producto</th>
+                                                <th>Movimiento</th>
+                                                <th>Cantidad</th>
+                                                <th>Motivo / Contexto</th>
+                                                <th>Evento</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tabla-movimientos-global">
+                                        <tr><td colspan="6" class="loading-state"><div class="spinner"></div> Cargando movimientos...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div id="paginacion-mov-global" class="pagination-container"></div>
+                        </div>
+
+                        <!-- SUB-TAB: POR PRODUCTO -->
+                        <div id="mov-view-producto" class="hidden">
+
+                            <!-- Product Search / Autocomplete — always visible primary control -->
+                            <div class="product-search-control">
+                                <div class="product-search-wrapper">
+                                    <span class="product-search-icon"><i data-lucide="search"></i></span>
+                                    <input type="text" id="product-search-input"
+                                           placeholder="Buscá un producto por nombre..."
+                                           autocomplete="off" aria-label="Buscar producto">
+                                    <button type="button" class="product-search-clear hidden"
+                                            id="product-search-clear" aria-label="Limpiar selección">
+                                        <i data-lucide="x"></i>
+                                    </button>
+                                </div>
+                                <div id="product-search-results" class="product-search-results hidden"></div>
+                            </div>
+
+                            <!-- Context badge (shown when a product is selected) -->
+                            <div id="mov-contexto-producto" class="mov-producto-badge hidden">
+                                <i data-lucide="package"></i>
+                                Historial de: <strong id="mov-contexto-nombre"></strong>
+                                <button type="button" class="product-change-btn"
+                                        onclick="limpiarSeleccionProductoHistorial()"
+                                        title="Cambiar producto">
+                                    <i data-lucide="refresh-cw"></i>
+                                </button>
+                            </div>
+
+                            <!-- Default suggestions / empty state (shown when no product selected) -->
+                            <div id="product-suggestions" class="product-suggestions">
+                                <div class="suggestions-header">
+                                    <i data-lucide="search"></i>
+                                    <span class="suggestions-title">Seleccioná un producto</span>
+                                    <span class="suggestions-hint">Usá el buscador de arriba o seleccioná uno sugerido para ver su historial de movimientos.</span>
+                                </div>
+                                <div id="suggestion-chips" class="suggestion-chips">
+                                    <!-- Populated dynamically -->
+                                </div>
+                            </div>
+
+                            <!-- Secondary table filter (shown only when product selected) -->
+                            <div id="mov-producto-filters" class="hidden">
+                                <div class="filter-bar">
+                                    <div class="search-box search-box--clearable">
+                                        <span class="search-icon"><i data-lucide="search"></i></span>
+                                        <input type="text" id="search-movimientos" placeholder="Filtrar por evento, origen o motivo..." autocomplete="off">
+                                        <button type="button" class="search-clear-btn" id="search-movimientos-clear" onclick="limpiarBusquedaMovimientos()" aria-label="Limpiar búsqueda">
+                                            <i data-lucide="x"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                                <div class="table-wrapper sticky-header">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Fecha / Hora</th>
+                                                <th>Producto</th>
+                                                <th>Movimiento</th>
+                                                <th>Cantidad</th>
+                                                <th>Motivo / Contexto</th>
+                                                <th>Evento</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tabla-movimientos">
+                                            <tr>
+                                                <td colspan="6" class="loading-state">Seleccioná un producto para ver su historial.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            <!-- Contextual pagination info: "Mostrando 1-50 de 132 movimientos" -->
+                            <div id="mov-pagination-info" class="mov-pagination-info hidden"></div>
+
+                            <!-- Paginación per‑producto -->
+                            <div id="paginacion-mov-producto" class="pagination-container"></div>
+
+                            <!-- Hidden select for legacy compatibility (external deep-links) -->
+                            <select id="select-producto-historial" class="hidden" aria-hidden="true">
+                                <option value="">--</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- DRAWER: ENTRADA / SALIDA -->
+    <div class="drawer-overlay" id="drawer-movimiento-overlay" onclick="cerrarDrawer(event)">
+        <aside class="drawer" id="drawer-movimiento">
+            <header class="drawer-header">
+                <h2 id="drawer-titulo">Registrar Entrada</h2>
+                <button class="btn-close" onclick="cerrarDrawer()"><i data-lucide="x"></i></button>
+            </header>
+
+            <div class="drawer-body">
+                <div id="drawer-alert" class="alert hidden"></div>
+
+                <!-- Step indicator -->
+                <div class="move-step-indicator" id="move-step-indicator" data-step-active="select">
+                    <div class="move-step-row">
+                        <span class="move-step active" data-step="select">
+                            <span class="move-step-number">1</span>
+                        </span>
+                        <span class="move-step-connector"></span>
+                        <span class="move-step" data-step="data">
+                            <span class="move-step-number">2</span>
+                        </span>
+                        <span class="move-step-connector"></span>
+                        <span class="move-step" data-step="confirm">
+                            <span class="move-step-number">3</span>
+                        </span>
+                    </div>
+                    <div class="move-step-label" id="move-step-label">Paso 1 · Seleccionar producto</div>
+                </div>
+
+                <form id="form-movimiento" class="form-vertical" onsubmit="guardarMovimiento(event)">
+                    <div class="form-section-card">
+                        <h3>Detalles del Movimiento</h3>
+                        <div class="form-group">
+                            <label for="producto-autocomplete-input">Producto *</label>
+                            <div class="autocomplete-field">
+                                <div class="autocomplete-input-wrapper">
+                                    <span class="autocomplete-icon"><i data-lucide="search"></i></span>
+                                    <input type="text" id="producto-autocomplete-input"
+                                           placeholder="Buscá por nombre de producto..."
+                                           autocomplete="off"
+                                           aria-label="Buscar producto"
+                                           role="combobox"
+                                           aria-expanded="false"
+                                           aria-controls="producto-autocomplete-results">
+                                    <button type="button" class="autocomplete-clear hidden"
+                                            id="producto-autocomplete-clear" aria-label="Limpiar selección">
+                                        <i data-lucide="x"></i>
+                                    </button>
+                                </div>
+                                <div id="producto-autocomplete-results" class="autocomplete-results hidden" role="listbox"></div>
+                                <select id="select-producto" class="hidden" aria-hidden="true" required>
+                                    <option value="">Selecciona un producto...</option>
+                                </select>
+                            </div>
+                            <small id="movimiento-stock-hint" class="stock-hint stock-hint--info">Seleccioná un producto para ver stock físico y disponibilidad operativa.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-cantidad" id="label-cantidad">Cantidad *</label>
+                            <input type="number" id="input-cantidad" min="1" placeholder="Ej: 10" required>
+                        </div>
+                        <div class="form-group" id="grupo-tipo-origen">
+                            <label for="select-tipo-origen">Tipo de Origen *</label>
+                            <select id="select-tipo-origen" required>
+                                <option value="">Selecciona un origen...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-motivo" id="label-motivo">Motivo / Observación</label>
+                            <textarea id="input-motivo" rows="3" placeholder="Ej: Compra de nuevo lote, producto dañado..." required></textarea>
+                        </div>
+                    </div>
+
+                    <!-- CONFIRMATION SUMMARY -->
+                    <div id="movimiento-confirmacion" class="form-section-card confirm-summary hidden">
+                        <h3>Resumen de la operaci&oacute;n</h3>
+                        <div id="confirm-summary-rows" class="confirm-summary-rows">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <div class="drawer-footer">
+                        <button type="button" class="btn btn-secondary" onclick="cerrarDrawer()">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="btn-guardar-mov">Confirmar Movimiento</button>
+                    </div>
+                </form>
+            </div>
+        </aside>
+    </div>
+
+    <!-- DRAWER: PRODUCTO -->
+    <div class="drawer-overlay" id="drawer-producto-overlay" onclick="cerrarDrawerProducto(event)">
+        <aside class="drawer" id="drawer-producto">
+            <header class="drawer-header">
+                <div>
+                    <h2 id="drawer-producto-titulo">Nuevo Producto</h2>
+                    <span class="drawer-mode-badge drawer-mode-badge--create" id="drawer-producto-modo">Creaci&oacute;n</span>
+                </div>
+                <button class="btn-close" onclick="cerrarDrawerProducto()"><i data-lucide="x"></i></button>
+            </header>
+
+            <div class="drawer-body">
+                <div id="drawer-producto-alert" class="alert hidden"></div>
+
+                <form id="form-producto" class="form-vertical" onsubmit="guardarProducto(event)">
+                    <!-- STEP 1: Identificación -->
+                    <div class="form-section-card">
+                        <h3><i data-lucide="tag" style="width:14px;height:14px;vertical-align:text-bottom"></i> 1 · Identificaci&oacute;n del Producto</h3>
+                        <p class="section-note" style="margin-top:-0.4rem;margin-bottom:0.85rem;font-size:0.82rem">Nombre y descripci&oacute;n para identificar el art&iacute;culo en el cat&aacute;logo.</p>
+                        <div class="form-group">
+                            <label for="input-producto-nombre">Nombre *</label>
+                            <input type="text" id="input-producto-nombre" maxlength="120" placeholder="Ej: Silla Tiffany, Base de Globo..." required>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-producto-descripcion">Descripci&oacute;n</label>
+                            <textarea id="input-producto-descripcion" rows="3" placeholder="Uso interno, material, variantes o notas operativas..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2: Alta Inicial (create only) -->
+                    <div class="form-section-card" id="producto-create-fields">
+                        <h3><i data-lucide="package-plus" style="width:14px;height:14px;vertical-align:text-bottom"></i> 2 · Stock y Estado Inicial</h3>
+                        <p class="section-note" style="margin-top:-0.4rem;margin-bottom:0.85rem;font-size:0.82rem">Defin&iacute; el stock f&iacute;sico con el que arranca el producto. Estos campos solo est&aacute;n disponibles durante la creaci&oacute;n.</p>
+                        <div class="form-group">
+                            <label for="input-producto-cantidad">Stock F&iacute;sico Inicial *</label>
+                            <input type="number" id="input-producto-cantidad" min="1" step="1" placeholder="Ej: 24">
+                        </div>
+                        <div class="form-group">
+                            <label for="select-producto-estado-create">Estado Inicial</label>
+                            <select id="select-producto-estado-create">
+                                <option value="ACTIVO">Activo</option>
+                                <option value="INACTIVO">Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2 (edit): Configuración Operativa -->
+                    <div class="form-section-card hidden" id="producto-edit-fields">
+                        <h3><i data-lucide="settings-2" style="width:14px;height:14px;vertical-align:text-bottom"></i> 2 · Configuraci&oacute;n Operativa</h3>
+                        <p class="section-note" style="margin-top:-0.4rem;margin-bottom:0.85rem;font-size:0.82rem">Precio, stock m&iacute;nimo y estado del producto. El stock f&iacute;sico se ajusta desde los movimientos.</p>
+                        <div class="product-status-panel">
+                            <div>
+                                <span class="product-status-panel-label">Estado actual</span>
+                                <div id="producto-estado-actual"></div>
+                            </div>
+                            <p id="producto-estado-ayuda" class="product-status-panel-copy">El estado se administra con los botones de activar o desactivar desde el cat&aacute;logo.</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-producto-precio">Precio Unitario</label>
+                            <input type="number" id="input-producto-precio" min="0" step="0.01" placeholder="Ej: 12.50">
+                        </div>
+                        <div class="form-group">
+                            <label for="input-producto-stock-minimo">Stock M&iacute;nimo</label>
+                            <input type="number" id="input-producto-stock-minimo" min="0" step="1" placeholder="Ej: 5">
+                        </div>
+                        <div class="inline-note" style="margin-top:0">
+                            <strong>Importante:</strong> El stock f&iacute;sico no se edita ac&aacute;. Para corregir existencias us&aacute; <strong>Entradas, Salidas o Ajustes</strong> desde la vista de Stock / Riesgo.
+                        </div>
+                    </div>
+
+                    <div class="drawer-footer">
+                        <button type="button" class="btn btn-secondary" onclick="cerrarDrawerProducto()">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="btn-guardar-producto">Guardar Producto</button>
+                    </div>
+                </form>
+            </div>
+        </aside>
+    </div>
+
+    <!-- MODAL DESACTIVAR PRODUCTO -->
+    <div class="modal-overlay" id="modal-producto-estado">
+        <div class="modal modal-sm">
+            <header class="modal-header">
+                <h2 id="modal-producto-estado-titulo">Cambiar estado</h2>
+                <button class="modal-close" onclick="cerrarModalProductoEstado()"><i data-lucide="x"></i></button>
+            </header>
+            <div class="modal-body">
+                <p id="modal-producto-estado-mensaje"></p>
+            </div>
+            <footer class="modal-footer">
+                <button class="btn btn-secondary" onclick="cerrarModalProductoEstado()">Cancelar</button>
+                <button class="btn btn-danger" id="btn-confirmar-producto-estado" onclick="confirmarCambioEstadoProducto()">Confirmar</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../js/core/config.js" defer></script>
+    <script src="../../js/core/auth.js" defer></script>
+    <script src="../../js/core/http.js" defer></script>
+    <script src="../../js/shared/api.js" defer></script>
+    <script src="../../js/shared/modulos.js" defer></script>
+    <script src="../../js/shared/formatters.js" defer></script>
+    <script src="../../js/shared/alerts.js" defer></script>
+    <script src="js/inventario.state.js" defer></script>
+    <script src="js/inventario.helpers.js" defer></script>
+    <script src="js/inventario.render.js" defer></script>
+    <script src="js/inventario.api.js" defer></script>
+    <script src="js/inventario.actions.js" defer></script>
+    <script src="inventario.js" defer></script>
+    <script src="../../js/shared/notificaciones-bell.js" defer></script>
+    <script src="../../js/shared/sidebar.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            requireAuth();
+            renderSidebar('inventario', 'Gestión de Eventos');
+        });
+    </script>
+</body>
+</html>

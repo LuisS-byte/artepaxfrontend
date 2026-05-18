@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "chunks": [
+    {
+      "id": "bc19bf01",
+      "created_by": "cryde",
+      "created_at": "2026-05-14T02:31:04Z",
+      "sessions": 34,
+      "memories": 159,
+      "prompts": 377
+    }
+  ]
+}

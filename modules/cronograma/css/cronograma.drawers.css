@@ -1,0 +1,73 @@
+/* ── CRONOGRAMA — Drawer contexto ────────────────── */
+
+/* Card de resumen compartido (drawer-summary-card extiende event-summary-card) */
+.drawer-summary-card {
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    border-radius: 18px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(247,248,250,0.95) 100%);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.drawer-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-md);
+}
+
+.drawer-summary-main {
+    grid-column: 1 / -1;
+}
+
+.drawer-summary-main h3 {
+    font-size: 1.1rem;
+    color: var(--neutral-900);
+}
+
+.drawer-summary-main p {
+    margin-top: 6px;
+    color: var(--neutral-600);
+    font-size: 0.86rem;
+}
+
+.drawer-summary-stat {
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: var(--white);
+    border: 1px solid var(--neutral-200);
+}
+
+.drawer-summary-stat span {
+    display: block;
+    font-size: 0.76rem;
+    color: var(--neutral-500);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.drawer-summary-stat strong {
+    display: block;
+    margin-top: 6px;
+}
+
+/* Nota contextual del drawer */
+.context-note {
+    display: flex;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: 16px;
+    background: rgba(21, 101, 192, 0.08);
+    color: var(--neutral-700);
+    border: 1px solid rgba(21, 101, 192, 0.14);
+    margin-bottom: var(--spacing-lg);
+}
+
+.context-note p {
+    margin-top: 4px;
+    font-size: 0.84rem;
+}
+
+/* Mini header */
+.mini-header h3 {
+    font-size: 0.95rem;
+}

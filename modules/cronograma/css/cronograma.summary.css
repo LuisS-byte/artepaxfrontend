@@ -1,0 +1,123 @@
+/* ── CRONOGRAMA — Resumen de evento ─────────────── */
+
+/* Card contenedor del resumen del evento */
+.event-summary-card {
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    border-radius: 18px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(247,248,250,0.95) 100%);
+    padding: var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
+}
+
+/* Grid de dos columnas: info + KPIs */
+.event-summary-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(280px, 1fr);
+    gap: var(--spacing-xl);
+    align-items: start;
+}
+
+.event-summary-grid h2 {
+    margin-top: var(--spacing-md);
+    font-size: 1.45rem;
+}
+
+.event-summary-grid p {
+    margin-top: var(--spacing-sm);
+    color: var(--neutral-700);
+}
+
+/* KPIs del resumen */
+.summary-kpis {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-md);
+}
+
+.summary-kpi {
+    padding: 14px;
+    border-radius: 16px;
+    background: var(--white);
+    border: 1px solid var(--neutral-200);
+}
+
+.summary-kpi strong {
+    display: block;
+    margin-top: 6px;
+    font-size: 1rem;
+    color: var(--neutral-900);
+}
+
+.summary-kpi span {
+    display: block;
+    font-size: 0.76rem;
+    color: var(--neutral-500);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+/* Eyebrow label del resumen */
+.summary-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(21, 101, 192, 0.1);
+    color: var(--accent);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* Banner de policy (habilitado/bloqueado) */
+.policy-banner {
+    margin-top: var(--spacing-lg);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: 14px;
+    border: 1px solid rgba(237, 108, 2, 0.2);
+    background: rgba(237, 108, 2, 0.08);
+    color: var(--neutral-700);
+}
+
+.policy-banner.is-ok {
+    border-color: rgba(46, 125, 50, 0.18);
+    background: rgba(46, 125, 50, 0.08);
+}
+
+.policy-banner svg,
+.context-note svg {
+    width: 18px;
+    height: 18px;
+    color: inherit;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+/* Acciones del resumen (botón Ir al evento) */
+.event-summary-actions {
+    margin-top: var(--spacing-lg);
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+}
+
+.event-summary-actions .btn[disabled] {
+    opacity: 0.65;
+}
+
+/* Barra de filtros del evento */
+.event-filter-bar {
+    padding: 0 0 var(--spacing-md);
+}
+
+/* Stack de estado de evento en celda */
+.event-state-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}

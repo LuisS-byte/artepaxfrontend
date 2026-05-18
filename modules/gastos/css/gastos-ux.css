@@ -1,0 +1,361 @@
+/* ══════════════════════════════════════════════════════════
+   UX PRO MAX — Pre-Delivery Polish
+   Focus, transitions, hover, a11y, search, chips, fade-out
+   ══════════════════════════════════════════════════════════ */
+
+/* ── FOCUS-VISIBLE: anillo accesible para teclado ───── */
+.action-chip:focus-visible,
+.egresos-chip:focus-visible,
+.egresos-queue-item:focus-visible,
+.gastos-kpi-card:focus-visible,
+.filter-bar select:focus-visible,
+.filter-bar input:focus-visible,
+.filter-bar .btn:focus-visible,
+.data-table th:focus-visible,
+.drawer .btn:focus-visible,
+.drawer select:focus-visible,
+.drawer input:focus-visible,
+.drawer textarea:focus-visible,
+.pagination-container .page-btn:focus-visible {
+    outline: 2px solid var(--accent, #1565C0);
+    outline-offset: 2px;
+}
+
+input[type="text"]:focus-visible,
+input[type="number"]:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+.input-field:focus-visible {
+    outline: 2px solid var(--accent, #1565C0);
+    outline-offset: 1px;
+    border-color: var(--accent, #1565C0);
+}
+
+/* ── TRANSITIONS: feedback visual instantáneo → suave ── */
+.gastos-kpi-card {
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.action-chip {
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.12s ease;
+}
+
+.data-table tbody tr {
+    transition: background 0.15s ease;
+}
+
+.btn,
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.12s ease, box-shadow 0.15s ease;
+}
+
+/* ── HOVER STATES: micro-interacciones ────────────────── */
+.gastos-kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.10);
+    border-color: rgba(148, 163, 184, 0.35);
+}
+
+.data-table tbody tr:hover {
+    background: rgba(21, 101, 192, 0.03);
+}
+
+.action-chip:hover {
+    transform: translateY(-1px);
+}
+
+/* ── SEARCH INPUT WRAPPER ───────────────────────────── */
+.search-group {
+    flex: 1;
+    min-width: 220px;
+}
+
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-input-wrapper .search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    color: var(--neutral-400);
+    pointer-events: none;
+}
+
+.search-input-wrapper .input-field {
+    padding-left: 38px;
+    padding-right: 36px;
+}
+
+.search-clear {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 50%;
+    background: var(--neutral-200);
+    color: var(--neutral-600);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.search-clear:hover {
+    background: var(--neutral-300);
+    color: var(--neutral-800);
+}
+
+.search-clear.hidden {
+    display: none;
+}
+
+.search-clear i {
+    width: 14px;
+    height: 14px;
+}
+
+/* ── ACCIONES WRAPPER ─────────────────────────────────── */
+.acciones-wrapper {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.acciones-wrapper .action-chip + .action-chip::before {
+    content: '';
+    display: inline-block;
+    width: 1px;
+    height: 20px;
+    background: var(--neutral-300);
+    margin-right: 0;
+    vertical-align: middle;
+}
+
+/* ── FILTER CHIPS ──────────────────────────────────────── */
+.filter-chips-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: var(--spacing-md);
+    min-height: 0;
+}
+
+.filter-chips-container:empty {
+    display: none;
+}
+
+.filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    background: rgba(21, 101, 192, 0.08);
+    color: var(--accent);
+    border: 1px solid rgba(21, 101, 192, 0.18);
+}
+
+.filter-chip-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(21, 101, 192, 0.12);
+    color: var(--accent);
+    cursor: pointer;
+    font-size: 0.7rem;
+    line-height: 1;
+    padding: 0;
+    transition: background 0.12s ease;
+}
+
+.filter-chip-remove:hover {
+    background: rgba(21, 101, 192, 0.25);
+}
+
+.filter-chip-remove i {
+    width: 12px;
+    height: 12px;
+}
+
+/* ── RESULTS COUNT ────────────────────────────────────── */
+.results-count-container {
+    margin-top: var(--spacing-sm);
+    font-size: 0.82rem;
+    color: var(--neutral-600);
+}
+
+.results-count-container:empty {
+    display: none;
+}
+
+.results-count-container .count-number {
+    font-weight: 700;
+    color: var(--neutral-800);
+}
+
+/* ── CHIP COLOR VARIANTS ───────────────────────────────── */
+.filter-chip.chip-warning {
+    background: rgba(237, 108, 2, 0.10);
+    color: var(--warning, #ED6C02);
+    border-color: rgba(237, 108, 2, 0.20);
+}
+
+.filter-chip.chip-primary {
+    background: rgba(21, 101, 192, 0.08);
+    color: var(--accent, #1565C0);
+    border-color: rgba(21, 101, 192, 0.18);
+}
+
+.filter-chip.chip-neutral {
+    background: rgba(100, 116, 139, 0.10);
+    color: var(--neutral-600, #64748B);
+    border-color: rgba(100, 116, 139, 0.18);
+}
+
+.filter-chip.chip-accent {
+    background: rgba(0, 150, 136, 0.10);
+    color: #009688;
+    border-color: rgba(0, 150, 136, 0.20);
+}
+
+.filter-chip-clear {
+    cursor: pointer;
+    font-weight: 500;
+    border: 1px dashed var(--neutral-400);
+    background: transparent;
+    color: var(--neutral-600);
+    gap: 4px;
+}
+
+.filter-chip-clear:hover {
+    background: var(--neutral-100);
+    border-color: var(--neutral-500);
+    color: var(--neutral-800);
+}
+
+/* ── ROW FADE-IN KEYFRAMES ───────────────────────────── */
+@keyframes rowFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.data-table tbody tr {
+    animation: rowFadeIn 0.25s ease both;
+}
+
+.data-table tbody tr:nth-child(1) { animation-delay: 0.00s; }
+.data-table tbody tr:nth-child(2) { animation-delay: 0.02s; }
+.data-table tbody tr:nth-child(3) { animation-delay: 0.04s; }
+.data-table tbody tr:nth-child(4) { animation-delay: 0.06s; }
+.data-table tbody tr:nth-child(5) { animation-delay: 0.08s; }
+.data-table tbody tr:nth-child(6) { animation-delay: 0.10s; }
+.data-table tbody tr:nth-child(7) { animation-delay: 0.12s; }
+.data-table tbody tr:nth-child(8) { animation-delay: 0.14s; }
+.data-table tbody tr:nth-child(9) { animation-delay: 0.16s; }
+.data-table tbody tr:nth-child(10) { animation-delay: 0.18s; }
+
+/* ── FADE-OUT (para eliminación) ────────────────────── */
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* ── ROW-DELETING (para animación antes de eliminar) ── */
+@keyframes fadeOutRow {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+}
+
+.row-deleting {
+    animation: fadeOutRow 300ms ease-out forwards;
+}
+
+/* ── CONCEPT CHIPS ─────────────────────────────────────── */
+.concept-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: var(--spacing-sm);
+}
+
+.concept-chips.hidden {
+    display: none;
+}
+
+.concept-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--neutral-300);
+    background: var(--neutral-0);
+    color: var(--neutral-700);
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+}
+
+.concept-chip:hover {
+    background: var(--accent, #1565C0);
+    border-color: var(--accent, #1565C0);
+    color: #fff;
+}
+
+/* ── REDUCED MOTION: respeta preferencias del SO ─────── */
+@media (prefers-reduced-motion: reduce) {
+    .gastos-kpi-card,
+    .action-chip,
+    .data-table tbody tr,
+    .btn,
+    .btn-primary,
+    .btn-secondary,
+    .btn-danger,
+    .search-clear,
+    .filter-chip-remove,
+    .fade-out {
+        transition: none;
+    }
+
+    .gastos-kpi-card:hover {
+        transform: none;
+    }
+
+    .action-chip:hover {
+        transform: none;
+    }
+
+    .data-table tbody tr {
+        animation: none;
+    }
+}

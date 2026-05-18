@@ -1,0 +1,176 @@
+/* ── CLIENT CELL: avatar + nombre ──────────────────────── */
+.client-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.client-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.client-avatar--1 { background: #EEF2FF; color: #4338CA; }
+.client-avatar--2 { background: #FEF3C7; color: #92400E; }
+.client-avatar--3 { background: #DCFCE7; color: #166534; }
+.client-avatar--4 { background: #FCE7F3; color: #9D174D; }
+.client-avatar--5 { background: #E0E7FF; color: #3730A3; }
+.client-avatar--6 { background: #FFEDD5; color: #9A3412; }
+.client-avatar--7 { background: #D1FAE5; color: #065F46; }
+.client-avatar--8 { background: #FEE2E2; color: #991B1B; }
+
+.client-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.client-name {
+    font-weight: 600;
+    color: var(--neutral-900);
+    font-size: 0.875rem;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.client-id {
+    font-size: 0.6875rem;
+    color: var(--neutral-400);
+    font-weight: 500;
+}
+
+/* ── DATE CELL: mejor formato ──────────────────────────── */
+.date-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.date-cell-primary {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--neutral-900);
+}
+
+.date-cell-time {
+    font-size: 0.75rem;
+    color: var(--neutral-400);
+    font-weight: 500;
+}
+
+/* ── DECORATION CELL ───────────────────────────────────── */
+.deco-cell {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+}
+
+.deco-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    opacity: 0.5;
+}
+
+.estado-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.estado-cell-note {
+    font-size: 0.6875rem;
+    color: var(--warning);
+    line-height: 1.2;
+}
+
+/* ── EMPTY STATE (tabla sin resultados) ──────────────────── */
+/* override intencional de global.css (.empty-state-card)
+   - padding más horizontal (48px 32px vs 64px 24px) para
+     adaptarse al ancho de la tabla
+   - .empty-icon svg necesario porque usamos Lucide icons,
+     mientras global.css usa font-size para iconos texto
+   Si global.css unifica soporte para SVG icons, revisar */
+.empty-state-card {
+    padding: 48px 32px;
+}
+
+.empty-state-card .empty-icon svg {
+    width: 56px;
+    height: 56px;
+    opacity: 0.2;
+    color: var(--neutral-400);
+}
+
+/* ── BADGES MEJORADOS: color + ícono + barra lateral ───── */
+/* Override local — aplica solo en módulo eventos            */
+.estado-cell .badge,
+#detalle-badge-estado .badge,
+.cal-detalle-evento-meta .badge {
+    border-left: 3px solid currentColor;
+    padding-left: 10px;
+    border-radius: 4px 999px 999px 4px;
+}
+
+.badge-cotizacion {
+    background: color-mix(in srgb, var(--event-cotizacion) 18%, transparent);
+    border: 1px solid color-mix(in srgb, var(--event-cotizacion) 30%, transparent);
+}
+.badge-cotizacion::before { content: '\25CB'; margin-right: 4px; font-size: 0.6rem; }
+
+.badge-programado {
+    background: color-mix(in srgb, var(--event-programado) 18%, transparent);
+    border: 1px solid color-mix(in srgb, var(--event-programado) 30%, transparent);
+}
+.badge-programado::before { content: '\25EC'; margin-right: 4px; font-size: 0.6rem; }
+
+.badge-confirmado {
+    background: color-mix(in srgb, var(--event-confirmado) 18%, transparent);
+    border: 1px solid color-mix(in srgb, var(--event-confirmado) 30%, transparent);
+}
+.badge-confirmado::before { content: '\2713'; margin-right: 4px; font-weight: 700; font-size: 0.7rem; }
+
+.badge-en-montaje {
+    background: color-mix(in srgb, var(--event-en-montaje) 18%, transparent);
+    border: 1px solid color-mix(in srgb, var(--event-en-montaje) 30%, transparent);
+}
+.badge-en-montaje::before { content: '\25B6'; margin-right: 4px; font-size: 0.55rem; }
+
+.badge-pendiente-cobro {
+    background: color-mix(in srgb, var(--event-pendiente-cobro) 18%, transparent);
+    border: 1px solid color-mix(in srgb, var(--event-pendiente-cobro) 30%, transparent);
+}
+.badge-pendiente-cobro::before { content: '\2605'; margin-right: 4px; font-size: 0.65rem; }
+
+.badge-finalizado {
+    background: color-mix(in srgb, var(--event-finalizado) 18%, transparent);
+    border: 1px solid color-mix(in srgb, var(--event-finalizado) 30%, transparent);
+}
+.badge-finalizado::before { content: '\25CF'; margin-right: 4px; font-size: 0.5rem; }
+
+.badge-cancelacion-pendiente {
+    background: color-mix(in srgb, var(--event-cancelacion-pendiente) 18%, transparent);
+    border: 1px solid color-mix(in srgb, var(--event-cancelacion-pendiente) 30%, transparent);
+}
+.badge-cancelacion-pendiente::before { content: '\26A0'; margin-right: 4px; font-size: 0.65rem; }
+
+.badge-cancelado {
+    background: color-mix(in srgb, var(--event-cancelado) 18%, transparent);
+    border: 1px solid color-mix(in srgb, var(--event-cancelado) 30%, transparent);
+}
+.badge-cancelado::before { content: '\2717'; margin-right: 4px; font-weight: 700; font-size: 0.7rem; }

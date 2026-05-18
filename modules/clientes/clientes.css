@@ -1,0 +1,19 @@
+/* ── TABLA CLIENTES ──────────────────────────────────── */
+
+.data-table {
+    width: 100%;
+    table-layout: auto;
+}
+
+.data-table thead th:last-child {
+    width: 220px;
+    min-width: 220px;
+}
+
+.data-table tbody td.acciones-cell {
+    width: 220px;
+    min-width: 220px;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+

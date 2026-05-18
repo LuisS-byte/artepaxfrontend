@@ -1,0 +1,16 @@
+/* ── EVENTOS — CSS Aggregator ──────────────────────────────── */
+/* Cada archivo cubre una responsabilidad específica.          */
+/* @import order matters: ux.css (polish layer) MUST be last. */
+/* NOTA: No usar @layer — los estilos del módulo necesitan    */
+/* prevalecer sobre global.css (sin layer).                    */
+
+@import url("css/eventos.table.css");
+@import url("css/eventos.kebab.css");
+@import url("css/eventos.cells.css");
+@import url("css/eventos.calendar.css");
+@import url("css/eventos.detail.css");
+@import url("css/eventos.rentabilidad.css");
+@import url("css/eventos.form.css");
+@import url("css/eventos.list.css");
+@import url("css/eventos.productos.css");
+@import url("css/eventos.ux.css");

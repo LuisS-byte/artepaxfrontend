@@ -1,0 +1,94 @@
+/* ══════════════════════════════════════════════════════════
+   Módulo Inventario — States: Skeleton, Empty & Error
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Skeleton Loading ────────────────────────────────── */
+.skeleton-row td {
+    padding: 14px 16px !important;
+    vertical-align: middle;
+}
+
+.skeleton-cell {
+    height: 16px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.skeleton-cell--lg { width: 65%; }
+.skeleton-cell--md { width: 40%; }
+.skeleton-cell--sm { width: 25%; }
+.skeleton-cell--xs { width: 15%; }
+.skeleton-cell--center { margin: 0 auto; }
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ── Empty State ─────────────────────────────────────── */
+.inventory-empty-state {
+    text-align: center;
+    padding: 56px 24px !important;
+}
+
+.inventory-empty-state-icon {
+    display: block;
+    margin: 0 auto 16px;
+    opacity: 0.18;
+}
+
+.inventory-empty-state-icon svg {
+    width: 64px;
+    height: 64px;
+}
+
+.inventory-empty-state-title {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--neutral-700);
+    margin-bottom: 6px;
+}
+
+.inventory-empty-state-text {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-light);
+    max-width: 320px;
+    margin: 0 auto;
+    line-height: 1.45;
+}
+
+/* ── Error State ─────────────────────────────────────── */
+.inventory-error-state {
+    text-align: center;
+    padding: 48px 24px !important;
+}
+
+.inventory-error-state-icon {
+    display: block;
+    margin: 0 auto 12px;
+    opacity: 0.2;
+}
+
+.inventory-error-state-icon svg {
+    width: 56px;
+    height: 56px;
+}
+
+.inventory-error-state-text {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--danger);
+    margin-bottom: 8px;
+}
+
+.inventory-error-state-hint {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--text-light);
+    margin-bottom: 14px;
+}

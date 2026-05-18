@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Artepax Fiesta - Dashboard</title>
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+</head>
+<body>
+
+<div class="app-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar-container"></aside>
+
+    <!-- CONTENIDO -->
+    <div class="main-wrapper">
+        <header class="topbar">
+            <div class="breadcrumbs">
+                <span class="current">Dashboard</span>
+            </div>
+            <div class="topbar-actions">
+                <div class="user-info">
+                    <span class="user-name">Administrador</span>
+                    <div class="user-avatar">AD</div>
+                </div>
+            </div>
+        </header>
+    <main class="main-content">
+        <div class="page-header">
+            <h1>Dashboard</h1>
+            <p id="saludo">Bienvenido al sistema de gestión Artepax Fiesta</p>
+        </div>
+
+        <!-- STAT CARDS -->
+        <div class="stat-grid">
+            <div class="stat-card">
+                <div class="stat-icon stat-icon-blue"><i data-lucide="users"></i></div>
+                <div class="stat-body">
+                    <h3 id="stat-clientes">—</h3>
+                    <p>Clientes registrados</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon stat-icon-blue"><i data-lucide="calendar-check"></i></div>
+                <div class="stat-body">
+                    <h3 id="stat-programados">—</h3>
+                    <p>Eventos programados</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon stat-icon-purple"><i data-lucide="calendar"></i></div>
+                <div class="stat-body">
+                    <h3 id="stat-hoy">—</h3>
+                    <p>Eventos hoy</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon stat-icon-orange"><i data-lucide="alert-triangle"></i></div>
+                <div class="stat-body">
+                    <h3 id="stat-stock-bajo">—</h3>
+                    <p>Productos con stock bajo</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon stat-icon-orange"><i data-lucide="file-clock"></i></div>
+                <div class="stat-body">
+                    <h3 id="stat-cotizaciones">—</h3>
+                    <p>Cotizaciones abiertas</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRÓXIMOS EVENTOS -->
+        <div class="card">
+            <div class="section-header">
+                <h2>Próximos eventos programados</h2>
+                <a href="modules/eventos/eventos.html" class="btn btn-outline btn-sm">Ver todos</a>
+            </div>
+            <div id="alert-dash" class="alert hidden"></div>
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Fecha</th>
+                            <th>Hora inicio</th>
+                            <th>Ubicación</th>
+                            <th>Decoración</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-proximos">
+                        <tr>
+                            <td colspan="5" class="loading-state"><div class="spinner"></div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- STOCK BAJO -->
+        <div class="card">
+            <div class="section-header">
+                <h2>Productos con stock bajo (≤ 5 unidades)</h2>
+                <a href="modules/inventario/inventario.html" class="btn btn-outline btn-sm">Ver inventario</a>
+            </div>
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Stock actual</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-stock-bajo">
+                        <tr>
+                            <td colspan="3" class="loading-state"><div class="spinner"></div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+    </div>
+</div>
+
+    <script src="js/core/config.js" defer></script>
+    <script src="js/core/auth.js" defer></script>
+    <script src="js/core/http.js" defer></script>
+    <script src="js/shared/api.js" defer></script>
+    <script src="js/shared/modulos.js" defer></script>
+    <script src="js/shared/formatters.js" defer></script>
+    <script src="js/shared/alerts.js" defer></script>
+    <script src="js/shared/notificaciones-bell.js" defer></script>
+    <script src="js/shared/sidebar.js" defer></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        renderSidebar('dashboard', 'Sistema de Gestión');
+        requireAuth();
+        cargarDashboard();
+    });
+
+    // ── CARGA ÚNICA DE DATOS BASE ────────────────────────
+    // Carga clientes, eventos y productos una sola vez y
+    // complementa productos con stock real desde inventario.
+
+    async function cargarDashboard() {
+        const [resClientes, resEventos, resProductos] = await Promise.allSettled([
+            API.clientes.list(),
+            API.eventos.list(),
+            API.productos.list()
+        ]);
+
+        function _extraerLista(respuesta) {
+            if (!respuesta) return null;
+            if (Array.isArray(respuesta)) return respuesta;
+            if (Array.isArray(respuesta.content)) return respuesta.content;
+            return [];
+        }
+
+        const clientes  = _extraerLista(resClientes.status  === 'fulfilled' ? resClientes.value  : null);
+        const eventos   = _extraerLista(resEventos.status   === 'fulfilled' ? resEventos.value   : null);
+        const productosBase = _extraerLista(resProductos.status === 'fulfilled' ? resProductos.value : null);
+        const productos = await enriquecerProductosConStockReal(productosBase);
+
+        renderStats(clientes, eventos, productos);
+        renderProximosEventos(eventos);
+        renderStockBajo(productos);
+    }
+
+    async function enriquecerProductosConStockReal(productos) {
+        if (!Array.isArray(productos) || productos.length === 0) return productos;
+
+        const stockResuelto = await Promise.allSettled(
+            productos.map(producto => API.inventario.stockProducto(producto.id))
+        );
+
+        return productos.map((producto, index) => {
+            const stock = stockResuelto[index];
+
+            if (stock?.status !== 'fulfilled') {
+                return {
+                    ...producto,
+                    cantidadDisponible: producto.cantidadTotal ?? 0,
+                    stockBajoAlerta: (producto.cantidadTotal ?? 0) <= (producto.stockMinimo ?? 0)
+                };
+            }
+
+            return {
+                ...producto,
+                ...stock.value
+            };
+        });
+    }
+
+    // ── STATS ────────────────────────────────────────────
+
+    function renderStats(clientes, eventos, productos) {
+        try {
+            const hoy = new Date().toISOString().slice(0, 10);
+
+            const totalClientes  = clientes ? clientes.length : '—';
+            const programados    = eventos  ? eventos.filter(e => e.estadoEventoNombre === 'PROGRAMADO').length : '—';
+            const eventosHoy     = eventos  ? eventos.filter(e => e.fecha === hoy).length : '—';
+            const stockBajoCnt   = productos
+                ? productos.filter(p => (p.cantidadDisponible ?? p.cantidadTotal ?? 0) <= 5).length
+                : '—';
+            const cotizaciones = eventos
+                ? eventos.filter(e => e.estadoEventoNombre === 'COTIZACION').length
+                : '—';
+
+            document.getElementById('stat-clientes').textContent     = totalClientes;
+            document.getElementById('stat-programados').textContent   = programados;
+            document.getElementById('stat-hoy').textContent          = eventosHoy;
+            document.getElementById('stat-stock-bajo').textContent   = stockBajoCnt;
+            document.getElementById('stat-cotizaciones').textContent = cotizaciones;
+        } catch (err) {
+            console.warn('Error en stats:', err);
+        }
+    }
+
+    // ── PROXIMOS EVENTOS ─────────────────────────────────
+
+    function renderProximosEventos(eventos) {
+        const tbody = document.getElementById('tabla-proximos');
+        if (!eventos) {
+            tbody.innerHTML = '<tr><td colspan="5" class="error-state">Error al cargar eventos.</td></tr>';
+            return;
+        }
+
+        const hoy = new Date().toISOString().slice(0, 10);
+        const proximos = eventos
+            .filter(e => e.estadoEventoNombre === 'PROGRAMADO' && e.fecha >= hoy)
+            .sort((a, b) => a.fecha.localeCompare(b.fecha))
+            .slice(0, 6);
+
+        if (proximos.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state-card">
+                <i data-lucide="calendar-x" class="empty-icon"></i>
+                <p>No hay eventos próximos programados.</p>
+            </div></td></tr>`;
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            return;
+        }
+
+        tbody.innerHTML = proximos.map(e => `
+            <tr>
+                <td><strong>${escapeHtml(e.clienteNombre)}</strong></td>
+                <td>${formatFecha(e.fecha)}</td>
+                <td>${escapeHtml(e.horaInicio || '—')}</td>
+                <td>${escapeHtml(e.ubicacion || '—')}</td>
+                <td>${escapeHtml(e.decoracionNombre || '—')}</td>
+            </tr>
+        `).join('');
+    }
+
+    // ── STOCK BAJO ──────────────────────────────────────
+
+    function renderStockBajo(productos) {
+        const tbody = document.getElementById('tabla-stock-bajo');
+        if (!productos) {
+            tbody.innerHTML = '<tr><td colspan="3" class="error-state">Error al cargar stock.</td></tr>';
+            return;
+        }
+
+        const stockBajo = productos
+            .filter(p => (p.cantidadDisponible ?? p.cantidadTotal ?? 0) <= 5)
+            .slice(0, 10);
+
+        if (stockBajo.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="3"><div class="empty-state-card">
+                <i data-lucide="shield-check" class="empty-icon"></i>
+                <p>Todos los productos tienen stock suficiente.</p>
+            </div></td></tr>`;
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            return;
+        }
+
+        tbody.innerHTML = stockBajo.map(p => {
+            const cantidad = p.cantidadDisponible ?? p.cantidadTotal ?? 0;
+            const nivel = cantidad <= 0 ? 'stock-bajo' : 'stock-medio';
+            return `
+            <tr>
+                <td><strong>${escapeHtml(p.nombre)}</strong></td>
+                <td><span class="stock-badge ${nivel}">${cantidad} uds.</span></td>
+                <td>${cantidad <= 0 ? 'Crítico' : 'Bajo'}</td>
+            </tr>`;
+        }).join('');
+    }
+    </script>
+</body>
+</html>

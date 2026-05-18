@@ -1,0 +1,646 @@
+/* Detalle de evento */
+.evento-detalle-modal {
+    overflow: hidden;
+}
+
+.evento-detalle-modal .modal-header {
+    position: sticky;
+    top: 0;
+    z-index: 12;
+    background:
+        linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.92) 100%),
+        var(--neutral-25);
+    backdrop-filter: blur(10px);
+}
+
+.evento-detalle-modal .modal-header-left {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.detalle-evento-body {
+    background:
+        radial-gradient(circle at top left, rgba(185, 28, 28, 0.05), transparent 28%),
+        linear-gradient(180deg, var(--neutral-25) 0%, var(--white) 18%);
+    max-height: calc(85vh - 160px);
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    scrollbar-color: var(--neutral-300) transparent;
+    scrollbar-width: thin;
+}
+
+.detalle-hero {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--neutral-200);
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(280px, 1fr);
+    gap: 1rem;
+    background:
+        linear-gradient(135deg, rgba(185, 28, 28, 0.07) 0%, rgba(255,255,255,0.98) 48%),
+        var(--white);
+}
+
+.detalle-hero-eyebrow {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-light);
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+}
+
+.detalle-hero-title {
+    margin: 0;
+    font-size: 1.6rem;
+    line-height: 1.1;
+    color: var(--text);
+}
+
+.detalle-hero-subtitle {
+    margin: 0.4rem 0 0;
+    color: var(--text-light);
+    font-size: 0.95rem;
+}
+
+.detalle-hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-top: 1rem;
+}
+
+.detalle-meta-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.55rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.26);
+    background: rgba(255,255,255,0.78);
+    color: var(--text);
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.detalle-meta-chip svg {
+    width: 14px;
+    height: 14px;
+    color: var(--primary);
+    flex-shrink: 0;
+}
+
+.detalle-kpis {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    align-self: start;
+}
+
+.detalle-kpi {
+    padding: 0.9rem 1rem;
+    border-radius: 16px;
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    background: rgba(255,255,255,0.9);
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.04);
+}
+
+.detalle-kpi-primary {
+    background: linear-gradient(135deg, rgba(185, 28, 28, 0.1), rgba(255,255,255,0.95));
+    border-color: rgba(185, 28, 28, 0.16);
+}
+
+.detalle-kpi-label {
+    display: block;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 0.35rem;
+}
+
+.detalle-kpi-value {
+    display: block;
+    font-size: 1rem;
+    line-height: 1.2;
+    color: var(--text);
+}
+
+.detalle-kpi-value.success { color: var(--success); }
+.detalle-kpi-value.warning { color: var(--warning); }
+
+.detalle-status-note {
+    margin: 1rem 1.5rem 0;
+    padding: 0.95rem 1rem;
+    border-radius: 16px;
+    display: flex;
+    gap: 0.85rem;
+    border: 1px solid transparent;
+}
+
+.detalle-status-note--info {
+    background: rgba(37, 99, 235, 0.08);
+    border-color: rgba(37, 99, 235, 0.14);
+}
+
+.detalle-status-note--success {
+    background: rgba(22, 163, 74, 0.08);
+    border-color: rgba(22, 163, 74, 0.14);
+}
+
+.detalle-status-note--warning {
+    background: rgba(245, 158, 11, 0.10);
+    border-color: rgba(245, 158, 11, 0.18);
+}
+
+.detalle-status-note--danger {
+    background: rgba(220, 38, 38, 0.08);
+    border-color: rgba(220, 38, 38, 0.14);
+}
+
+.detalle-status-note-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.78);
+    flex-shrink: 0;
+}
+
+.detalle-status-note-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.detalle-status-note-content {
+    min-width: 0;
+}
+
+.detalle-status-note-content strong {
+    display: block;
+    font-size: 0.92rem;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+}
+
+.detalle-status-note-content p {
+    margin: 0;
+    color: var(--text-light);
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+
+.detalle-section-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.95rem;
+}
+
+.detalle-financial-summary {
+    grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+}
+
+.detalle-financial-card-emphasis {
+    box-shadow: inset 0 0 0 1px rgba(245, 158, 11, 0.18);
+}
+
+.detalle-empty-state {
+    padding: 1.5rem;
+    border: 1px dashed var(--neutral-300);
+    border-radius: 16px;
+    background: linear-gradient(180deg, var(--white), var(--neutral-25));
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.detalle-empty-state-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    background: rgba(15, 23, 42, 0.05);
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.detalle-empty-state-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.detalle-empty-state-content strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: var(--text);
+}
+
+.detalle-empty-state-content p {
+    margin: 0;
+    color: var(--text-light);
+    font-size: 0.82rem;
+    line-height: 1.5;
+    text-wrap: pretty;
+}
+
+.detalle-status-note-content p {
+    text-wrap: pretty;
+}
+
+.detalle-empty-state-actions {
+    display: flex;
+    justify-content: flex-start;
+}
+
+@media (max-width: 900px) {
+    .detalle-hero {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .evento-detalle-modal .modal-header {
+        padding: 1rem;
+    }
+
+    .detalle-hero {
+        padding: 1rem;
+    }
+
+    .detalle-status-note {
+        margin: 0.85rem 1rem 0;
+    }
+
+    .detalle-kpis,
+    .detalle-financial-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .detalle-meta-chip {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}
+
+/* ══════════════════════════════════════════════════════════
+   MODAL DETALLE EVENTO — UX específica
+   ══════════════════════════════════════════════════════════ */
+
+/* ── MODAL BODY: scroll inteligente (en .detalle-evento-body arriba) ── */
+
+/* ── PROGRESS BAR: animación de llenado ──────────────── */
+.payment-progress .pp-bar-fill {
+    transition: width 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ── FINANCIAL CARDS: micro-elevación en hover ───────── */
+.detalle-financial-summary .financial-card {
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.detalle-financial-summary .financial-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.07);
+    border-color: rgba(148, 163, 184, 0.35);
+}
+
+/* ── ITEMS LIST: sutil elevación en hover ────────────── */
+.detalle-section-stack .list-item {
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.detalle-section-stack .list-item:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+    border-color: rgba(148, 163, 184, 0.28);
+}
+
+/* ── STATUS NOTE WARNING: pulso sutil ────────────────── */
+@keyframes detallePulseWarning {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.3); }
+    50%      { box-shadow: 0 0 0 6px rgba(245, 158, 11, 0); }
+}
+
+.detalle-status-note--warning .detalle-status-note-icon {
+    animation: detallePulseWarning 2.4s ease-in-out infinite;
+}
+
+/* ── INFO GRID: espaciado consistente ────────────────── */
+.detalle-section-stack .info-item {
+    padding: 0.5rem 0;
+}
+
+.detalle-section-stack .info-item label {
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-light);
+    margin-bottom: 0.25rem;
+}
+
+.detalle-section-stack .info-item span {
+    font-size: 0.875rem;
+    color: var(--text);
+    line-height: 1.4;
+}
+
+/* ── TOGGLE BAR: expandir/colapsar todo ────────────── */
+.detalle-toggle-bar {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.35rem 1.5rem 0;
+}
+
+.detalle-toggle-bar .btn-ghost {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-light);
+    padding: 0.3rem 0.65rem;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.detalle-toggle-bar .btn-ghost:hover {
+    color: var(--text);
+    border-color: var(--neutral-200);
+}
+
+.detalle-toggle-bar .btn-ghost svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* ── MODAL EXTRAS (se abre desde detalle) ── */
+/* z-index heredado de .modal-overlay (1050) — encima del drawer */
+
+/* ── MODAL CANCELAR / CONFIRMAR (también desde detalle) ── */
+
+/* ══════════════════════════════════════════════════════════
+   MEJORAS DETALLE — Contacto, Precios, Productos, Timeline
+   ══════════════════════════════════════════════════════════ */
+
+/* ── HERO: chips de contacto ────────────────────────── */
+.detalle-hero-meta--contacto {
+    margin-top: 0.35rem;
+    padding-top: 0.5rem;
+    border-top: 1px dashed var(--neutral-200);
+}
+
+.detalle-meta-chip svg.lucide-phone,
+.detalle-meta-chip svg.lucide-mail {
+    color: var(--neutral-500);
+}
+
+.detalle-meta-chip--extras {
+    background: rgba(245, 158, 11, 0.08) !important;
+    border-color: rgba(245, 158, 11, 0.25) !important;
+}
+
+.detalle-meta-chip--extras svg {
+    color: #b45309 !important;
+}
+
+/* ── DATOS: precios en chips ────────────────────────── */
+.precio-breakdown {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    align-items: center;
+}
+
+.precio-chip {
+    display: inline-block;
+    padding: 0.28rem 0.65rem;
+    border-radius: 999px;
+    background: var(--neutral-100);
+    border: 1px solid var(--neutral-200);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.precio-chip--extra {
+    background: rgba(245, 158, 11, 0.1);
+    border-color: rgba(245, 158, 11, 0.25);
+    color: #b45309;
+}
+
+.precio-chip--total {
+    background: var(--neutral-800);
+    border-color: var(--neutral-700);
+    color: var(--white);
+    font-weight: 700;
+    font-size: 0.82rem;
+}
+
+/* ── DATOS: bloque de nota dedicado ─────────────────── */
+.detalle-nota-block {
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.04), var(--white));
+    border: 1px solid rgba(37, 99, 235, 0.10);
+}
+
+.detalle-nota-block label {
+    display: block;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    color: var(--text-light);
+    margin-bottom: 0.3rem;
+}
+
+.detalle-nota-block p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text);
+    line-height: 1.55;
+    text-wrap: pretty;
+}
+
+/* ── PRODUCTOS: grupos base vs extras ───────────────── */
+.detalle-productos-group {
+    padding-bottom: 0.5rem;
+}
+
+.detalle-productos-group + .detalle-productos-group {
+    margin-top: 0.85rem;
+    padding-top: 0.75rem;
+    border-top: 1px dashed var(--neutral-300);
+}
+
+.detalle-productos-group-label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+}
+
+.detalle-productos-group--extras .detalle-productos-group-label {
+    color: #b45309;
+}
+
+.detalle-productos-group--extras .detalle-productos-group-label svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* ── TIMELINE ───────────────────────────────────────── */
+.detalle-timeline {
+    padding: 0.35rem 0 0.35rem 0.5rem;
+}
+
+.detalle-timeline-step {
+    display: flex;
+    gap: 0.85rem;
+    position: relative;
+    padding-bottom: 1rem;
+}
+
+.detalle-timeline-step:last-child {
+    padding-bottom: 0;
+}
+
+.detalle-timeline-step::before {
+    content: '';
+    position: absolute;
+    left: 17px;
+    top: 34px;
+    width: 2px;
+    height: calc(100% - 10px);
+    background: var(--neutral-200);
+    border-radius: 1px;
+}
+
+.detalle-timeline-step:last-child::before {
+    display: none;
+}
+
+.detalle-timeline-marker {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: var(--neutral-100);
+    border: 2px solid var(--neutral-200);
+    z-index: 1;
+}
+
+.detalle-timeline-marker svg {
+    width: 16px;
+    height: 16px;
+    color: var(--text-light);
+}
+
+.detalle-timeline-step.success .detalle-timeline-marker {
+    background: rgba(22, 163, 74, 0.08);
+    border-color: rgba(22, 163, 74, 0.25);
+}
+
+.detalle-timeline-step.success .detalle-timeline-marker svg {
+    color: var(--success);
+}
+
+.detalle-timeline-step.danger .detalle-timeline-marker {
+    background: rgba(220, 38, 38, 0.08);
+    border-color: rgba(220, 38, 38, 0.2);
+}
+
+.detalle-timeline-step.danger .detalle-timeline-marker svg {
+    color: var(--danger);
+}
+
+.detalle-timeline-step.pending .detalle-timeline-marker {
+    background: rgba(245, 158, 11, 0.08);
+    border-color: rgba(245, 158, 11, 0.3);
+    border-style: dashed;
+}
+
+.detalle-timeline-step.pending .detalle-timeline-marker svg {
+    color: var(--warning);
+}
+
+.detalle-timeline-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding-top: 0.45rem;
+}
+
+.detalle-timeline-body strong {
+    font-size: 0.82rem;
+    color: var(--text);
+}
+
+.detalle-timeline-body span {
+    font-size: 0.72rem;
+    color: var(--text-light);
+}
+
+/* ── RENTABILIDAD: grid compacto ───────────────────── */
+.renta-grid-detalle {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+}
+
+.renta-grid-detalle .info-item label {
+    font-size: 0.62rem;
+}
+
+/* ── RENTABILIDAD: barra costos ────────────────────── */
+.renta-bar-detalle {
+    padding: 0.75rem 0.9rem;
+    border-radius: 12px;
+    background: var(--neutral-25);
+    border: 1px solid var(--neutral-200);
+}
+
+.renta-bar-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+}
+
+.renta-bar-track {
+    height: 8px;
+    border-radius: 999px;
+    background: var(--neutral-200);
+    overflow: hidden;
+}
+
+.renta-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.renta-bar-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.35rem;
+    font-size: 0.72rem;
+    color: var(--text-light);
+    font-weight: 600;
+}

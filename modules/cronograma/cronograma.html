@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronograma | Artepax Fiesta</title>
+
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="cronograma.css">
+    <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+</head>
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar-container"></aside>
+
+        <div class="main-wrapper">
+            <header class="topbar">
+                <div class="breadcrumbs">
+                    <a href="../../index.html">Inicio</a>
+                    <span class="separator">/</span>
+                    <span class="current">Cronograma</span>
+                </div>
+                <div class="topbar-actions">
+                    <div class="user-info">
+                        <span class="user-name">Administrador</span>
+                        <div class="user-avatar">AD</div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <header class="module-header">
+                    <div class="header-info">
+                        <h1>Cronograma de Actividades</h1>
+                        <p>Organizá tareas, tiempos y personal para que cada evento avance con orden y seguimiento.</p>
+                    </div>
+                </header>
+
+                <div class="tabs">
+                    <button class="tab-btn active" data-action="cambiarTab" data-tab="evento">Por evento</button>
+                    <button class="tab-btn" data-action="cambiarTab" data-tab="todos">Todas las actividades</button>
+
+                </div>
+
+                <div id="alert-box" class="alert hidden"></div>
+
+                <section id="view-todos" class="content-section hidden">
+                    <div class="card">
+                        <div class="section-header compact cronograma-section-header">
+                            <div>
+                                <h2>Listado global paginado</h2>
+                                <p class="section-note">Filtrá las actividades visibles para revisar rápido el estado operativo actual.</p>
+                            </div>
+                        </div>
+
+                        <div class="filter-bar">
+                            <div class="filter-group">
+                                <label class="filter-label">Estado</label>
+                                <select id="filter-estado-global" class="input-field" onchange="cargarCronogramaGlobal()">
+                                    <option value="">Todos</option>
+                                    <option value="PENDIENTE">Pendiente</option>
+                                    <option value="EN_PROGRESO">En progreso</option>
+                                    <option value="COMPLETADO">Completado</option>
+                                    <option value="CANCELADO">Cancelado</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label">Desde</label>
+                                <input type="text" id="filter-fecha-desde" class="input-field date-picker" onchange="cargarCronogramaGlobal()">
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label">Hasta</label>
+                                <input type="text" id="filter-fecha-hasta" class="input-field date-picker" onchange="cargarCronogramaGlobal()">
+                            </div>
+                        </div>
+
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Actividad</th>
+                                        <th>Cliente</th>
+                                        <th>Evento</th>
+                                        <th>Inicio</th>
+                                        <th>Fin</th>
+                                        <th class="col-estado">Estado</th>
+                                        <th>Observacion</th>
+                                        <th class="col-stock">Personal</th>
+                                        <th class="col-acciones-lg">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabla-cronograma-global">
+                                    <tr><td colspan="9" class="loading-state"><div class="spinner"></div> Cargando actividades...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div id="paginacion-crono-global" class="pagination-container"></div>
+                    </div>
+                </section>
+
+                <section id="view-evento" class="content-section">
+                    <div class="cronograma-layout">
+                        <aside class="crono-queue">
+                            <div class="crono-queue-header">
+                                <h3>Eventos</h3>
+                                <div class="search-box crono-queue-search">
+                                    <span class="search-icon"><i data-lucide="search"></i></span>
+                                    <input type="text" id="crono-queue-search" placeholder="Buscar por cliente o ID...">
+                                </div>
+                                <div class="crono-queue-chips" id="crono-queue-chips">
+                                    <button class="crono-chip active" data-filter="todos">Todos</button>
+                                    <button class="crono-chip" data-filter="editables">Editables</button>
+                                    <button class="crono-chip" data-filter="pendientes">Pend. cobro</button>
+                                </div>
+                            </div>
+                            <div class="crono-queue-list" id="crono-queue-list">
+                                <div class="loading-state"><div class="spinner"></div> Cargando eventos...</div>
+                            </div>
+                        </aside>
+                        <div class="crono-main">
+
+                            <div id="cronograma-empty" class="empty-state-large">
+                                <i data-lucide="calendar-clock"></i>
+                                <h3>Seleccioná un evento</h3>
+                                <p>Elegí un evento de la lista para gestionar sus actividades, validar horarios y asignar personal.</p>
+                            </div>
+
+                            <div id="cronograma-container" class="hidden">
+                        <div class="card event-summary-card" id="cronograma-evento-resumen"></div>
+
+                        <div class="card">
+                            <div class="section-header cronograma-section-header">
+                                <div>
+                                    <h2 id="evento-titulo-cron">Actividades del evento</h2>
+                                    <p class="section-note" id="evento-subtitulo-cron">Seguí el avance del trabajo y tomá la próxima acción desde acá.</p>
+                                </div>
+                                <button class="btn btn-primary" id="btn-nueva-tarea" data-action="abrirDrawerTarea">Nueva actividad</button>
+                            </div>
+
+                            <div class="filter-bar event-filter-bar">
+                                <div class="filter-group">
+                                    <label class="filter-label">Estado</label>
+                                    <select id="filter-estado-crono" class="input-field" onchange="filtrarCronograma()">
+                                        <option value="">Todos</option>
+                                        <option value="PENDIENTE">Pendiente</option>
+                                        <option value="EN_PROGRESO">En progreso</option>
+                                        <option value="COMPLETADO">Completado</option>
+                                        <option value="CANCELADO">Cancelado</option>
+                                        <option value="VENCIDA">Vencidas</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="table-wrapper">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Actividad</th>
+                                            <th>Inicio</th>
+                                            <th>Fin</th>
+                                            <th class="col-estado">Estado</th>
+                                            <th>Observacion</th>
+                                            <th class="col-stock">Personal</th>
+                                            <th class="col-acciones-lg">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tabla-cronograma"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <div class="drawer-overlay" id="drawer-tarea-overlay">
+        <aside class="drawer cronograma-drawer" id="drawer-tarea">
+            <header class="drawer-header">
+                <h2 id="drawer-titulo">Agregar actividad</h2>
+<button class="btn-close" data-action="cerrarDrawerTarea"><i data-lucide="x"></i></button>
+            </header>
+
+            <div class="drawer-body">
+                <div id="drawer-alert" class="alert hidden"></div>
+                <div class="drawer-summary-card" id="drawer-evento-contexto"></div>
+
+                <form id="form-tarea" class="form-vertical">
+                    <div class="form-section">
+                        <h3>Detalle operativo</h3>
+                        <div class="form-group">
+                            <label for="input-actividad">Actividad *</label>
+                            <input type="text" id="input-actividad" maxlength="255" placeholder="Ej: Preparar estructura, cargar vehiculo, montar mesa principal" required>
+                            <small class="text-muted">Maximo 255 caracteres. Usa una descripcion corta y accionable.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-fecha-inicio">Fecha y hora de inicio *</label>
+                            <input type="text" id="input-fecha-inicio" class="datetime-picker" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-fecha-fin">Fecha y hora de fin *</label>
+                            <input type="text" id="input-fecha-fin" class="datetime-picker" required>
+                        </div>
+                    </div>
+
+                    <div class="form-section hidden" id="grupo-observacion">
+                        <h3>Observacion administrativa</h3>
+                        <div class="form-group">
+                            <label for="input-observacion">Observacion</label>
+                            <textarea id="input-observacion" rows="4" maxlength="255" placeholder="Notas internas, dependencias o riesgos operativos..."></textarea>
+                            <small class="text-muted">Usala para registrar detalles internos y observaciones del equipo.</small>
+                        </div>
+                    </div>
+
+                    <div class="context-note" id="observacion-help">
+                        <i data-lucide="info"></i>
+                        <div>
+                            <strong>Observacion administrativa</strong>
+                            <p>Creá la actividad con lo esencial y después completá las notas internas si hace falta más contexto.</p>
+                        </div>
+                    </div>
+
+                    <div class="drawer-footer">
+<button type="button" class="btn btn-secondary" data-action="cerrarDrawerTarea">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="btn-guardar-tarea" data-action="guardarTarea">Guardar actividad</button>
+                    </div>
+                </form>
+            </div>
+        </aside>
+    </div>
+
+    <div class="drawer-overlay" id="drawer-personal-overlay">
+        <aside class="drawer cronograma-drawer" id="drawer-personal">
+            <header class="drawer-header">
+                <h2>Asignacion de personal</h2>
+                <button class="btn-close" data-action="cerrarDrawerPersonal"><i data-lucide="x"></i></button>
+            </header>
+
+            <div class="drawer-body">
+                <div id="drawer-personal-alert" class="alert hidden"></div>
+                <div class="drawer-summary-card" id="personal-cronograma-resumen"></div>
+
+                <div class="form-section">
+                    <div class="section-header compact mini-header">
+                        <div>
+                            <h3>Personal asignado</h3>
+                            <p class="section-note">Cada alta crea o actualiza la asignacion segun la clave compuesta cronograma + usuario.</p>
+                        </div>
+                    </div>
+                    <div id="lista-personal-asignado" class="personal-list">
+                        <div class="loading-state"><div class="spinner"></div> Cargando...</div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header compact mini-header">
+                        <div>
+                            <h3>Asignar o actualizar usuario</h3>
+                            <p class="section-note">Asigná al personal con el identificador operativo que ya usa el equipo en el sistema.</p>
+                        </div>
+                    </div>
+                    <form id="form-personal" class="form-vertical">
+                        <div class="form-group">
+                            <label>Usuario *</label>
+                            <div class="autocomplete-field">
+                                <div class="autocomplete-input-wrapper">
+                                    <span class="autocomplete-icon"><i data-lucide="search"></i></span>
+                                    <input type="text" id="autocomplete-usuario-input" placeholder="Buscar usuario por nombre..." autocomplete="off" aria-expanded="false">
+                                    <button type="button" class="autocomplete-clear hidden" id="autocomplete-usuario-clear" aria-label="Limpiar selección"><i data-lucide="x"></i></button>
+                                </div>
+                                <div class="autocomplete-results hidden" id="autocomplete-usuario-results"></div>
+                            </div>
+                            <input type="hidden" id="select-usuario-id" value="">
+                            <small class="text-muted">Buscá por nombre de usuario. Si no aparece, primero créalo en Gestión de Usuarios.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-pago-asignado">Pago asignado *</label>
+                            <input type="number" id="input-pago-asignado" placeholder="0.00" min="0.01" step="0.01" required>
+                            <small class="text-muted">Ingresá un monto válido para esta asignación.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-pago-tipo">Tipo de pago *</label>
+                            <select id="input-pago-tipo" required>
+                                <option value="">-- Seleccionar --</option>
+                                <option value="FIJO">Pago fijo</option>
+                                <option value="POR_HORA">Por hora</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="btn-asignar-personal" style="width:100%" data-action="asignarPersonal">Guardar asignacion</button>
+                    </form>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- MODAL DETALLE ACTIVIDAD (SOLO LECTURA) -->
+    <div class="modal-overlay" id="modal-detalle-actividad">
+        <div class="modal modal-lg">
+            <header class="modal-header">
+                <h2 id="detalle-actividad-titulo">Detalle de Actividad</h2>
+                <button class="modal-close" onclick="cerrarDetalleActividad()"><i data-lucide="x"></i></button>
+            </header>
+            <div class="modal-body" id="detalle-actividad-contenido">
+                <div class="loading-state"><div class="spinner"></div> Cargando detalle...</div>
+            </div>
+            <footer class="modal-footer">
+                <button class="btn btn-secondary" onclick="cerrarDetalleActividad()">Cerrar</button>
+            </footer>
+        </div>
+    </div>
+
+    <div id="modal-confirmacion-crono" class="modal-overlay" role="dialog" aria-modal="true">
+        <div class="modal modal-sm">
+            <div class="modal-header">
+                <h2 id="modal-confirmacion-titulo">Confirmar accion</h2>
+                <button class="modal-close" data-action="cerrarModalConfirmacionCrono">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="modal-confirmacion-mensaje"></p>
+            </div>
+            <footer class="modal-footer">
+                <div class="modal-footer-left">
+                    <button type="button" class="btn btn-secondary" data-action="cerrarModalConfirmacionCrono">Volver</button>
+                </div>
+                <div class="modal-footer-right">
+                    <button type="button" class="btn btn-danger" id="btn-confirmar-crono" data-action="confirmarAccionCronograma">Confirmar</button>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script src="../../js/core/config.js" defer></script>
+    <script src="../../js/core/auth.js" defer></script>
+    <script src="../../js/core/http.js" defer></script>
+    <script src="../../js/shared/api.js" defer></script>
+    <script src="../../js/shared/modulos.js" defer></script>
+    <script src="../../js/shared/formatters.js" defer></script>
+    <script src="../../js/shared/alerts.js" defer></script>
+    <script src="js/cronograma.constants.js" defer></script>
+    <script src="js/cronograma.helpers.js" defer></script>
+    <script src="js/cronograma.policy.js" defer></script>
+    <script src="js/cronograma.api.js" defer></script>
+    <script src="js/cronograma.state.js" defer></script>
+    <script src="js/cronograma.render.js" defer></script>
+    <script src="js/cronograma.actions.js" defer></script>
+    <script src="js/cronograma.confirmation.js" defer></script>
+    <script src="js/cronograma.drawer-actividad.js" defer></script>
+    <script src="js/cronograma.drawer-personal.js" defer></script>
+    <script src="js/cronograma.js" defer></script>
+    <script src="../../js/shared/notificaciones-bell.js" defer></script>
+    <script src="../../js/shared/sidebar.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            requireAuth();
+            renderSidebar('cronograma', 'Gestion de Eventos');
+        });
+    </script>
+</body>
+</html>

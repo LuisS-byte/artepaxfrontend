@@ -1,0 +1,88 @@
+/* ══════════════════════════════════════════════════════════
+   Gastos — Drawer & Forms
+   ══════════════════════════════════════════════════════════ */
+
+.input-with-symbol {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-symbol .symbol {
+    position: absolute;
+    left: 12px;
+    color: var(--text-light);
+    font-weight: 600;
+    pointer-events: none;
+}
+
+.input-with-symbol input {
+    padding-left: 28px !important;
+    width: 100%;
+}
+
+.gastos-drawer {
+    max-width: 500px;
+}
+
+.drawer-summary-card {
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    border-radius: 18px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(247,248,250,0.96) 100%);
+    padding: var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
+}
+
+.drawer-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-md);
+}
+
+.drawer-summary-main {
+    grid-column: 1 / -1;
+}
+
+.drawer-summary-main h3 {
+    font-size: 1.1rem;
+    color: var(--neutral-900);
+}
+
+.drawer-summary-main p {
+    margin-top: 6px;
+    color: var(--neutral-600);
+    font-size: 0.86rem;
+}
+
+.drawer-summary-stat {
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: var(--white);
+    border: 1px solid var(--neutral-200);
+}
+
+.drawer-summary-stat span {
+    display: block;
+    font-size: 0.76rem;
+    color: var(--neutral-500);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.drawer-summary-stat strong {
+    display: block;
+    margin-top: 6px;
+}
+
+/* ── STICKY FOOTER ──────────────────────────────────── */
+.drawer-footer {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    background: var(--neutral-0, #fff);
+    border-top: 1px solid var(--neutral-200);
+    padding: var(--spacing-lg);
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: flex-end;
+}

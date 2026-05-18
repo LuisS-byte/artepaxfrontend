@@ -1,0 +1,248 @@
+/* ══════════════════════════════════════════════════════════
+   Módulo Inventario — Tables, Filters, Chips & Search
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Table Wrapper ───────────────────────────────────── */
+.table-wrapper {
+    border: 1px solid var(--neutral-200);
+    border-radius: 16px;
+    overflow: hidden;
+    background: #fff;
+    position: relative;
+}
+
+/* Sticky header */
+.table-wrapper.sticky-header {
+    max-height: 520px;
+    overflow-y: auto;
+}
+
+.table-wrapper.sticky-header .data-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.table-wrapper.sticky-header .data-table thead th {
+    background: #fafafa;
+    backdrop-filter: blur(4px);
+}
+
+.data-table thead th {
+    background: #fafafa;
+}
+
+/* ── Row hover glow ──────────────────────────────────── */
+.data-table tbody tr {
+    transition: background 0.18s ease, box-shadow 0.18s ease, transform 0.12s ease;
+}
+
+.data-table tbody tr:hover {
+    background: rgba(var(--inventory-brand-rgb) / 0.02);
+    box-shadow: inset 0 1px 0 rgba(var(--inventory-brand-rgb) / 0.05), inset 0 -1px 0 rgba(var(--inventory-brand-rgb) / 0.05);
+}
+
+/* ── Stagger animation for table rows ────────────────── */
+@keyframes rowFadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.data-table tbody tr.row-animate {
+    opacity: 0;
+    animation: rowFadeIn 0.35s ease forwards;
+}
+
+/* ── Filter Bar (redesigned as card — extends global.css) ── */
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    align-items: end;
+    margin-bottom: 0.75rem;
+    padding: 0.95rem 1rem;
+    border: 1px solid rgba(var(--inventory-brand-rgb) / 0.1);
+    border-radius: 16px;
+    background: linear-gradient(180deg, #fff, #fefcfc);
+    box-shadow: 0 2px 8px rgba(var(--inventory-brand-rgb) / 0.04);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filter-bar:focus-within {
+    border-color: rgba(var(--inventory-brand-rgb) / 0.22);
+    box-shadow: 0 2px 12px rgba(var(--inventory-brand-rgb) / 0.06);
+}
+
+/* ── Active Filter Chips ─────────────────────────────── */
+.active-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    min-height: 0;
+    transition: all 0.25s ease;
+}
+
+.active-filters:empty {
+    margin-bottom: 0;
+}
+
+.filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    background: rgba(var(--inventory-brand-rgb) / 0.07);
+    border: 1px solid rgba(var(--inventory-brand-rgb) / 0.15);
+    color: var(--inventory-brand);
+    font-size: 0.75rem;
+    font-weight: 600;
+    animation: filterChipIn 0.25s ease;
+}
+
+@keyframes filterChipIn {
+    from { opacity: 0; transform: scale(0.85); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.filter-chip-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(var(--inventory-brand-rgb) / 0.15);
+    color: var(--inventory-brand);
+    cursor: pointer;
+    font-size: 0.65rem;
+    line-height: 1;
+    transition: background 0.15s;
+    padding: 0;
+}
+
+.filter-chip-remove:hover {
+    background: rgba(var(--inventory-brand-rgb) / 0.28);
+}
+
+.filter-clear-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.3rem 0.65rem;
+    border: 1px dashed rgba(var(--inventory-brand-rgb) / 0.2);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-light);
+    font-size: 0.73rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-left: auto;
+}
+
+.filter-clear-all:hover {
+    background: rgba(var(--inventory-brand-rgb) / 0.05);
+    color: var(--inventory-brand);
+    border-color: rgba(var(--inventory-brand-rgb) / 0.3);
+}
+
+.filter-clear-all svg {
+    width: 12px;
+    height: 12px;
+}
+
+/* ── Date Inputs ─────────────────────────────────────── */
+.date-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.date-input-wrapper .date-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+    pointer-events: none;
+    display: flex;
+}
+
+.date-input-wrapper .date-icon svg {
+    width: 15px;
+    height: 15px;
+}
+
+.date-input-wrapper input.date-picker {
+    padding-left: 32px !important;
+}
+
+input.date-picker.date-valid {
+    border-color: var(--success-border) !important;
+    box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.08);
+}
+
+input.date-picker.date-warning {
+    border-color: var(--warning-border) !important;
+    box-shadow: 0 0 0 2px rgba(237, 108, 2, 0.08);
+}
+
+input.date-picker.date-invalid {
+    border-color: var(--danger-border) !important;
+    box-shadow: 0 0 0 2px rgba(198, 40, 40, 0.08);
+}
+
+/* ── Date validation feedback message ────────────────── */
+.date-feedback {
+    font-size: 0.7rem;
+    margin-top: 0.2rem;
+    font-weight: 500;
+}
+
+.date-feedback.warning { color: var(--warning); }
+.date-feedback.error { color: var(--danger); }
+
+/* ── Search Box with Clear Button ────────────────────── */
+.search-box--clearable {
+    position: relative;
+}
+
+.search-box--clearable .search-clear-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: none;
+    background: var(--neutral-200);
+    color: var(--neutral-500);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.6rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s, background 0.15s;
+    padding: 0;
+}
+
+.search-box--clearable .search-clear-btn.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.search-box--clearable .search-clear-btn:hover {
+    background: var(--neutral-300);
+    color: var(--text);
+}
+
+.search-box--clearable input {
+    padding-right: 32px !important;
+}

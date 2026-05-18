@@ -1,0 +1,115 @@
+/* ══════════════════════════════════════════════════════════
+   Módulo Inventario — Audit Summary Bar
+   ══════════════════════════════════════════════════════════ */
+
+.audit-summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding: 0.75rem 0.9rem;
+    border-radius: 16px;
+    border: 1px solid var(--neutral-200);
+    background: linear-gradient(180deg, #FAFBFC, #F7F8FA);
+    box-shadow: var(--shadow-sm);
+}
+
+.audit-summary-stat {
+    text-align: center;
+    padding: 0.4rem 0.5rem;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    transition: border-color 0.15s, background 0.15s;
+}
+
+.audit-summary-stat:hover {
+    border-color: var(--neutral-200);
+    background: #fff;
+}
+
+.audit-summary-label {
+    display: block;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-light);
+    margin-bottom: 0.2rem;
+}
+
+.audit-summary-value {
+    display: block;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.2;
+}
+
+/* ── Semantic stats ────────────────────────────────────── */
+.audit-summary-stat--in .audit-summary-value {
+    color: var(--success-text);
+}
+
+.audit-summary-stat--out .audit-summary-value {
+    color: var(--danger-text);
+}
+
+.audit-summary-stat--event .audit-summary-value {
+    color: #6D28D9;
+}
+
+/* ── Catalog footnote ──────────────────────────────────── */
+.catalog-footnote {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: 0.85rem;
+    padding: 0.55rem 0.8rem;
+    border-radius: 10px;
+    background: var(--neutral-25);
+    border: 1px solid var(--neutral-200);
+    font-size: 0.78rem;
+    color: var(--text-light);
+    line-height: 1.45;
+}
+
+.catalog-footnote svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    color: var(--text-light);
+}
+
+.catalog-footnote a,
+.link-inline {
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.catalog-footnote a:hover,
+.link-inline:hover {
+    text-decoration: underline;
+}
+
+/* ── Responsive: Audit summary ─────────────────────────── */
+@media (max-width: 640px) {
+    .audit-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .priority-strip-item {
+        min-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .audit-summary {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+        padding: 0.6rem;
+    }
+
+    .audit-summary-value {
+        font-size: 1.1rem;
+    }
+}

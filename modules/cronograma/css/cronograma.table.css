@@ -1,0 +1,76 @@
+/* ── CRONOGRAMA — Tabla de actividades ───────────── */
+
+/* Texto tachado para actividad completada */
+.task-done {
+    text-decoration: line-through;
+    color: var(--neutral-400);
+}
+
+/* Celda de actividad: nombre + chips */
+.task-title-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.task-title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Meta: estados siguientes, observación, personal, link inline */
+.task-meta-row,
+.task-observacion-cell,
+.personal-meta,
+.link-inline {
+    font-size: 0.8rem;
+    color: var(--neutral-500);
+}
+
+.task-observacion-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* Chip de observación */
+.task-observacion-chip {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    background: rgba(21, 101, 192, 0.08);
+    color: var(--accent);
+}
+
+.task-observacion-chip.is-empty {
+    background: rgba(100, 116, 139, 0.12);
+    color: var(--neutral-500);
+}
+
+/* Link inline a detalle del evento */
+.link-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.link-inline svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* Modificador de action-chip para el módulo */
+.action-chip--primary {
+    border-color: rgba(21, 101, 192, 0.16);
+    color: var(--accent);
+    background: rgba(21, 101, 192, 0.06);
+}

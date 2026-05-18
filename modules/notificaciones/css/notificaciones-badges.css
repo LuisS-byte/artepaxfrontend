@@ -1,0 +1,71 @@
+/* ══════════════════════════════════════════════════════════
+   Notificaciones — Badges de Estado
+   ══════════════════════════════════════════════════════════ */
+
+.badge-pendiente-noti,
+.badge-leida-noti,
+.badge-enviada-noti,
+.badge-fallida-noti {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: var(--rounded-full);
+}
+
+.badge-pendiente-noti {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.badge-enviada-noti {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.badge-leida-noti {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.badge-fallida-noti {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.badge-pendiente-noti svg,
+.badge-enviada-noti svg,
+.badge-leida-noti svg,
+.badge-fallida-noti svg,
+.badge-desconocido svg {
+    width: 10px;
+    height: 10px;
+}
+
+/* Animación para icono de carga en botones */
+.badge-desconocido svg.spin,
+svg.spin {
+    animation: noti-spin 1s linear infinite;
+}
+
+@keyframes noti-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Estado desconocido — neutral, no asume "Leída" */
+.badge-desconocido {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: var(--rounded-full);
+    background: #f3f4f6;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}

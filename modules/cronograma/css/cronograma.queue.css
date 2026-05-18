@@ -1,0 +1,145 @@
+/* ── CRONOGRAMA — Cola visual de eventos ─────────── */
+
+/* Aside izquierdo: cola de eventos */
+.crono-queue {
+    background: var(--white);
+    border-radius: 18px;
+    border: 1px solid var(--neutral-200);
+    overflow: hidden;
+    position: sticky;
+    top: calc(var(--topbar-height) + var(--spacing-xl));
+    max-height: calc(100vh - var(--topbar-height) - var(--spacing-xl) * 2);
+    display: flex;
+    flex-direction: column;
+}
+
+.crono-queue-header {
+    padding: var(--spacing-lg);
+    border-bottom: 1px solid var(--neutral-200);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.crono-queue-header h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+/* Search dentro de la cola */
+.crono-queue-search {
+    max-width: none;
+}
+
+/* Filtros chips de la cola */
+.crono-queue-chips {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.crono-chip {
+    padding: 5px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--neutral-200);
+    background: var(--neutral-25);
+    color: var(--neutral-600);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.crono-chip:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.crono-chip.active {
+    background: rgba(21, 101, 192, 0.1);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* Lista scrollable de eventos */
+.crono-queue-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--spacing-sm);
+}
+
+/* Estado vacío de la cola */
+.crono-queue-empty {
+    padding: 40px 16px;
+    text-align: center;
+    color: var(--neutral-500);
+    font-size: 0.85rem;
+}
+
+/* Item de evento en la cola */
+.crono-queue-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+    border: 1px solid transparent;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s ease;
+    margin-bottom: 6px;
+}
+
+.crono-queue-item:hover {
+    background: var(--neutral-25);
+    border-color: var(--neutral-200);
+}
+
+.crono-queue-item.active {
+    background: rgba(21, 101, 192, 0.06);
+    border-color: rgba(21, 101, 192, 0.2);
+}
+
+/* Top de item: nombre + badge */
+.crono-queue-item-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.crono-queue-item-top strong {
+    font-size: 0.85rem;
+    color: var(--neutral-900);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.crono-queue-item-top .badge {
+    flex-shrink: 0;
+    font-size: 0.68rem;
+}
+
+/* Meta: id, fecha, ubicación */
+.crono-queue-meta {
+    display: flex;
+    gap: 10px;
+    font-size: 0.75rem;
+    color: var(--neutral-500);
+    flex-wrap: wrap;
+}
+
+/* Call to action del item (gestión/consulta) */
+.crono-queue-cta {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-top: 2px;
+}
+
+.crono-queue-cta--muted {
+    color: var(--neutral-400);
+}

@@ -1,0 +1,7 @@
+/* ══════════════════════════════════════════════════════════
+   Módulo Notificaciones — Entry Point
+   ══════════════════════════════════════════════════════════ */
+
+@import "./css/notificaciones-list.css";
+@import "./css/notificaciones-badges.css";
+@import "./css/notificaciones-responsive.css";

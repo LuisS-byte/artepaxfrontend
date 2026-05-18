@@ -1,0 +1,17 @@
+/* ══════════════════════════════════════════════════════════
+   Módulo Inventario — Entry Point
+   Carga todos los subarchivos ordenados por responsabilidad
+   ══════════════════════════════════════════════════════════ */
+
+@import "./css/inventario-vars.css";
+@import "./css/inventario-layout.css";
+@import "./css/inventario-tabs.css";
+@import "./css/inventario-tables.css";
+@import "./css/inventario-products.css";
+@import "./css/inventario-stock.css";
+@import "./css/inventario-movements.css";
+@import "./css/inventario-priority.css";
+@import "./css/inventario-audit.css";
+@import "./css/inventario-drawers.css";
+@import "./css/inventario-states.css";
+@import "./css/inventario-responsive.css";

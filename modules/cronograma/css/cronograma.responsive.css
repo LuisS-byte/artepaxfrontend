@@ -1,0 +1,48 @@
+/* ── CRONOGRAMA — Responsive ─────────────────────── */
+/* @import order: este archivo DEBE cargar al final.  */
+
+@media (max-width: 1120px) {
+    .cronograma-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .crono-queue {
+        position: static;
+        max-height: none;
+    }
+
+    .crono-queue-list {
+        max-height: 300px;
+    }
+
+    .event-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .summary-kpis {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .summary-kpis,
+    .drawer-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .action-chip,
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .acciones-wrapper,
+    .event-summary-actions {
+        justify-content: stretch;
+    }
+
+    .personal-item {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

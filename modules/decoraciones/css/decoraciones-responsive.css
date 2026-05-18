@@ -1,0 +1,108 @@
+/* ══════════════════════════════════════════════════════════
+   Decoraciones — Responsive
+   ══════════════════════════════════════════════════════════ */
+
+@media (max-width: 980px) {
+    .decor-hero {
+        grid-template-columns: 1fr;
+    }
+
+    .decor-kpis {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .decor-hero-main,
+    .drawer-feedback-row,
+    .filter-headline {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 768px) {
+    .filter-bar-decor,
+    .composition-header,
+    .composition-row {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .decor-kpis {
+        grid-template-columns: 1fr;
+    }
+
+    .composition-summary,
+    .decor-detail-hero,
+    .decor-detail-kpis,
+    .drawer-core-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .decor-business-card {
+        grid-template-columns: 1fr;
+    }
+
+    .composition-actions,
+    .view-options {
+        justify-content: stretch;
+    }
+
+    .composition-actions .btn,
+    .view-options .btn-view,
+    .header-actions .btn,
+    .acciones-wrapper--decoraciones .btn,
+    .drawer-footer-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .filter-result-count {
+        align-self: stretch;
+        text-align: center;
+    }
+
+    .decor-card-heading,
+    .decor-stock-signal,
+    .decor-detail-item,
+    .decor-card-topline,
+    .decor-card-footnote,
+    .composition-row-topline,
+    .drawer-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .composition-row-summary {
+        text-align: left;
+    }
+
+    .decor-hero-topline {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .decor-detail-stock {
+        text-align: left;
+    }
+}
+
+@media (max-width: 520px) {
+    .decor-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .decor-hero-note {
+        align-items: flex-start;
+        border-radius: 16px;
+    }
+
+    .acciones-wrapper--decoraciones {
+        width: 100%;
+    }
+
+    .drawer-footer-actions {
+        width: 100%;
+        flex-direction: column-reverse;
+    }
+}

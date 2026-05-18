@@ -1,0 +1,130 @@
+/* ══════════════════════════════════════════════════════════
+   Módulo Inventario — Products Overview & Status
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Products Overview ───────────────────────────────── */
+.products-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.product-kpi-card {
+    background: linear-gradient(180deg, var(--white), var(--neutral-25));
+    border: 1px solid var(--neutral-200);
+    border-radius: var(--rounded-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease, transform 0.18s ease;
+}
+
+.product-kpi-card:hover {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+    transform: translateY(-2px);
+}
+
+.product-kpi-card::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -20%;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    opacity: 0.05;
+    pointer-events: none;
+}
+
+.product-kpi-card:not(.success):not(.warning):not(.info)::before {
+    background: var(--inventory-brand);
+}
+
+.product-kpi-card.success {
+    border-color: var(--success-border);
+    background: linear-gradient(135deg, #ECFDF5, #D1FAE5);
+}
+
+.product-kpi-card.success::before { background: var(--success); }
+
+.product-kpi-card.warning {
+    border-color: var(--warning-border);
+    background: linear-gradient(135deg, #FFF7ED, #FFEDD5);
+}
+
+.product-kpi-card.warning::before { background: var(--warning); }
+
+.product-kpi-card.info {
+    border-color: #90CAF9;
+    background: linear-gradient(135deg, #EFF6FF, #DBEAFE);
+}
+
+.product-kpi-card.info::before { background: var(--info); }
+
+.product-kpi-label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-light);
+    margin-bottom: 0.35rem;
+}
+
+.product-kpi-value {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: var(--inventory-brand);
+}
+
+.product-kpi-card.success .product-kpi-value { color: var(--success); }
+.product-kpi-card.warning .product-kpi-value { color: var(--warning); }
+.product-kpi-card.info .product-kpi-value { color: var(--info); }
+
+/* ── Product name cell ───────────────────────────────── */
+.product-name-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.product-name-cell strong {
+    color: var(--text);
+}
+
+.product-description {
+    color: var(--text-light);
+    font-size: 0.84rem;
+    line-height: 1.45;
+}
+
+/* ── Product status panel ────────────────────────────── */
+.product-status-panel {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    align-items: center;
+    padding: var(--spacing-md);
+    border-radius: var(--rounded-md);
+    border: 1px solid var(--neutral-200);
+    background: linear-gradient(180deg, #fff, #fcfcfc);
+    margin-bottom: var(--spacing-md);
+}
+
+.product-status-panel-label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-light);
+    margin-bottom: 0.3rem;
+}
+
+.product-status-panel-copy {
+    margin: 0;
+    color: var(--text-light);
+    font-size: 0.84rem;
+    line-height: 1.45;
+    max-width: 34ch;
+}

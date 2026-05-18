@@ -1,0 +1,46 @@
+/* ══════════════════════════════════════════════════════════
+   Documentos — Responsive
+   ══════════════════════════════════════════════════════════ */
+
+@media (max-width: 900px) {
+    .docs-hero,
+    .event-doc-summary-grid,
+    .summary-kpis {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .placeholder-groups,
+    .doc-gen-card {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .doc-gen-card {
+        gap: var(--spacing-lg);
+    }
+
+    .doc-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 1.75rem;
+    }
+
+    .docs-kpis {
+        grid-template-columns: 1fr;
+    }
+
+    .quill-wrapper .ql-editor {
+        min-height: 220px;
+    }
+
+    .doc-generation-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .doc-contextual-kpis {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-md);
+    }
+}

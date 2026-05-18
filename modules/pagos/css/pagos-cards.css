@@ -1,0 +1,71 @@
+/* ══════════════════════════════════════════════════════════
+   PAGOS — Cards y banners
+   Stat/KPI cards (consolidadas), status hints, summary banners.
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Stat card (consolidada: movement + queue + metodo) ─ */
+
+.pag-stat-card {
+    background: linear-gradient(180deg, var(--white), var(--neutral-25));
+    border: 1px solid var(--neutral-200);
+    border-radius: var(--rounded-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.pag-stat-card--sm {
+    background: var(--neutral-50);
+    border-radius: var(--rounded-md);
+    padding: var(--spacing-md);
+}
+
+.pag-stat-card--warning { background: var(--warning-bg); border-color: var(--warning-border); }
+.pag-stat-card--success { background: var(--success-bg); border-color: var(--success-border); }
+.pag-stat-card--danger  { background: var(--danger-bg);  border-color: var(--danger-border); }
+.pag-stat-card--info    { background: rgba(21,101,192,0.06); border-color: rgba(21,101,192,0.2); }
+
+.pag-stat-label {
+    display: block;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-light);
+    margin-bottom: 0.25rem;
+}
+
+.pag-stat-value {
+    display: block;
+    font-weight: 800;
+    color: var(--primary);
+    font-size: 1.25rem;
+}
+.pag-stat-value--lg { font-size: 1.6rem; }
+.pag-stat-value--xl { font-size: 1.7rem; }
+
+/* ── Hint y banner (consolidados) ────────────────────── */
+
+.pag-hint,
+.pag-banner {
+    border-radius: var(--rounded-md);
+    border: 1px solid var(--neutral-200);
+    background: var(--neutral-50);
+    color: var(--neutral-700);
+}
+
+.pag-hint {
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-md);
+    font-size: 0.9rem;
+}
+
+.pag-banner {
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-size: 0.95rem;
+}
+
+/* Tonal modifiers — shared between hint and banner */
+.pag-hint--warning,  .pag-banner--warning  { background: var(--warning-bg); border-color: var(--warning-border); color: var(--warning-text); }
+.pag-hint--success,  .pag-banner--success  { background: var(--success-bg); border-color: var(--success-border); color: var(--success-text); }
+.pag-hint--danger,   .pag-banner--danger   { background: var(--danger-bg);  border-color: var(--danger-border);  color: var(--danger-text); }
+.pag-hint--info,     .pag-banner--info     { background: rgba(21,101,192,0.06); border-color: rgba(21,101,192,0.2); color: var(--info, #1565C0); }

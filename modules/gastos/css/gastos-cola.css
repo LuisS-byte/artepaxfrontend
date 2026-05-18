@@ -1,0 +1,514 @@
+/* ══════════════════════════════════════════════════════════
+   GASTOS — Cola de control de egresos
+   Queue items, filter chips, stats, search, workspace split.
+   Pattern: pagos-queue.css + pagos-cards.css con prefijo egresos-.
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Workspace split ────────────────────────────────── */
+
+.egresos-workspace {
+    display: grid;
+    grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
+    gap: var(--spacing-lg);
+    align-items: start;
+}
+
+.egresos-queue-panel,
+.egresos-detail-panel {
+    min-width: 0;
+}
+
+/* ── Queue panel (left) ─────────────────────────────── */
+
+.egresos-queue-panel {
+    max-height: calc(100vh - 200px);
+    position: sticky;
+    top: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── Queue header ───────────────────────────────────── */
+
+.egresos-queue-header h2 {
+    font-size: 1.15rem;
+    margin-bottom: 0.2rem;
+}
+
+.egresos-queue-header .section-note {
+    font-size: 0.82rem;
+    color: var(--text-light);
+    margin-bottom: var(--spacing-md);
+}
+
+/* ── Search shell ───────────────────────────────────── */
+
+.egresos-search-shell {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.egresos-search-shell .input-field {
+    padding-left: 36px;
+    padding-right: 36px;
+    width: 100%;
+}
+
+.egresos-search-shell::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    background: var(--neutral-400);
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") center/contain no-repeat;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") center/contain no-repeat;
+    pointer-events: none;
+}
+
+.egresos-search-clear {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 50%;
+    background: var(--neutral-200);
+    color: var(--neutral-600);
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.egresos-search-clear:hover {
+    background: var(--neutral-300);
+    color: var(--neutral-800);
+}
+
+.egresos-search-clear.hidden {
+    display: none;
+}
+
+.egresos-search-clear i {
+    width: 14px;
+    height: 14px;
+}
+
+/* ── Filter chips row ───────────────────────────────── */
+
+.egresos-filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.egresos-chip {
+    border: 1px solid var(--neutral-200);
+    background: var(--neutral-0);
+    color: var(--neutral-700);
+    border-radius: 999px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+}
+
+.egresos-chip:hover {
+    border-color: var(--neutral-400);
+    background: var(--neutral-50);
+}
+
+.egresos-chip.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--white);
+}
+
+/* ── Queue stats (KPI counters) ─────────────────────── */
+
+.egresos-queue-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-md);
+}
+
+.egresos-stat-card {
+    background: var(--neutral-50);
+    border-radius: var(--rounded-md);
+    padding: var(--spacing-sm) var(--spacing-sm);
+    text-align: center;
+    border: 1px solid var(--neutral-200);
+}
+
+.egresos-stat-card--warning {
+    background: var(--warning-bg);
+    border-color: var(--warning-border);
+}
+
+.egresos-stat-card--success {
+    background: var(--success-bg);
+    border-color: var(--success-border);
+}
+
+.egresos-stat-card--accent {
+    background: rgba(21, 101, 192, 0.06);
+    border-color: rgba(21, 101, 192, 0.2);
+}
+
+.egresos-stat-label {
+    display: block;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-light);
+    margin-bottom: 0.15rem;
+    white-space: nowrap;
+}
+
+.egresos-stat-value {
+    display: block;
+    font-weight: 800;
+    color: var(--primary);
+    font-size: 1.1rem;
+}
+
+/* ── Queue list ─────────────────────────────────────── */
+
+.egresos-queue-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+}
+
+.egresos-queue-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.egresos-queue-list::-webkit-scrollbar-thumb {
+    background: var(--neutral-300);
+    border-radius: 999px;
+}
+
+.egresos-queue-item {
+    width: 100%;
+    text-align: left;
+    border: 1px solid var(--neutral-200);
+    background: var(--neutral-0);
+    border-radius: var(--rounded-lg);
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.15s ease;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+.egresos-queue-item:hover {
+    border-color: rgba(21, 101, 192, 0.35);
+    box-shadow: var(--shadow-md);
+}
+
+.egresos-queue-item.active {
+    border-color: var(--primary);
+    border-left: 4px solid var(--primary);
+    background: rgba(21, 101, 192, 0.03);
+}
+
+.egresos-queue-item-top {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+    align-items: center;
+    margin-bottom: 3px;
+}
+
+.egresos-queue-item-top strong {
+    color: var(--text);
+    font-size: 0.88rem;
+}
+
+.egresos-queue-id {
+    font-size: 0.72rem;
+    color: var(--text-light);
+    white-space: nowrap;
+}
+
+.egresos-queue-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: 4px;
+    font-size: 0.75rem;
+}
+
+.egresos-queue-badge {
+    flex-shrink: 0;
+}
+
+.egresos-queue-date {
+    color: var(--text-light);
+}
+
+.egresos-queue-location {
+    color: var(--neutral-500);
+}
+
+.egresos-queue-location svg {
+    width: 11px;
+    height: 11px;
+    vertical-align: middle;
+    margin-right: 2px;
+}
+
+/* ── Queue metrics row ──────────────────────────────── */
+
+.egresos-queue-metrics {
+    font-size: 0.78rem;
+    color: var(--neutral-700);
+    margin-bottom: 2px;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 8px;
+}
+
+.egresos-queue-metrics .sep {
+    color: var(--neutral-300);
+}
+
+/* ── Queue helper badge ─────────────────────────────── */
+
+.egresos-queue-helper {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 1px 7px;
+    border-radius: 999px;
+    margin-top: 2px;
+}
+
+.egresos-queue-helper.warning {
+    background: rgba(237, 108, 2, 0.12);
+    color: var(--warning-text);
+}
+
+.egresos-queue-helper.success {
+    background: rgba(46, 125, 50, 0.12);
+    color: var(--success-text);
+}
+
+.egresos-queue-helper.neutral {
+    background: rgba(100, 116, 139, 0.12);
+    color: var(--text-light);
+}
+
+/* ── Empty state ────────────────────────────────────── */
+
+.egresos-queue-location {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--neutral-500);
+    margin-bottom: var(--spacing-xs);
+    margin-top: 2px;
+}
+
+.egresos-queue-item--alerta {
+    border-left: 4px solid var(--warning-border);
+}
+
+.egresos-queue-item--alerta.active {
+    border-left: 4px solid var(--warning);
+}
+
+.egresos-queue-metrics--empty {
+    justify-content: center;
+    padding: var(--spacing-xs) 0;
+}
+
+.egresos-queue-no-gastos {
+    font-size: 0.8rem;
+    color: var(--neutral-400);
+    font-style: italic;
+}
+
+.egresos-queue-metrics .sep {
+    color: var(--neutral-300);
+}
+
+.egresos-back-btn {
+    display: none;
+    margin-bottom: var(--spacing-md);
+}
+
+@media (max-width: 768px) {
+    .egresos-back-btn {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+    }
+}
+
+.egresos-queue-empty {
+    text-align: center;
+    padding: var(--spacing-xl) var(--spacing-md);
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+/* ── Detail panel (right) ───────────────────────────── */
+
+.egresos-detail-panel {
+    min-height: 300px;
+}
+
+/* ── Eventos globales toggle (vista "Todos los gastos") ─ */
+
+.eventos-global-container {
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 1px solid var(--neutral-200);
+    margin-bottom: var(--spacing-lg);
+}
+
+.eventos-global-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+}
+
+.eventos-global-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-sm) var(--spacing-lg);
+    padding: 8px 12px;
+    border: 1px solid var(--neutral-200);
+    border-radius: var(--rounded-lg);
+    background: var(--neutral-0);
+}
+
+.eventos-global-row-main {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex: 1;
+    min-width: 200px;
+}
+
+.eventos-global-row-main strong {
+    font-size: 0.88rem;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.eventos-global-row-meta {
+    display: flex;
+    gap: var(--spacing-md);
+    font-size: 0.78rem;
+    color: var(--text-light);
+}
+
+.eventos-global-row-monto {
+    display: flex;
+    gap: var(--spacing-md);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.eventos-global-row-monto .monto-pend { color: var(--warning-text); }
+.eventos-global-row-monto .monto-des { color: var(--success-text); }
+.eventos-global-row-monto .monto-proy { color: var(--neutral-500); }
+
+.eventos-global-empty {
+    text-align: center;
+    padding: var(--spacing-lg);
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+/* ── Overview stats (vista "Todos los gastos") ─────── */
+
+.gastos-movements-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.gastos-stat-card {
+    background: var(--neutral-50);
+    border-radius: var(--rounded-md);
+    padding: var(--spacing-md) var(--spacing-sm);
+    text-align: center;
+    border: 1px solid var(--neutral-200);
+}
+
+.gastos-stat-card--warning {
+    background: rgba(237, 108, 2, 0.08);
+    border-color: rgba(237, 108, 2, 0.2);
+}
+
+.gastos-stat-card--success {
+    background: rgba(46, 125, 50, 0.08);
+    border-color: rgba(46, 125, 50, 0.2);
+}
+
+.gastos-stat-card--info {
+    background: rgba(21, 101, 192, 0.06);
+    border-color: rgba(21, 101, 192, 0.2);
+}
+
+.gastos-stat-label {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-light);
+    margin-bottom: 0.2rem;
+}
+
+.gastos-stat-value {
+    display: block;
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: var(--text);
+}
+
+/* ── Responsive: stack at ≤768px ───────────────────── */
+
+@media (max-width: 768px) {
+    .egresos-workspace {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+
+    .egresos-queue-panel {
+        max-height: none;
+        position: static;
+    }
+
+    .egresos-filter-row {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: var(--spacing-xs);
+    }
+
+    .egresos-chip {
+        flex-shrink: 0;
+    }
+}

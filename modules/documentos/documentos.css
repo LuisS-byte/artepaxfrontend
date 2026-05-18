@@ -1,0 +1,9 @@
+/* ══════════════════════════════════════════════════════════
+   Módulo Documentos — Entry Point
+   ══════════════════════════════════════════════════════════ */
+
+@import "./css/documentos-hero.css";
+@import "./css/documentos-content.css";
+@import "./css/documentos-queue.css";
+@import "./css/documentos-editor.css";
+@import "./css/documentos-responsive.css";

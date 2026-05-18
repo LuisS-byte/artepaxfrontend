@@ -1,0 +1,64 @@
+/* ══════════════════════════════════════════════════════════
+   Gastos — Selectors & Tables
+   ══════════════════════════════════════════════════════════ */
+
+.selector-card-gastos {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.gastos-section-header {
+    gap: var(--spacing-lg);
+}
+
+.amount-cell {
+    font-family: 'Inter', monospace;
+    color: var(--primary);
+}
+
+.gasto-concepto-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.gasto-note-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.gasto-note-chip {
+    display: inline-flex;
+    align-self: flex-start;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    background: rgba(21,101,192,0.08);
+    color: var(--accent);
+}
+
+.gasto-note-chip.is-empty {
+    background: rgba(100,116,139,0.12);
+    color: var(--neutral-500);
+}
+
+/* ── Sticky table headers ──────────────────────────── */
+.table-wrapper thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: var(--neutral-0, #fff);
+}
+
+.table-wrapper thead th::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--neutral-300);
+}

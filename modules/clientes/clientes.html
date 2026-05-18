@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes | Artepax Fiesta</title>
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="clientes.css">
+    <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+</head>
+<body>
+
+    <div class="app-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar-container"></aside>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-wrapper">
+            <!-- TOPBAR -->
+            <header class="topbar">
+                <div class="breadcrumbs">
+                    <a href="../../index.html">Inicio</a>
+                    <span class="separator">/</span>
+                    <span class="current">Clientes</span>
+                </div>
+                <div class="topbar-actions">
+                    <div id="user-display" class="user-info">
+                        <span class="user-name">Administrador</span>
+                        <div class="user-avatar">AD</div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <header class="module-header">
+                    <div class="header-info">
+                        <h1>Clientes</h1>
+                        <p>Gestión integral de la base de datos de clientes.</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" onclick="abrirDrawerCrear()">
+                            <span class="icon">+</span> Nuevo Cliente
+                        </button>
+                    </div>
+                </header>
+
+                <!-- FILTERS & TABLE -->
+                <section class="content-section">
+                    <div class="card">
+                        <div class="filter-bar">
+                            <div class="search-box">
+                                <span class="search-icon"><i data-lucide="search"></i></span>
+                                <input type="text" id="search-input" placeholder="Buscar por nombre, correo o teléfono...">
+                            </div>
+                            <div class="filter-groups">
+                                <select id="filter-estado" class="select-filter" onchange="cambiarFiltroEstado()">
+                                    <option value="activos">Solo Activos</option>
+                                    <option value="inactivos">Solo Inactivos</option>
+                                    <option value="todos">Todos</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="alert-box" class="alert hidden"></div>
+
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Contacto</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabla-clientes">
+                                    <!-- Cargado vía JS -->
+                                    <tr>
+                                        <td colspan="4" class="loading-state">
+                                            <div class="spinner"></div>
+                                            Cargando clientes...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- DRAWER CREAR / EDITAR -->
+    <div class="drawer-overlay" id="drawer-cliente-overlay" onclick="cerrarDrawer(event)">
+        <aside class="drawer" id="drawer-cliente">
+            <header class="drawer-header">
+                <h2 id="drawer-titulo">Nuevo Cliente</h2>
+                <button class="btn-close" onclick="cerrarDrawer()"><i data-lucide="x"></i></button>
+            </header>
+            
+            <div class="drawer-body">
+                <div id="drawer-alert" class="alert hidden"></div>
+                
+                <form id="form-cliente" class="form-vertical" onsubmit="guardarCliente(event)">
+                    <div class="form-section">
+                        <h3>Información Básica</h3>
+                        <div class="form-group">
+                            <label for="input-nombre">Nombre Completo *</label>
+                            <input type="text" id="input-nombre" placeholder="Ej: Juan Pérez" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-telefono">Teléfono *</label>
+                            <input type="text" id="input-telefono" placeholder="Ej: 7777-1234" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-correo">Correo Electrónico *</label>
+                            <input type="email" id="input-correo" placeholder="ejemplo@correo.com" required>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Ubicación</h3>
+                        <div class="form-group">
+                            <label for="input-direccion">Dirección de Residencia</label>
+                            <textarea id="input-direccion" rows="3" placeholder="Calle, número, ciudad..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="drawer-footer">
+                        <button type="button" class="btn btn-secondary" onclick="cerrarDrawer()">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="btn-guardar">Guardar Cliente</button>
+                    </div>
+                </form>
+            </div>
+        </aside>
+    </div>
+
+    <!-- MODAL CONFIRMACIÓN ELIMINAR -->
+    <div class="modal-overlay" id="modal-eliminar">
+        <div class="modal modal-sm">
+            <header class="modal-header">
+                <h2>¿Eliminar Cliente?</h2>
+                <button class="modal-close" onclick="cerrarModalEliminar()"><i data-lucide="x"></i></button>
+            </header>
+            <div class="modal-body">
+                <p>Estás a punto de desactivar a <strong id="nombre-eliminar"></strong>. El cliente pasará a la lista de inactivos.</p>
+            </div>
+            <footer class="modal-footer">
+                <button class="btn btn-secondary" onclick="cerrarModalEliminar()">Cancelar</button>
+                <button class="btn btn-danger" onclick="confirmarEliminar()">Desactivar</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../js/core/config.js" defer></script>
+    <script src="../../js/core/auth.js" defer></script>
+    <script src="../../js/core/http.js" defer></script>
+    <script src="../../js/shared/api.js" defer></script>
+    <script src="../../js/shared/modulos.js" defer></script>
+    <script src="../../js/shared/formatters.js" defer></script>
+    <script src="../../js/shared/alerts.js" defer></script>
+    <script src="js/clientes.state.js" defer></script>
+    <script src="js/clientes.helpers.js" defer></script>
+    <script src="js/clientes.render.js" defer></script>
+    <script src="js/clientes.api.js" defer></script>
+    <script src="js/clientes.actions.js" defer></script>
+    <script src="clientes.js" defer></script>
+    <script src="../../js/shared/notificaciones-bell.js" defer></script>
+    <script src="../../js/shared/sidebar.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            requireAuth();
+            renderSidebar('clientes', 'Gestión de Eventos');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventos | Artepax Fiesta</title>
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="eventos.css">
+    <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+</head>
+<body>
+
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar-container"></aside>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-wrapper">
+            <!-- TOPBAR -->
+            <header class="topbar">
+                <nav class="breadcrumbs" aria-label="Breadcrumb">
+                    <a href="../../index.html">Inicio</a>
+                    <span class="separator">/</span>
+                    <span class="current" aria-current="page">Eventos</span>
+                </nav>
+                <div class="topbar-actions">
+                    <div class="user-info">
+                        <span class="user-name">Administrador</span>
+                        <div class="user-avatar">AD</div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <header class="module-header">
+                    <div class="header-info">
+                        <h1>Eventos</h1>
+                        <p>Seguimiento de cotizaciones, programaciones y ejecuciones.</p>
+                    </div>
+                    <div class="header-actions">
+                        <!-- Tabs vista -->
+                        <div class="view-tabs" role="tablist">
+                            <button type="button" id="tab-lista" class="tab-btn tab-btn--active" role="tab"
+                                    onclick="cambiarVista('lista')" aria-selected="true">
+                                <i data-lucide="menu"></i> Lista
+                            </button>
+                            <button type="button" id="tab-calendario" class="tab-btn" role="tab"
+                                    onclick="cambiarVista('calendario')" aria-selected="false">
+                                <i data-lucide="calendar"></i> Calendario
+                            </button>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="abrirDrawerCrear()">
+                            <i data-lucide="plus"></i> Nueva Cotización
+                        </button>
+                    </div>
+                </header>
+
+                <!-- ══ VISTA LISTA ══════════════════════════════════ -->
+                <section id="vista-lista" class="content-section">
+
+                    <!-- KPI SUMMARY CARDS -->
+                    <div class="kpi-toolbar">
+                        <div class="kpi-toolbar-left">
+                            <h2 class="kpi-toolbar-title">Resumen</h2>
+                        </div>
+                        <div class="kpi-toolbar-right">
+                            <div class="kpi-date-filter">
+                                <label for="kpi-fecha-desde" class="kpi-date-label">Desde</label>
+                                <input type="text" id="kpi-fecha-desde" class="input-field date-picker" placeholder="Desde..." onchange="aplicarFiltroFecha()" autocomplete="off">
+                            </div>
+                            <div class="kpi-date-filter">
+                                <label for="kpi-fecha-hasta" class="kpi-date-label">Hasta</label>
+                                <input type="text" id="kpi-fecha-hasta" class="input-field date-picker" placeholder="Hasta..." onchange="aplicarFiltroFecha()" autocomplete="off">
+                            </div>
+                            <button type="button" class="btn btn-outline btn-sm hidden" id="kpi-limpiar-fechas" onclick="limpiarFiltroFechas()">
+                                <i data-lucide="x"></i> Limpiar fechas
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="kpi-grid" id="kpi-grid">
+                        <div class="kpi-card kpi-card--total" data-filter="todos" title="Mostrar todos los eventos">
+                            <div class="kpi-card-icon"><i data-lucide="calendar-range"></i></div>
+                            <div class="kpi-card-body">
+                                <span class="kpi-card-value" id="kpi-total">—</span>
+                                <span class="kpi-card-label">Total</span>
+                            </div>
+                        </div>
+                        <div class="kpi-card kpi-card--accion" data-filter="accion" title="Filtrar eventos que requieren acción">
+                            <div class="kpi-card-icon"><i data-lucide="briefcase-business"></i></div>
+                            <div class="kpi-card-body">
+                                <span class="kpi-card-value" id="kpi-accion">—</span>
+                                <span class="kpi-card-label">Requieren Acción</span>
+                            </div>
+                        </div>
+                        <div class="kpi-card kpi-card--ejecucion" data-filter="ejecucion" title="Filtrar eventos en ejecución">
+                            <div class="kpi-card-icon"><i data-lucide="truck"></i></div>
+                            <div class="kpi-card-body">
+                                <span class="kpi-card-value" id="kpi-ejecucion">—</span>
+                                <span class="kpi-card-label">En Ejecución</span>
+                            </div>
+                        </div>
+                        <div class="kpi-card kpi-card--pendiente-cobro" data-filter="PENDIENTE_COBRO" title="Filtrar por Pendiente de Cobro">
+                            <div class="kpi-card-icon"><i data-lucide="wallet"></i></div>
+                            <div class="kpi-card-body">
+                                <span class="kpi-card-value" id="kpi-pendiente-cobro">—</span>
+                                <span class="kpi-card-label">Pend. Cobro</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card card-table">
+                        <div class="filter-bar">
+                            <div class="search-box">
+                                <span class="search-icon"><i data-lucide="search"></i></span>
+                                <input type="text" id="search-input" placeholder="Buscar en página actual...">
+                                <button type="button" class="search-clear hidden" id="search-clear" onclick="limpiarBusqueda()" title="Limpiar búsqueda"><i data-lucide="x"></i></button>
+                            </div>
+                            <div class="filter-groups">
+                                <select id="filter-estado" class="select-filter" onchange="limpiarKpiFiltro(false); filtrarEventos()">
+                                    <option value="todos">Todos los Estados</option>
+                                    <option value="COTIZACION">Cotizaciones</option>
+                                    <option value="PROGRAMADO">Programados</option>
+                                    <option value="CONFIRMADO">Confirmados</option>
+                                    <option value="EN_MONTAJE">En Montaje</option>
+                                    <option value="PENDIENTE_COBRO">Pend. Cobro</option>
+                                    <option value="CANCELACION_PENDIENTE">Canc. Pendientes</option>
+                                    <option value="FINALIZADO">Finalizados</option>
+                                    <option value="CANCELADO">Cancelados</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Active filter chips -->
+                        <div class="active-filters hidden" id="active-filters"></div>
+
+                        <div id="alert-box" class="alert hidden" role="alert"></div>
+
+                        <!-- Results count -->
+                        <div class="results-count hidden" id="results-count"></div>
+
+                        <div class="table-wrapper">
+                            <table class="data-table" id="tabla-eventos-table">
+                                <colgroup>
+                                    <col class="tabla-eventos-col-id">
+                                    <col class="tabla-eventos-col-cliente">
+                                    <col class="tabla-eventos-col-fecha">
+                                    <col class="tabla-eventos-col-ubicacion">
+                                    <col class="tabla-eventos-col-decoracion">
+                                    <col class="tabla-eventos-col-estado">
+                                    <col class="tabla-eventos-col-acciones">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th class="col-id">ID</th>
+                                        <th>Cliente</th>
+                                        <th>Fecha del Evento</th>
+                                        <th>Ubicación</th>
+                                        <th>Decoración</th>
+                                        <th class="col-estado">Estado</th>
+                                        <th class="col-acciones-md">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabla-eventos">
+                                    <tr>
+                                        <td colspan="7" class="loading-state">
+                                            <div class="spinner"></div>
+                                            Cargando eventos...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Paginación -->
+                        <div id="paginacion-eventos" class="pagination-container"></div>
+                    </div>
+                </section>
+
+                <!-- ══ VISTA CALENDARIO ════════════════════════════ -->
+                <section id="vista-calendario" class="content-section hidden">
+                    <!-- Cabecera de navegación del mes -->
+                    <div class="cal-nav card">
+                        <button type="button" class="btn btn-outline btn-sm" onclick="mesAnterior()"><i data-lucide="chevron-left"></i> Anterior</button>
+                        <div class="cal-nav-center">
+                            <span id="cal-mes-titulo" class="cal-mes-label">—</span>
+                            <button type="button" class="btn btn-outline btn-sm" onclick="irAHoy()" title="Ir al mes actual">Hoy</button>
+                        </div>
+                        <button type="button" class="btn btn-outline btn-sm" onclick="mesSiguiente()">Siguiente <i data-lucide="chevron-right"></i></button>
+                    </div>
+
+                    <!-- Leyenda de estados -->
+                    <div class="cal-leyenda">
+                        <span class="cal-dot cal-dot--COTIZACION"></span>Cotización
+                        <span class="cal-dot cal-dot--PROGRAMADO"></span>Programado
+                        <span class="cal-dot cal-dot--CONFIRMADO"></span>Confirmado
+                        <span class="cal-dot cal-dot--EN_MONTAJE"></span>En Montaje
+                        <span class="cal-dot cal-dot--PENDIENTE_COBRO"></span>Pend. Cobro
+                        <span class="cal-dot cal-dot--CANCELACION_PENDIENTE"></span>Canc. Pendiente
+                        <span class="cal-dot cal-dot--FINALIZADO"></span>Finalizado
+                        <span class="cal-dot cal-dot--CANCELADO"></span>Cancelado
+                    </div>
+
+                    <!-- Grid del mes -->
+                    <div class="card cal-card">
+                        <div class="cal-header-dias">
+                            <span>Lun</span><span>Mar</span><span>Mié</span>
+                            <span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
+                        </div>
+                        <div id="cal-grid" class="cal-grid">
+                            <div class="loading-state"><div class="spinner"></div> Cargando calendario...</div>
+                        </div>
+                    </div>
+
+                    <!-- Panel de detalle del día seleccionado -->
+                    <div id="cal-detalle-dia" class="cal-detalle-dia hidden card">
+                        <div class="cal-detalle-header">
+                            <h3 id="cal-detalle-titulo">Eventos del día</h3>
+                            <button type="button" class="btn-close-sm" onclick="cerrarDetalleDia()"><i data-lucide="x"></i></button>
+                        </div>
+                        <div id="cal-detalle-contenido"></div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- DRAWER CREAR / EDITAR -->
+    <!-- DRAWER: CREAR / EDITAR EVENTO (STEP-BASED) -->
+    <div class="drawer-overlay" id="drawer-evento-overlay" onclick="cerrarDrawerEvento(event)">
+        <aside class="drawer drawer--evento" id="drawer-evento">
+            <header class="drawer-header">
+                <h2 id="drawer-titulo-evento">Nueva Cotización</h2>
+                <button type="button" class="btn-close" onclick="cerrarDrawerEvento()"><i data-lucide="x"></i></button>
+            </header>
+
+            <div class="drawer-body">
+                <div id="drawer-alert-evento" class="alert hidden" role="alert"></div>
+
+                <!-- Step indicator -->
+                <div class="evento-step-indicator" id="evento-step-indicator">
+                    <div class="evento-step-row">
+                        <span class="evento-step active" data-step="1">
+                            <span class="evento-step-num">1</span>
+                            <span class="evento-step-label">Cliente</span>
+                        </span>
+                        <span class="evento-step-connector"></span>
+                        <span class="evento-step" data-step="2">
+                            <span class="evento-step-num">2</span>
+                            <span class="evento-step-label">Agenda</span>
+                        </span>
+                        <span class="evento-step-connector"></span>
+                        <span class="evento-step" data-step="3">
+                            <span class="evento-step-num">3</span>
+                            <span class="evento-step-label">Confirmar</span>
+                        </span>
+                    </div>
+                </div>
+
+                <form id="form-evento" class="form-vertical" onsubmit="return false;">
+
+                    <!-- ══ STEP 1: Cliente ══════════════════════ -->
+                    <div class="evento-step-content" data-step="1">
+                        <div class="form-section">
+                            <h3><i data-lucide="user-circle"></i> Cliente, Tipo y Decoracion</h3>
+                            <div class="form-group">
+                                <label for="autocomplete-cliente-input">Cliente <span class="required-mark">*</span></label>
+                                <div class="autocomplete-field">
+                                    <div class="autocomplete-input-wrapper">
+                                        <span class="autocomplete-icon"><i data-lucide="search"></i></span>
+                                        <input type="text" id="autocomplete-cliente-input"
+                                               placeholder="Busca por nombre de cliente..."
+                                               autocomplete="off"
+                                               role="combobox"
+                                               aria-expanded="false"
+                                               aria-controls="autocomplete-cliente-results">
+                                        <button type="button" class="autocomplete-clear hidden"
+                                                id="autocomplete-cliente-clear" aria-label="Limpiar seleccion">
+                                            <i data-lucide="x"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-ghost btn-sm autocomplete-add-btn"
+                                                id="btn-nuevo-cliente" onclick="abrirModalNuevoCliente()"
+                                                title="Crear nuevo cliente">
+                                            <i data-lucide="plus"></i>
+                                        </button>
+                                    </div>
+                                    <div id="autocomplete-cliente-results" class="autocomplete-results hidden" role="listbox"></div>
+                                    <select id="select-cliente" class="hidden" aria-hidden="true" required>
+                                        <option value="">Selecciona un cliente...</option>
+                                    </select>
+                                </div>
+                                <span class="field-error" id="error-select-cliente"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="autocomplete-tipo-evento-input">Tipo de Evento <span class="required-mark">*</span></label>
+                                <div class="autocomplete-field">
+                                    <div class="autocomplete-input-wrapper">
+                                        <span class="autocomplete-icon"><i data-lucide="search"></i></span>
+                                        <input type="text" id="autocomplete-tipo-evento-input"
+                                               placeholder="Busca por tipo de evento..."
+                                               autocomplete="off"
+                                               role="combobox"
+                                               aria-expanded="false"
+                                               aria-controls="autocomplete-tipo-evento-results">
+                                        <button type="button" class="autocomplete-clear hidden"
+                                                id="autocomplete-tipo-evento-clear" aria-label="Limpiar seleccion">
+                                            <i data-lucide="x"></i>
+                                        </button>
+                                    </div>
+                                    <div id="autocomplete-tipo-evento-results" class="autocomplete-results hidden" role="listbox"></div>
+                                    <select id="select-tipo-evento" class="hidden" aria-hidden="true" required>
+                                        <option value="">Selecciona un tipo...</option>
+                                    </select>
+                                </div>
+                                <span class="field-error" id="error-select-tipo-evento"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="autocomplete-decoracion-input">Decoracion <span class="required-mark">*</span></label>
+                                <div class="autocomplete-field">
+                                    <div class="autocomplete-input-wrapper">
+                                        <span class="autocomplete-icon"><i data-lucide="search"></i></span>
+                                        <input type="text" id="autocomplete-decoracion-input"
+                                               placeholder="Primero selecciona un tipo de evento..."
+                                               autocomplete="off"
+                                               role="combobox"
+                                               aria-expanded="false"
+                                               aria-controls="autocomplete-decoracion-results">
+                                        <button type="button" class="autocomplete-clear hidden"
+                                                id="autocomplete-decoracion-clear" aria-label="Limpiar seleccion">
+                                            <i data-lucide="x"></i>
+                                        </button>
+                                    </div>
+                                    <div id="autocomplete-decoracion-results" class="autocomplete-results hidden" role="listbox"></div>
+                                    <select id="select-decoracion" class="hidden" aria-hidden="true" required>
+                                        <option value="">Selecciona una decoracion...</option>
+                                    </select>
+                                </div>
+                                <span class="field-error" id="error-select-decoracion"></span>
+                                <div id="decoracion-preview" class="decoracion-preview hidden">
+                                    <div class="decoracion-preview-head">
+                                        <span class="decoracion-precio" id="decoracion-preview-precio"></span>
+                                        <span class="decoracion-nota">Precio base - Los extras se agregan despues.</span>
+                                    </div>
+                                    <div id="decoracion-preview-productos" class="decoracion-productos hidden">
+                                        <span class="decoracion-productos-title">Incluye:</span>
+                                        <div class="decoracion-productos-lista" id="decoracion-productos-lista"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ══ STEP 2: Agenda ═══════════════════════ -->
+                    <div class="evento-step-content hidden" data-step="2">
+                        <div class="form-section">
+                            <h3><i data-lucide="calendar-days"></i> Fecha y Horario</h3>
+                            <div class="form-row two-columns">
+                                <div class="form-group">
+                                    <label for="input-fecha">Fecha <span class="required-mark">*</span></label>
+                                    <input type="text" id="input-fecha" class="date-picker" required>
+                                    <span class="field-error" id="error-input-fecha"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-ubicacion">Ubicación</label>
+                                    <input type="text" id="input-ubicacion" placeholder="Ej: Jardines del Lago">
+                                    <span class="field-error" id="error-input-ubicacion"></span>
+                                </div>
+                            </div>
+                            <div class="form-row two-columns">
+                                <div class="form-group">
+                                    <label for="input-hora-inicio">Hora de Inicio</label>
+                                    <input type="text" id="input-hora-inicio" class="time-picker" placeholder="--:--">
+                                    <span class="field-error" id="error-input-hora-inicio"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-hora-fin">Hora de Fin</label>
+                                    <input type="text" id="input-hora-fin" class="time-picker" placeholder="--:--">
+                                    <span class="field-error" id="error-input-hora-fin"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Disponibilidad preview -->
+                        <div id="disponibilidad-preview" class="disponibilidad-card hidden">
+                            <div class="disponibilidad-icon" id="disponibilidad-icon">
+                                <i data-lucide="clock"></i>
+                            </div>
+                            <div class="disponibilidad-body">
+                                <strong id="disponibilidad-texto">Verificando disponibilidad...</strong>
+                                <span id="disponibilidad-detalle" class="disponibilidad-detalle"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ══ STEP 3: Confirmar ════════════════════ -->
+                    <div class="evento-step-content hidden" data-step="3">
+                        <div id="evento-resumen-container" class="evento-resumen-card">
+                            <!-- Resumen generado por JS -->
+                        </div>
+
+                        <div class="form-section">
+                            <h3><i data-lucide="file-text"></i> Nota</h3>
+                            <div class="form-group">
+                                <textarea id="input-nota" rows="4" placeholder="Observaciones adicionales para la cotización..."></textarea>
+                                <span class="field-error" id="error-input-nota"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer dinámico -->
+                    <div class="drawer-footer" id="evento-drawer-footer">
+                        <button type="button" class="btn btn-secondary" id="btn-evento-atras" onclick="eventoStepAnterior()" hidden>
+                            <i data-lucide="chevron-left" style="width:14px;height:14px"></i> Atrás
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="cerrarDrawerEvento()" id="btn-evento-cancelar">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="btn-evento-siguiente" onclick="eventoSiguientePaso()">
+                            Siguiente <i data-lucide="chevron-right" style="width:14px;height:14px"></i>
+                        </button>
+                        <button type="button" class="btn btn-primary hidden" id="btn-guardar-evento" onclick="guardarEvento(event)">Guardar Cotización</button>
+                    </div>
+                </form>
+            </div>
+        </aside>
+    </div>
+
+    <!-- MODAL DETALLE -->
+    <div class="modal-overlay" id="modal-detalle-evento">
+        <div class="modal modal-xl evento-detalle-modal">
+            <header class="modal-header">
+                <div class="modal-header-left">
+                    <h2 id="detalle-titulo">Detalle del Evento</h2>
+                    <span id="detalle-badge-estado"></span>
+                </div>
+                <button type="button" class="modal-close" onclick="cerrarModalDetalleEvento()"><i data-lucide="x"></i></button>
+            </header>
+            <div class="modal-body detalle-evento-body" id="detalle-evento-contenido"></div>
+            <footer class="modal-footer" id="detalle-footer">
+                <button type="button" class="btn btn-secondary" onclick="cerrarModalDetalleEvento()">Cerrar</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- MODAL RENTABILIDAD -->
+    <div class="modal-overlay" id="modal-rentabilidad-evento">
+        <div class="modal modal-xl">
+            <header class="modal-header">
+                <h2>Rentabilidad del Evento</h2>
+                <button type="button" class="modal-close" onclick="cerrarModalRentabilidad()"><i data-lucide="x"></i></button>
+            </header>
+            <div class="modal-body" id="rentabilidad-evento-contenido"></div>
+            <footer class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="cerrarModalRentabilidad()">Cerrar</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- MODAL CANCELAR CON MOTIVO -->
+    <div class="modal-overlay" id="modal-cancelar">
+        <div class="modal modal-sm">
+            <header class="modal-header">
+                <div class="modal-header-left">
+                    <h2>Solicitar Cancelacion</h2>
+                    <small class="modal-header-sub">El evento pasara a Cancelacion Pendiente</small>
+                </div>
+                <button type="button" class="modal-close" onclick="cerrarModalCancelar()"><i data-lucide="x"></i></button>
+            </header>
+            <div class="modal-body">
+                <div id="modal-cancelar-alert" class="alert hidden" role="alert"></div>
+                <p>Ingresa el motivo de la cancelacion.</p>
+                <div class="form-group form-group--cancel">
+                    <label for="motivo-cancelacion">Motivo <span class="required-mark">*</span></label>
+                    <textarea id="motivo-cancelacion" rows="3" placeholder="Ej: El cliente cambio de fecha o presupuesto..."></textarea>
+                </div>
+            </div>
+            <footer class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="cerrarModalCancelar()">Volver</button>
+                <button type="button" class="btn btn-danger" id="btn-solicitar-cancelar" onclick="confirmarSolicitudCancelar()">Solicitar Cancelacion</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- MODAL CONFIRMAR ACCION (TRANSICIONES) -->
+    <div class="modal-overlay" id="modal-confirmar">
+        <div class="modal modal-sm">
+            <header class="modal-header">
+                <div class="modal-header-left">
+                    <h2 id="confirmar-titulo">Confirmar Accion</h2>
+                    <small class="modal-header-sub" id="confirmar-subtitulo">Esta accion cambiara el estado del evento</small>
+                </div>
+                <button type="button" class="modal-close" onclick="cerrarModalConfirmar()"><i data-lucide="x"></i></button>
+            </header>
+            <div class="modal-body">
+                <div id="confirmar-alert" class="alert hidden" role="alert"></div>
+                <p id="confirmar-mensaje"></p>
+            </div>
+            <footer class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="cerrarModalConfirmar()">Volver</button>
+                <button type="button" class="btn btn-primary" id="btn-confirmar-accion">Confirmar</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- MODAL EXTRAS -->
+    <div class="modal-overlay" id="modal-extras">
+        <div class="modal modal-xl modal-content--narrow">
+            <header class="modal-header">
+                <h2>Agregar Productos Extra</h2>
+                <button type="button" class="modal-close" onclick="cerrarModalExtras()"><i data-lucide="x"></i></button>
+            </header>
+            <div class="modal-body modal-body--compact">
+                <div id="extras-alert" class="alert hidden" role="alert"></div>
+
+                <div class="form-section">
+                    <h3>Productos</h3>
+                    <p class="text-muted text-helper">
+                        Agregá los productos adicionales para este evento.
+                    </p>
+                    <div id="extras-items-list">
+                        <p class="text-muted text-helper--bare">No hay productos agregados aún.</p>
+                    </div>
+                    <div class="extras-add-row">
+                        <div class="extras-add-field extras-add-field--grow">
+                            <label for="extras-select-producto">Producto</label>
+                            <select id="extras-select-producto" class="select-filter">
+                                <option value="">Seleccionar producto...</option>
+                            </select>
+                        </div>
+                        <div class="extras-add-field extras-add-field--qty">
+                            <label for="extras-cantidad">Cant.</label>
+                            <input type="number" id="extras-cantidad" min="1" value="1" class="input-field" inputmode="numeric">
+                        </div>
+                        <button type="button" class="btn btn-outline extras-add-btn" onclick="agregarItemExtra()">
+                            + Agregar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-section form-section--spaced">
+                    <h3>Cargos</h3>
+                    <div class="form-row two-columns">
+                        <div class="form-group">
+                            <label for="extras-monto">Monto Adicional Total *</label>
+                            <input type="number" id="extras-monto" min="0.01" step="0.01" placeholder="0.00" inputmode="decimal">
+                            <small id="extras-monto-hint" class="text-muted hidden extras-monto-hint"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="extras-nota-precio">Motivo del Cargo *</label>
+                            <textarea id="extras-nota-precio" rows="2" placeholder="Ej: transporte especial, decoración extra..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="cerrarModalExtras()">Volver</button>
+                <button type="button" class="btn btn-primary" id="btn-guardar-extras" onclick="confirmarExtras()">Guardar Extras</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- MODAL VALIDACIÓN STOCK (PROGRAMAR) -->
+    <div class="modal-overlay" id="modal-stock-validacion">
+        <div class="modal modal-lg">
+            <header class="modal-header">
+                <h2>Stock Insuficiente</h2>
+                <button type="button" class="modal-close" onclick="cerrarModalStockValidacion()"><i data-lucide="x"></i></button>
+            </header>
+            <div class="modal-body modal-body--compact">
+                <div id="stock-validacion-contenido"></div>
+            </div>
+            <footer class="modal-footer" id="stock-validacion-footer">
+                <button type="button" class="btn btn-secondary" onclick="cerrarModalStockValidacion()">Volver</button>
+                <button type="button" class="btn btn-primary" id="btn-ir-inventario" onclick="irAInventario()">
+                    <i data-lucide="package"></i> Ir a Inventario
+                </button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- MODAL CONFIRMAR DESCARTAR CAMBIOS -->
+    <div class="modal-overlay" id="modal-descartar-cambios">
+        <div class="modal modal-sm">
+            <header class="modal-header">
+                <h2>¿Descartar cambios?</h2>
+                <button type="button" class="modal-close" onclick="cancelarDescarte()"><i data-lucide="x"></i></button>
+            </header>
+            <div class="modal-body">
+                <p>Tenés cambios sin guardar en el formulario. Si salís ahora, se perderán.</p>
+            </div>
+            <footer class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="cancelarDescarte()">Seguir editando</button>
+                <button type="button" class="btn btn-danger" onclick="confirmarDescarte()">Descartar</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- MODAL: NUEVO CLIENTE INLINE -->
+    <div class="modal-overlay" id="modal-nuevo-cliente">
+        <div class="modal modal-sm">
+            <header class="modal-header">
+                <h2>Nuevo Cliente</h2>
+                <button type="button" class="modal-close" onclick="cerrarModalNuevoCliente()"><i data-lucide="x"></i></button>
+            </header>
+            <div class="modal-body">
+                <div id="nuevo-cliente-alert" class="alert hidden"></div>
+                <form id="form-nuevo-cliente" class="form-vertical" onsubmit="guardarNuevoCliente(event)">
+                    <div class="form-group">
+                        <label for="input-nuevo-cliente-nombre">Nombre <span class="required-mark">*</span></label>
+                        <input type="text" id="input-nuevo-cliente-nombre" placeholder="Nombre completo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-nuevo-cliente-telefono">Teléfono</label>
+                        <input type="text" id="input-nuevo-cliente-telefono" placeholder="Ej: +54 11 1234-5678">
+                    </div>
+                    <div class="form-group">
+                        <label for="input-nuevo-cliente-email">Email</label>
+                        <input type="email" id="input-nuevo-cliente-email" placeholder="cliente@ejemplo.com">
+                    </div>
+                </form>
+            </div>
+            <footer class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="cerrarModalNuevoCliente()">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn-guardar-nuevo-cliente" onclick="guardarNuevoCliente()">Crear Cliente</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../js/core/config.js" defer></script>
+    <script src="../../js/core/auth.js" defer></script>
+    <script src="../../js/core/http.js" defer></script>
+    <script src="../../js/shared/api.js" defer></script>
+    <script src="../../js/shared/modulos.js" defer></script>
+    <script src="../../js/shared/formatters.js" defer></script>
+    <script src="../../js/shared/alerts.js" defer></script>
+    <script src="js/eventos.constants.js" defer></script>
+    <script src="js/eventos.labels.js" defer></script>
+    <script src="js/eventos.permissions.js" defer></script>
+    <script src="js/eventos.state.js" defer></script>
+    <script src="js/eventos.table.js" defer></script>
+    <script src="js/eventos.filters.js" defer></script>
+    <script src="js/eventos.validators.js" defer></script>
+    <script src="js/eventos.payload.js" defer></script>
+    <script src="js/eventos.form.js" defer></script>
+    <script src="js/eventos.confirmations.js" defer></script>
+    <script src="js/eventos.actions.js" defer></script>
+    <script src="js/eventos.extras.js" defer></script>
+    <script src="js/eventos.detail.js" defer></script>
+    <script src="js/eventos.rentabilidad.js" defer></script>
+    <script src="js/eventos.calendar.js" defer></script>
+    <script src="eventos.js" defer></script>
+    <script src="../../js/shared/notificaciones-bell.js" defer></script>
+    <script src="../../js/shared/sidebar.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            requireAuth();
+            renderSidebar('eventos', 'Gestión de Eventos');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,290 @@
+/* ══════════════════════════════════════════════════════════
+   PAGOS — Layout y estructura
+   Workspace, grids, headers, progress bar, table utils, responsive.
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Workspace ───────────────────────────────────────── */
+
+.pag-workspace {
+    display: grid;
+    grid-template-columns: minmax(320px, 380px) minmax(0, 1fr);
+    gap: var(--spacing-lg);
+    align-items: start;
+}
+
+.pag-queue-panel,
+.pag-detail-panel {
+    min-width: 0;
+}
+
+.pag-queue-header h2,
+.pag-history-header h2,
+.pag-detail-header h2 {
+    margin: 0;
+}
+
+.pag-search-shell {
+    margin-top: var(--spacing-lg);
+}
+
+/* ── Movements layout ────────────────────────────────── */
+
+.pag-movements-header {
+    align-items: end;
+    margin-bottom: var(--spacing-lg);
+}
+
+.pag-movements-search-shell {
+    min-width: min(100%, 320px);
+}
+
+.pag-movements-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.pag-filter-action {
+    justify-content: end;
+}
+
+/* ── Métodos layout ──────────────────────────────────── */
+
+.pag-metodos-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--spacing-md);
+    margin: var(--spacing-lg) 0;
+}
+
+.pag-metodo-descripcion {
+    color: var(--text-light);
+    font-size: 0.84rem;
+    line-height: 1.45;
+}
+
+.pag-metodo-name-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.pag-metodo-name-cell strong {
+    color: var(--text);
+}
+
+/* ── Finance cards ───────────────────────────────────── */
+
+.pag-finance-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.pag-finance-card {
+    background: var(--neutral-0);
+    padding: var(--spacing-xl);
+    border-radius: var(--rounded-lg);
+    border: 1px solid var(--neutral-200);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+}
+
+.pag-finance-card h3 {
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--neutral-500);
+    margin-bottom: var(--spacing-sm);
+}
+
+.pag-finance-card .amount {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.pag-finance-card--success {
+    border-color: var(--success-border);
+    background: var(--success-bg);
+}
+.pag-finance-card--success .amount { color: var(--success); }
+
+.pag-finance-card--warning {
+    border-color: var(--warning-border);
+    background: var(--warning-bg);
+}
+.pag-finance-card--warning .amount { color: var(--warning); }
+
+.pag-finance-card--info {
+    border-color: rgba(21,101,192,0.25);
+    background: rgba(21,101,192,0.06);
+}
+.pag-finance-card--info .amount { color: var(--info, #1565C0); }
+
+/* ── Collection progress ─────────────────────────────── */
+
+.pag-progress-card {
+    background: var(--neutral-0);
+    border: 1px solid var(--neutral-200);
+    border-radius: var(--rounded-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--spacing-lg);
+}
+
+.pag-progress-head,
+.pag-progress-labels {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    align-items: center;
+}
+
+.pag-progress-head span,
+.pag-progress-labels span {
+    color: var(--neutral-700);
+    font-size: 0.85rem;
+}
+
+.pag-progress-head strong {
+    color: var(--primary);
+}
+
+.pag-progress-bar {
+    height: 10px;
+    background: var(--neutral-100);
+    border-radius: 999px;
+    overflow: hidden;
+    margin: var(--spacing-md) 0 0.65rem;
+}
+
+.pag-progress-fill {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, var(--accent), var(--success));
+    transition: width 0.25s ease;
+}
+
+/* ── Anticipo ────────────────────────────────────────── */
+
+.pag-anticipo-card {
+    margin-bottom: var(--spacing-lg);
+}
+
+.pag-anticipo-card-header {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    align-items: flex-start;
+    margin-bottom: var(--spacing-md);
+}
+
+.pag-anticipo-card-header h3 {
+    margin: 0;
+}
+
+.pag-anticipo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.pag-anticipo-metric {
+    background: var(--neutral-50);
+    border: 1px solid var(--neutral-200);
+    border-radius: var(--rounded-md);
+    padding: var(--spacing-md);
+}
+
+.pag-anticipo-metric span {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--text-light);
+    margin-bottom: 0.25rem;
+}
+
+.pag-anticipo-metric strong {
+    color: var(--primary);
+    font-size: 1rem;
+}
+
+/* ── Detail header ───────────────────────────────────── */
+
+.pag-detail-header,
+.pag-history-card {
+    margin-bottom: var(--spacing-lg);
+}
+
+.pag-detail-subtitle {
+    margin: var(--spacing-sm) 0 0;
+    color: var(--neutral-700);
+}
+
+.pag-detail-kicker,
+.pag-metodo-availability-note {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--text-light);
+}
+
+/* ── Drawer ──────────────────────────────────────────── */
+
+.pag-drawer-context {
+    margin: 0.35rem 0 0;
+    color: var(--text-light);
+    font-size: 0.88rem;
+    line-height: 1.45;
+    max-width: 85%;
+}
+
+/* ── Table utils ─────────────────────────────────────── */
+
+.amount-cell {
+    font-family: 'Inter', sans-serif;
+    color: var(--primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.link-sm {
+    font-size: 0.8125rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.link-sm:hover {
+    text-decoration: underline;
+}
+
+/* ── Section note ────────────────────────────────────── */
+
+.section-note {
+    margin: 0;
+    color: var(--text-light);
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+/* ── Empty states ────────────────────────────────────── */
+
+.pag-queue-empty,
+.pag-empty-state {
+    min-height: 220px;
+}
+
+/* ── Responsive ──────────────────────────────────────── */
+
+@media (max-width: 1100px) {
+    .pag-workspace {
+        grid-template-columns: 1fr;
+    }
+
+    .pag-movements-header,
+    .pag-progress-head,
+    .pag-progress-labels {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}

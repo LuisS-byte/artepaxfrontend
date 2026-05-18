@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gastos | Artepax Fiesta</title>
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="gastos.css">
+    <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+</head>
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar-container"></aside>
+
+        <div class="main-wrapper">
+            <header class="topbar">
+                <div class="breadcrumbs">
+                    <a href="../../index.html">Inicio</a>
+                    <span class="separator">/</span>
+                    <span class="current">Gastos</span>
+                </div>
+                <div class="topbar-actions">
+                    <div class="user-info">
+                        <span class="user-name">Administrador</span>
+                        <div class="user-avatar">AD</div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <header class="module-header">
+                    <div class="header-info">
+                        <h1>Gestion de Gastos</h1>
+                        <p>Registra, desembolsa y controla gastos variables de cada evento con claridad operativa.</p>
+                    </div>
+                </header>
+
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="evento" onclick="cambiarTab('evento')">Control de egresos</button>
+                    <button class="tab-btn" data-tab="todos" onclick="cambiarTab('todos')">Todos los gastos</button>
+
+                </div>
+
+                <div id="alert-box" class="alert hidden"></div>
+
+                <section id="view-todos" class="content-section hidden">
+                    <div class="card">
+                        <div class="section-header compact gastos-section-header">
+                            <div>
+                                <h2>Movimientos de gastos</h2>
+                                <p class="section-note">Todos los gastos registrados, filtrables por estado, fecha y concepto.</p>
+                            </div>
+                            <button class="btn btn-ghost btn-sm" onclick="GastosRender.toggleEventosGlobales()" id="btn-toggle-eventos">
+                                <i data-lucide="list"></i> Ver eventos
+                            </button>
+                        </div>
+
+                        <div id="eventos-global-container" class="hidden">
+                            <div class="filter-bar">
+                                <div class="filter-group">
+                                    <label class="filter-label">Estado evento</label>
+                                    <select id="filter-eventos-global-estado" class="input-field" onchange="GastosRender.renderEventosGlobalesLista()">
+                                        <option value="">Todos los estados</option>
+                                        <option value="COTIZACION">Cotización</option>
+                                        <option value="PROGRAMADO">Programado</option>
+                                        <option value="CONFIRMADO">Confirmado</option>
+                                        <option value="EN_MONTAJE">En montaje</option>
+                                        <option value="PENDIENTE_COBRO">Pendiente de cobro</option>
+                                        <option value="FINALIZADO">Finalizado</option>
+                                        <option value="CANCELADO">Cancelado</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group search-group">
+                                    <label class="filter-label">Buscar</label>
+                                    <div class="search-input-wrapper">
+                                        <i data-lucide="search" class="search-icon"></i>
+                                        <input type="text" id="search-eventos-global" class="input-field" placeholder="Cliente o #ID...">
+                                        <button id="search-eventos-global-clear" class="search-clear hidden" onclick="GastosRender.limpiarBusquedaEventosGlobales()">
+                                            <i data-lucide="x"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="eventos-global-lista" class="eventos-global-container">
+                                <div class="loading-state"><div class="spinner"></div> Cargando eventos...</div>
+                            </div>
+                        </div>
+
+                        <div class="gastos-movements-overview" id="gastos-movements-overview">
+                            <div class="gastos-stat-card">
+                                <span class="gastos-stat-label">Visibles</span>
+                                <strong class="gastos-stat-value" id="mov-gastos-visibles">0</strong>
+                            </div>
+                            <div class="gastos-stat-card gastos-stat-card--warning">
+                                <span class="gastos-stat-label">Proyectados</span>
+                                <strong class="gastos-stat-value" id="mov-gastos-proyectados">$0</strong>
+                            </div>
+                            <div class="gastos-stat-card gastos-stat-card--success">
+                                <span class="gastos-stat-label">Desembolsados</span>
+                                <strong class="gastos-stat-value" id="mov-gastos-desembolsados">$0</strong>
+                            </div>
+                            <div class="gastos-stat-card gastos-stat-card--info">
+                                <span class="gastos-stat-label">Eventos</span>
+                                <strong class="gastos-stat-value" id="mov-gastos-eventos">0</strong>
+                            </div>
+                        </div>
+
+                        <div class="filter-bar">
+                            <div class="filter-group">
+                                <label class="filter-label">Estado</label>
+                                <select id="filter-estado-gasto" class="input-field" onchange="cargarGastosGlobales()">
+                                    <option value="">Todos</option>
+                                    <option value="PROYECTADO">Proyectado</option>
+                                    <option value="DESEMBOLSADO">Desembolsado</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label">Desde</label>
+                                <input type="text" id="filter-fecha-desde" class="input-field date-picker" onchange="cargarGastosGlobales()">
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label">Hasta</label>
+                                <input type="text" id="filter-fecha-hasta" class="input-field date-picker" onchange="cargarGastosGlobales()">
+                            </div>
+                            <div class="filter-group search-group">
+                                <label class="filter-label">Búsqueda</label>
+                                <div class="search-input-wrapper">
+                                    <i data-lucide="search" class="search-icon"></i>
+                                    <input type="text" id="search-gasto" class="input-field" placeholder="Buscar por concepto o nota...">
+                                    <button id="search-gasto-clear" class="search-clear hidden" onclick="GastosActions.limpiarBusquedaGasto()">
+                                        <i data-lucide="x"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="filter-chips" class="filter-chips-container"></div>
+                        <div id="results-count" class="results-count-container"></div>
+
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Cliente</th>
+                                        <th>Evento</th>
+                                        <th>Concepto</th>
+                                        <th>Monto</th>
+                                        <th>Estado</th>
+                                        <th>Nota</th>
+                                        <th class="col-acciones">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabla-gastos-global">
+                                    <tr><td colspan="8" class="loading-state"><div class="spinner"></div> Cargando gastos...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div id="paginacion-gastos-global" class="pagination-container"></div>
+                    </div>
+                </section>
+
+                <section id="view-evento" class="content-section">
+                  <div class="egresos-workspace">
+                    <aside class="card egresos-queue-panel" id="egresos-queue-panel">
+                      <div class="egresos-queue-header">
+                        <h2>Control de egresos</h2>
+                        <p class="section-note">Seleccioná un evento para ver y gestionar sus gastos.</p>
+                      </div>
+
+                      <div class="egresos-search-shell">
+                        <input type="search" id="input-buscar-evento" class="input-field" placeholder="Buscar por cliente, #ID o ubicación...">
+                        <button id="egresos-search-clear" class="egresos-search-clear hidden" onclick="GastosCola.limpiarBusquedaCola()">
+                          <i data-lucide="x"></i>
+                        </button>
+                      </div>
+
+                      <div class="egresos-filter-row" role="tablist">
+                        <button class="egresos-chip active" type="button" data-filter="pendientes" onclick="GastosCola.setFiltroCola('pendientes')">Pendientes</button>
+                        <button class="egresos-chip" type="button" data-filter="operativos" onclick="GastosCola.setFiltroCola('operativos')">Operativos</button>
+                        <button class="egresos-chip" type="button" data-filter="montaje" onclick="GastosCola.setFiltroCola('montaje')">En montaje</button>
+                        <button class="egresos-chip" type="button" data-filter="sin-gastos" onclick="GastosCola.setFiltroCola('sin-gastos')">Sin gastos</button>
+                      </div>
+
+                      <div class="egresos-queue-stats">
+                        <div class="egresos-stat-card egresos-stat-card--warning">
+                          <span class="egresos-stat-label">Pendientes</span>
+                          <strong class="egresos-stat-value" id="cola-pendientes">0</strong>
+                        </div>
+                        <div class="egresos-stat-card egresos-stat-card--success">
+                          <span class="egresos-stat-label">Operativos</span>
+                          <strong class="egresos-stat-value" id="cola-operativos">0</strong>
+                        </div>
+                        <div class="egresos-stat-card egresos-stat-card--accent">
+                          <span class="egresos-stat-label">En montaje</span>
+                          <strong class="egresos-stat-value" id="cola-montaje">0</strong>
+                        </div>
+                        <div class="egresos-stat-card">
+                          <span class="egresos-stat-label">Sin gastos</span>
+                          <strong class="egresos-stat-value" id="cola-sin-gastos">0</strong>
+                        </div>
+                      </div>
+
+                      <div id="egresos-queue-list" class="egresos-queue-list">
+                        <div class="egresos-queue-empty">Cargando eventos...</div>
+                      </div>
+                    </aside>
+
+                    <div class="egresos-detail-panel">
+                      <div id="gastos-empty" class="empty-state-large pag-empty-state">
+                        <i data-lucide="receipt"></i>
+                        <h3>Elegí un evento para empezar</h3>
+                        <p>Usá la cola de control de egresos para seleccionar un evento y gestionar sus gastos.</p>
+                      </div>
+
+                    <button class="btn btn-ghost btn-sm egresos-back-btn" onclick="document.getElementById('egresos-queue-panel').scrollIntoView({behavior:'smooth'})">
+                        <i data-lucide="arrow-left"></i> Volver a eventos
+                    </button>
+
+                    <div id="gastos-container" class="hidden">
+                        <div class="card event-summary-card" id="gastos-evento-resumen"></div>
+
+                        <div class="card">
+                            <div class="section-header gastos-section-header">
+                                <div>
+                                    <h2>Gastos del evento</h2>
+                                    <p class="section-note">Los gastos registrados se administran marcándolos como desembolsados o quitándolos mientras sigan pendientes.</p>
+                                </div>
+                                <button class="btn btn-primary" id="btn-nuevo-gasto" onclick="abrirDrawerGasto()">Registrar gasto</button>
+                            </div>
+
+                            <div class="finance-grid event-finance-grid">
+                                <div class="finance-card warning">
+                                    <h3>Total proyectado</h3>
+                                    <p id="total-proyectado" class="amount">$0.00</p>
+                                </div>
+                                <div class="finance-card success">
+                                    <h3>Total desembolsado</h3>
+                                    <p id="total-desembolsado" class="amount">$0.00</p>
+                                </div>
+                                <div class="finance-card accent-soft">
+                                    <h3>Pendiente por desembolsar</h3>
+                                    <p id="total-pendiente" class="amount">$0.00</p>
+                                </div>
+                            </div>
+
+                            <div id="progress-bar-gasto-container" class="progress-bar-container hidden">
+                                <div class="progress-bar-header">
+                                    <span class="progress-bar-label">Avance de desembolso</span>
+                                    <span class="progress-bar-percent" id="progress-bar-percent">0%</span>
+                                </div>
+                                <div class="progress-bar-track">
+                                    <div class="progress-bar-fill" id="progress-bar-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+
+                            <div class="table-wrapper" style="margin-top: var(--spacing-xl);">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha</th>
+                                            <th>Concepto</th>
+                                            <th>Monto</th>
+                                            <th>Estado</th>
+                                            <th>Nota</th>
+                                        <th class="col-acciones">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tabla-gastos"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                  </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <div class="drawer-overlay" id="drawer-gasto-overlay" onclick="cerrarDrawerGasto(event)">
+        <aside class="drawer gastos-drawer">
+            <header class="drawer-header">
+                <h2>Registrar gasto</h2>
+                <button class="btn-close" onclick="cerrarDrawerGasto()"><i data-lucide="x"></i></button>
+            </header>
+            <div class="drawer-body">
+                <div id="drawer-gasto-alert" class="alert hidden"></div>
+                <div class="drawer-summary-card" id="drawer-gasto-contexto"></div>
+
+                    <form id="form-gasto" class="form-vertical" onsubmit="registrarGasto(event)">
+                        <div class="form-section">
+                            <h3>Detalle financiero</h3>
+                            <div class="form-group">
+                                <label for="input-concepto">Concepto *</label>
+                                <input type="text" id="input-concepto" placeholder="Ej: Transporte, compra de flores, alquiler extra" required>
+                                <div id="concept-chips" class="concept-chips hidden">
+                                    <span class="concept-chip" data-concept="Flete">Flete</span>
+                                    <span class="concept-chip" data-concept="Comida equipo">Comida equipo</span>
+                                    <span class="concept-chip" data-concept="Material extra">Material extra</span>
+                                    <span class="concept-chip" data-concept="Decoraci&oacute;n">Decoraci&oacute;n</span>
+                                    <span class="concept-chip" data-concept="Transporte">Transporte</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="input-monto">Monto (USD) *</label>
+                                <div class="input-with-symbol">
+                                    <span class="symbol">$</span>
+                                    <input type="number" id="input-monto" step="0.01" min="0.01" placeholder="0.00" required>
+                                </div>
+                                <small class="text-muted">Ingresá un monto mayor a cero.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="select-estado">Estado inicial</label>
+                                <select id="select-estado">
+                                    <option value="PROYECTADO">Proyectado</option>
+                                    <option value="DESEMBOLSADO">Desembolsado</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="input-nota">Nota</label>
+                                <textarea id="input-nota" rows="4" placeholder="Detalle administrativo opcional..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="context-note">
+                            <i data-lucide="info"></i>
+                            <div>
+                                <strong>Regla importante</strong>
+                                <p>Revisá bien antes de guardar: si el gasto queda pendiente todavía vas a poder quitarlo.</p>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="drawer-footer">
+                        <button type="button" class="btn btn-secondary" onclick="cerrarDrawerGasto()">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="btn-guardar-gasto" onclick="GastosActions.registrarGasto(event)">Guardar gasto</button>
+                    </div>
+            </div>
+        </aside>
+    </div>
+
+    <div class="modal-overlay" id="modal-confirmacion-gasto">
+        <div class="modal modal-sm">
+            <header class="modal-header">
+                <h2 id="modal-gasto-titulo">Confirmar accion</h2>
+                <button class="modal-close" onclick="cerrarModalGasto()"><i data-lucide="x"></i></button>
+            </header>
+            <div class="modal-body">
+                <p id="modal-gasto-mensaje"></p>
+            </div>
+            <footer class="modal-footer">
+                <button class="btn btn-secondary" onclick="cerrarModalGasto()">Cancelar</button>
+                <button class="btn btn-primary" id="btn-confirmar-gasto" onclick="confirmarAccionGasto()">Confirmar</button>
+            </footer>
+        </div>
+    </div>
+
+    <script src="../../js/core/config.js" defer></script>
+    <script src="../../js/core/auth.js" defer></script>
+    <script src="../../js/core/http.js" defer></script>
+    <script src="../../js/shared/api.js" defer></script>
+    <script src="../../js/shared/modulos.js" defer></script>
+    <script src="../../js/shared/formatters.js" defer></script>
+    <script src="../../js/shared/alerts.js" defer></script>
+    <script src="js/gastos.state.js" defer></script>
+    <script src="js/gastos.helpers.js" defer></script>
+    <script src="js/gastos.api.js" defer></script>
+    <script src="js/gastos.render.js" defer></script>
+    <script src="js/gastos.actions.js" defer></script>
+    <script src="js/gastos.cola.js" defer></script>
+    <script src="gastos.js" defer></script>
+    <script src="../../js/shared/notificaciones-bell.js" defer></script>
+    <script src="../../js/shared/sidebar.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            requireAuth();
+            renderSidebar('gastos', 'Gestion de Eventos');
+        });
+    </script>
+</body>
+</html>

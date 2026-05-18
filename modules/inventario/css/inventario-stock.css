@@ -1,0 +1,32 @@
+/* ══════════════════════════════════════════════════════════
+   Módulo Inventario — Stock Hints
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Stock hint semantic backgrounds ─────────────────── */
+.stock-hint {
+    display: block;
+    margin-top: 0.45rem;
+    padding: 0.45rem 0.7rem;
+    border-radius: var(--rounded-sm);
+    font-size: 0.78rem;
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+.stock-hint--info {
+    background: #EFF6FF;
+    color: #1E40AF;
+    border: 1px solid #BFDBFE;
+}
+
+.stock-hint--warning {
+    background: var(--warning-bg);
+    color: var(--warning-text);
+    border: 1px solid var(--warning-border);
+}
+
+.stock-hint--accent {
+    background: #F5F3FF;
+    color: #6D28D9;
+    border: 1px solid #DDD6FE;
+}

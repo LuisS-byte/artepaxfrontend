@@ -1,0 +1,27 @@
+/* ── CRONOGRAMA — Badges y chips ─────────────────── */
+
+/* Base compartida: chip de vencida y chip de policy */
+.vencida-chip,
+.policy-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    font-weight: 700;
+}
+
+.vencida-chip {
+    background: rgba(198, 40, 40, 0.12);
+    color: var(--danger);
+}
+
+.policy-chip {
+    background: rgba(46, 125, 50, 0.12);
+    color: var(--success);
+}
+
+.policy-chip.policy-locked {
+    background: rgba(100, 116, 139, 0.12);
+    color: var(--neutral-500);
+}

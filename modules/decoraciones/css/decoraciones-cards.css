@@ -1,0 +1,387 @@
+/* ══════════════════════════════════════════════════════════
+   Decoraciones — Cards / Grid
+   ══════════════════════════════════════════════════════════ */
+
+.decor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    gap: var(--spacing-xl);
+}
+
+.decor-card {
+    background: var(--neutral-0);
+    border-radius: 20px;
+    border: 1px solid var(--neutral-200);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+}
+
+.decor-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(31, 58, 95, 0.22);
+    box-shadow: 0 18px 40px rgba(31, 58, 95, 0.12);
+}
+
+.decor-card.is-inactive {
+    opacity: 0.82;
+}
+
+.decor-img {
+    height: 178px;
+    background:
+        radial-gradient(circle at 30% 20%, rgba(237, 108, 2, 0.18), transparent 28%),
+        linear-gradient(135deg, #f8fafc, #fff7ed);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--neutral-100);
+    position: relative;
+}
+
+.decor-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.decor-img .placeholder {
+    display: grid;
+    place-items: center;
+    width: 72px;
+    height: 72px;
+    border: 1px solid rgba(31, 58, 95, 0.12);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.68);
+    color: var(--primary);
+    box-shadow: 0 14px 35px rgba(31, 58, 95, 0.08);
+}
+
+.decor-img .placeholder::after {
+    content: "Sin imagen";
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.35rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.85);
+    color: var(--neutral-600);
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.decor-img .placeholder svg {
+    width: 32px;
+    height: 32px;
+    stroke-width: 1.8;
+}
+
+.decor-badge-price {
+    position: absolute;
+    bottom: var(--spacing-md);
+    right: var(--spacing-md);
+    background: rgba(15, 23, 42, 0.9);
+    color: var(--neutral-0);
+    padding: 5px 11px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.875rem;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
+    backdrop-filter: blur(8px);
+}
+
+.decor-info {
+    padding: 1rem 1rem 0.95rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.decor-card-topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.7rem;
+}
+
+.decor-card-id {
+    color: var(--text-light);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.decor-card-availability {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.26rem 0.52rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.decor-card-availability.is-success {
+    background: var(--success-bg);
+    color: var(--success-text);
+}
+
+.decor-card-availability.is-muted {
+    background: var(--neutral-100);
+    color: var(--neutral-600);
+}
+
+.decor-card-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.decor-info h3 {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--neutral-900);
+    margin-bottom: 0;
+    line-height: 1.25;
+}
+
+.decor-meta-row {
+    margin-bottom: 0.75rem;
+}
+
+.decor-info p {
+    font-size: 0.875rem;
+    color: var(--neutral-500);
+    line-height: 1.55;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.decor-stock-signal {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.58rem 0.65rem;
+    border: 1px solid var(--neutral-200);
+    border-radius: 13px;
+    background: var(--neutral-50);
+}
+
+.decor-stock-signal span {
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+}
+
+.decor-stock-signal small {
+    color: var(--text-light);
+    font-size: 0.76rem;
+    white-space: nowrap;
+}
+
+.decor-stock-signal.is-success {
+    background: var(--success-bg);
+    border-color: var(--success-border);
+    color: var(--success-text);
+}
+
+.decor-stock-signal.is-danger {
+    background: var(--danger-bg);
+    border-color: var(--danger-border);
+    color: var(--danger-text);
+}
+
+.decor-stock-signal.is-warning {
+    background: var(--warning-bg);
+    border-color: var(--warning-border);
+    color: var(--warning-text);
+}
+
+.decor-products-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-top: 0.9rem;
+}
+
+.decor-card-footnote {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: 0.8rem;
+    padding-top: 0.75rem;
+    border-top: 1px dashed var(--neutral-200);
+    color: var(--text-light);
+    font-size: 0.76rem;
+}
+
+.decor-product-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    max-width: 100%;
+    padding: 0.32rem 0.52rem;
+    border: 1px solid var(--neutral-200);
+    border-radius: 999px;
+    background: var(--neutral-50);
+    color: var(--neutral-700);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.decor-product-chip strong {
+    color: var(--primary);
+}
+
+.decor-product-chip.is-empty,
+.decor-product-chip.is-more {
+    color: var(--text-light);
+}
+
+.decor-actions {
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: var(--neutral-25);
+    border-top: 1px solid var(--neutral-100);
+    display: block;
+}
+
+.acciones-wrapper--decoraciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+}
+
+.acciones-wrapper--decoraciones .btn {
+    flex: 1 1 112px;
+}
+
+.decor-empty-state {
+    grid-column: 1 / -1;
+    display: grid;
+    justify-items: center;
+    gap: 0.7rem;
+    padding: 3rem 1.5rem;
+    border: 1px dashed var(--neutral-300);
+    border-radius: 22px;
+    background:
+        radial-gradient(circle at top, rgba(237, 108, 2, 0.08), transparent 34%),
+        var(--neutral-0);
+    text-align: center;
+}
+
+.decor-empty-icon {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 22px;
+    background: var(--warning-bg);
+    color: var(--warning);
+}
+
+.decor-empty-icon svg {
+    width: 28px;
+    height: 28px;
+}
+
+.decor-empty-state h3 {
+    margin: 0;
+    color: var(--neutral-900);
+    font-size: 1.1rem;
+}
+
+.decor-empty-state p {
+    max-width: 52ch;
+    margin: 0;
+    color: var(--text-light);
+}
+
+.decor-name-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    min-width: 0;
+}
+
+.decor-name-main {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    min-width: 0;
+}
+
+.decor-name-main strong {
+    display: block;
+    color: var(--neutral-900);
+    line-height: 1.2;
+}
+
+.decor-name-main small,
+.decor-description-inline {
+    display: block;
+    color: var(--text-light);
+    font-size: 0.78rem;
+    line-height: 1.35;
+}
+
+.decor-mini-ref {
+    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--neutral-200);
+    background: linear-gradient(135deg, #fff7ed, #f8fafc);
+    display: grid;
+    place-items: center;
+    color: var(--primary);
+}
+
+.decor-mini-ref.is-empty svg {
+    width: 18px;
+    height: 18px;
+}
+
+.decor-mini-ref-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.decor-table-composition {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    min-width: 0;
+}
+
+.decor-table-composition-meta strong {
+    display: block;
+    color: var(--neutral-900);
+    font-size: 0.82rem;
+}
+
+.decor-table-composition-meta small {
+    color: var(--text-light);
+    font-size: 0.76rem;
+}
+
+.decor-table-composition-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}

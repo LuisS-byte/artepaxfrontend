@@ -1,0 +1,478 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagos | Artepax Fiesta</title>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="css/pagos-layout.css">
+    <link rel="stylesheet" href="css/pagos-cards.css">
+    <link rel="stylesheet" href="css/pagos-queue.css">
+    <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+</head>
+<body>
+
+    <div class="app-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar-container"></aside>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-wrapper">
+            <!-- TOPBAR -->
+            <header class="topbar">
+                <div class="breadcrumbs">
+                    <a href="../../index.html">Inicio</a>
+                    <span class="separator">/</span>
+                    <span class="current">Pagos</span>
+                </div>
+                <div class="topbar-actions">
+                    <div class="user-info">
+                        <span class="user-name">Administrador</span>
+                        <div class="user-avatar">AD</div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <header class="module-header">
+                    <div class="header-info">
+                        <h1>Cobranza y Pagos</h1>
+                        <p>Gestioná la cobranza operativa por evento, consultá movimientos y mantené el catálogo de cobro.</p>
+                    </div>
+                </header>
+
+                <!-- TABS -->
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="evento" onclick="cambiarTab('evento')">Cobranza</button>
+                    <button class="tab-btn" data-tab="todos" onclick="cambiarTab('todos')">Movimientos</button>
+                    <button class="tab-btn" data-tab="metodos" onclick="cambiarTab('metodos')">Métodos</button>
+                </div>
+
+                <div id="alert-box" class="alert hidden"></div>
+
+                <!-- TAB: TODOS LOS PAGOS -->
+                <section id="view-todos" class="content-section hidden">
+                    <div class="card">
+                        <div class="section-header pag-movements-header">
+                            <div>
+                                <h2>Movimientos</h2>
+                                <p id="pagos-global-note" class="section-note">Revisá el historial global de movimientos de pago y filtrá por estado, concepto o fecha.</p>
+                            </div>
+                            <div class="pag-movements-search-shell">
+                                <label for="input-buscar-pago-global" class="filter-label">Buscar movimiento</label>
+                                <input type="search" id="input-buscar-pago-global" class="input-field" placeholder="Cliente, evento, concepto o método...">
+                            </div>
+                        </div>
+
+                        <div class="pag-movements-overview">
+                            <div class="pag-stat-card">
+                                <span class="pag-stat-label">Visibles</span>
+                                <strong class="pag-stat-value pag-stat-value--lg" id="movimientos-visibles">0</strong>
+                            </div>
+                            <div class="pag-stat-card pag-stat-card--warning">
+                                <span class="pag-stat-label">Pendientes</span>
+                                <strong class="pag-stat-value pag-stat-value--lg" id="movimientos-pendientes">0</strong>
+                            </div>
+                            <div class="pag-stat-card pag-stat-card--success">
+                                <span class="pag-stat-label">Pagados</span>
+                                <strong class="pag-stat-value pag-stat-value--lg" id="movimientos-pagados">0</strong>
+                            </div>
+                            <div class="pag-stat-card pag-stat-card--danger">
+                                <span class="pag-stat-label">Devoluciones</span>
+                                <strong class="pag-stat-value pag-stat-value--lg" id="movimientos-devolucion">0</strong>
+                            </div>
+                        </div>
+
+                        <div class="filter-bar">
+                            <div class="filter-group">
+                                <label class="filter-label">Estado</label>
+                                <select id="filter-estado-pago" class="input-field" onchange="cargarPagosGlobales()">
+                                    <option value="">Todos</option>
+                                    <option value="PENDIENTE">Pendiente</option>
+                                    <option value="PAGADO">Pagado</option>
+                                    <option value="CANCELADO">Cancelado</option>
+                                    <option value="DEVOLUCION_PENDIENTE">Devolución pendiente</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label">Concepto</label>
+                                <select id="filter-concepto-pago" class="input-field" onchange="cargarPagosGlobales()">
+                                    <option value="">Todos</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label">Desde</label>
+                                <input type="text" id="filter-fecha-desde" class="input-field date-picker" placeholder="Desde..." onchange="cargarPagosGlobales()" autocomplete="off">
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label">Hasta</label>
+                                <input type="text" id="filter-fecha-hasta" class="input-field date-picker" placeholder="Hasta..." onchange="cargarPagosGlobales()" autocomplete="off">
+                            </div>
+                            <div class="filter-group pag-filter-action">
+                                <label class="filter-label">Acciones</label>
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="limpiarFiltrosMovimientos()">Limpiar filtros</button>
+                            </div>
+                        </div>
+
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Cliente</th>
+                                        <th>Evento</th>
+                                        <th>Concepto</th>
+                                        <th>Método</th>
+                                        <th>Monto</th>
+                                        <th class="col-estado">Estado</th>
+                                        <th class="col-acciones-sm">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabla-pagos-global">
+                                    <tr><td colspan="8" class="loading-state"><div class="spinner"></div> Cargando pagos...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div id="paginacion-global" class="pagination-container"></div>
+                    </div>
+                </section>
+
+                <!-- TAB: POR EVENTO -->
+                <section id="view-evento" class="content-section">
+                    <div class="pag-workspace">
+                        <aside class="card pag-queue-panel">
+                            <div class="pag-queue-header">
+                                <div>
+                                    <h2>Cobranza</h2>
+                                    <p class="section-note">Empezá por los eventos que tienen saldo pendiente o devoluciones por resolver.</p>
+                                </div>
+                            </div>
+
+                            <div class="pag-search-shell">
+                                <label for="input-buscar-evento-pago" class="filter-label">Buscar evento</label>
+                                <input type="search" id="input-buscar-evento-pago" class="input-field" placeholder="Cliente, evento #ID o estado...">
+                            </div>
+
+                            <div class="pag-filter-row" role="tablist" aria-label="Filtros de cobranza por evento">
+                                <button class="pag-chip active" type="button" data-filter="pendientes" onclick="setFiltroEventosPago('pendientes')">Con saldo</button>
+                                <button class="pag-chip" type="button" data-filter="devolucion" onclick="setFiltroEventosPago('devolucion')">Devoluciones</button>
+                                <button class="pag-chip" type="button" data-filter="por-confirmar" onclick="setFiltroEventosPago('por-confirmar')">Por confirmar</button>
+                                <button class="pag-chip" type="button" data-filter="todos" onclick="setFiltroEventosPago('todos')">Toda la cola</button>
+                            </div>
+
+                            <div class="pag-queue-stats">
+                                <div class="pag-stat-card pag-stat-card--sm">
+                                    <span class="pag-stat-label">Con saldo</span>
+                                    <strong class="pag-stat-value" id="cola-eventos-pendientes">0</strong>
+                                </div>
+                                <div class="pag-stat-card pag-stat-card--sm pag-stat-card--warning">
+                                    <span class="pag-stat-label">Devoluciones</span>
+                                    <strong class="pag-stat-value" id="cola-eventos-devolucion">0</strong>
+                                </div>
+                                <div class="pag-stat-card pag-stat-card--sm pag-stat-card--success">
+                                    <span class="pag-stat-label">Al día</span>
+                                    <strong class="pag-stat-value" id="cola-eventos-al-dia">0</strong>
+                                </div>
+                                <div class="pag-stat-card pag-stat-card--sm pag-stat-card--info">
+                                    <span class="pag-stat-label">Por confirmar</span>
+                                    <strong class="pag-stat-value" id="cola-eventos-por-confirmar">0</strong>
+                                </div>
+                            </div>
+
+                            <div id="lista-eventos-pago" class="pag-queue-list">
+                                <div class="pag-queue-empty">Cargando eventos...</div>
+                            </div>
+
+                        </aside>
+
+                        <div class="pag-detail-panel">
+                            <div id="pagos-empty" class="empty-state-large pag-empty-state">
+                                <i data-lucide="wallet"></i>
+                                <h3>Elegí un evento para empezar</h3>
+                                <p>Usá la cola de cobranza para abrir un evento con saldo pendiente, devolución pendiente o pagos por revisar.</p>
+                            </div>
+
+                            <div id="pagos-container" class="hidden">
+                                <div class="card pag-detail-header">
+                                    <div class="pag-detail-header-main">
+                                        <div>
+                                            <p class="pag-detail-kicker">Seguimiento financiero</p>
+                                            <h2 id="evento-pago-titulo">Evento</h2>
+                                        </div>
+                                        <div id="evento-pago-badge"></div>
+                                    </div>
+                                    <p id="evento-pago-subtitulo" class="pag-detail-subtitle"></p>
+                                    <div id="evento-pago-meta" class="pag-detail-meta"></div>
+                                    <div id="pago-evento-hint" class="pag-hint hidden"></div>
+                                </div>
+
+                                <div class="pag-finance-grid">
+                                    <div class="pag-finance-card">
+                                        <h3>Total del Evento</h3>
+                                        <p id="total-evento" class="amount">$0.00</p>
+                                    </div>
+                                    <div class="pag-finance-card--success">
+                                        <h3>Total Abonado</h3>
+                                        <p id="total-abonado" class="amount">$0.00</p>
+                                    </div>
+                                    <div class="pag-finance-card--warning">
+                                        <h3>Saldo Pendiente</h3>
+                                        <p id="saldo-pendiente" class="amount">$0.00</p>
+                                    </div>
+                                    <div class="pag-finance-card hidden" id="card-devolucion-pendiente">
+                                        <h3>Devolución Pendiente</h3>
+                                        <p id="devolucion-pendiente" class="amount">$0.00</p>
+                                    </div>
+                                </div>
+
+                                <div id="pago-resumen-alerta" class="pag-banner hidden"></div>
+
+                                <div class="pag-progress-card">
+                                    <div class="pag-progress-head">
+                                        <span>Avance de cobro</span>
+                                        <strong id="cobro-porcentaje">0%</strong>
+                                    </div>
+                                    <div class="pag-progress-bar">
+                                        <div id="cobro-bar-fill" class="pag-progress-fill"></div>
+                                    </div>
+                                    <div class="pag-progress-labels">
+                                        <span id="cobro-bar-left">$0.00 cobrados</span>
+                                        <span id="cobro-bar-right">$0.00 pendientes</span>
+                                    </div>
+                                </div>
+
+                                <div id="card-anticipo" class="card pag-anticipo-card hidden">
+                                    <div class="pag-anticipo-card-header">
+                                        <div>
+                                            <p class="pag-detail-kicker">Regla de anticipo</p>
+                                            <h3>Estado del anticipo mínimo</h3>
+                                        </div>
+                                        <div id="anticipo-badge"></div>
+                                    </div>
+                                    <div class="pag-anticipo-grid">
+                                        <div class="pag-anticipo-metric">
+                                            <span>Requerido</span>
+                                            <strong id="anticipo-requerido">0% · $0.00</strong>
+                                        </div>
+                                        <div class="pag-anticipo-metric">
+                                            <span>Confirmado</span>
+                                            <strong id="anticipo-confirmado">$0.00</strong>
+                                        </div>
+                                        <div class="pag-anticipo-metric hidden" id="anticipo-por-concepto-wrap">
+                                            <span>Concepto ANTICIPO</span>
+                                            <strong id="anticipo-por-concepto">$0.00</strong>
+                                        </div>
+                                        <div class="pag-anticipo-metric">
+                                            <span>Faltante</span>
+                                            <strong id="anticipo-faltante">$0.00</strong>
+                                        </div>
+                                    </div>
+                                    <div id="anticipo-alerta" class="pag-banner"></div>
+                                </div>
+
+                                <div class="card pag-history-card">
+                                    <div class="section-header pag-history-header">
+                                        <div>
+                                            <h2>Movimientos del evento</h2>
+                                            <p class="section-note">Revisá pagos registrados, pendientes por confirmar y movimientos anulados o en devolución dentro de este evento.</p>
+                                        </div>
+                                        <button class="btn btn-primary btn-sm" id="btn-registrar-pago" onclick="abrirDrawerPago()">+ Registrar Pago</button>
+                                    </div>
+
+                                    <div class="table-wrapper">
+                                        <table class="data-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Fecha</th>
+                                                    <th>Concepto</th>
+                                                    <th>Método</th>
+                                                    <th>Monto</th>
+                                                    <th class="col-estado">Estado</th>
+                                                    <th class="col-acciones-sm">Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tabla-pagos">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB: MÉTODOS DE PAGO -->
+                <section id="view-metodos" class="content-section hidden">
+                    <div class="card">
+                        <div class="section-header">
+                            <div>
+                                <h2>Métodos</h2>
+                                <p class="section-note" style="margin-top: 0.25rem;">
+                                    Administrá qué métodos están disponibles para registrar nuevos cobros.
+                                </p>
+                            </div>
+                            <button class="btn btn-primary btn-sm" onclick="abrirDrawerMetodo()">+ Nuevo Método</button>
+                        </div>
+
+                        <div class="pag-metodos-overview">
+                            <div class="pag-stat-card">
+                                <span class="pag-stat-label">Total</span>
+                                <strong class="pag-stat-value pag-stat-value--xl" id="metodos-total">0</strong>
+                            </div>
+                            <div class="pag-stat-card pag-stat-card--success">
+                                <span class="pag-stat-label">Activos</span>
+                                <strong class="pag-stat-value pag-stat-value--xl" id="metodos-activos">0</strong>
+                            </div>
+                            <div class="pag-stat-card pag-stat-card--warning">
+                                <span class="pag-stat-label">Inactivos</span>
+                                <strong class="pag-stat-value pag-stat-value--xl" id="metodos-inactivos">0</strong>
+                            </div>
+                        </div>
+
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Método</th>
+                                        <th>Descripción</th>
+                                        <th class="col-estado">Estado</th>
+                                        <th class="col-acciones-xs">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabla-metodos-pago">
+                                    <tr><td colspan="4" class="loading-state"><div class="spinner"></div> Cargando métodos...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- DRAWER: REGISTRAR PAGO -->
+    <div class="drawer-overlay" id="drawer-pago-overlay" onclick="cerrarDrawer(event)">
+        <aside class="drawer" id="drawer-pago">
+            <header class="drawer-header">
+                <h2 id="drawer-titulo">Registrar Nuevo Abono</h2>
+                <p id="drawer-pago-contexto" class="pag-drawer-context hidden"></p>
+                <button class="btn-close" onclick="cerrarDrawer()"><i data-lucide="x"></i></button>
+            </header>
+            
+            <div class="drawer-body">
+                <div id="drawer-alert" class="alert hidden"></div>
+                
+                <form id="form-pago" class="form-vertical" onsubmit="guardarPago(event)">
+                    <div class="form-section">
+                        <h3>Detalles del Pago</h3>
+                        <div class="form-group">
+                            <label for="input-monto">Monto a Registrar (USD) *</label>
+                            <div class="input-with-symbol">
+                                <span class="symbol">$</span>
+                                <input type="number" id="input-monto" step="0.01" min="0.01" placeholder="0.00" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="select-concepto-pago">Concepto de Pago *</label>
+                            <select id="select-concepto-pago" required>
+                                <option value="">-- Selecciona un concepto --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="select-metodo-pago">Método de Pago *</label>
+                            <select id="select-metodo-pago" required>
+                                <option value="">-- Selecciona un método --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="drawer-footer">
+                        <button type="button" class="btn btn-secondary" onclick="cerrarDrawer()">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="btn-guardar-pago">Confirmar Registro</button>
+                    </div>
+                </form>
+            </div>
+        </aside>
+    </div>
+
+    <!-- MODAL CONFIRMAR ANULACIÓN -->
+    <div class="modal-overlay" id="modal-anular-pago">
+        <div class="modal modal-sm">
+            <header class="modal-header">
+                <h2>¿Anular Pago?</h2>
+                <button class="modal-close" onclick="cerrarModalAnular()"><i data-lucide="x"></i></button>
+            </header>
+            <div class="modal-body">
+                <p>Estás a punto de anular el pago de <strong id="anular-monto"></strong>. Esta acción no se puede deshacer.</p>
+            </div>
+            <footer class="modal-footer">
+                <button class="btn btn-secondary" onclick="cerrarModalAnular()">Cancelar</button>
+                <button class="btn btn-danger" onclick="confirmarAnulacion()">Anular</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- DRAWER: CREAR MÉTODO -->
+    <div class="drawer-overlay" id="drawer-metodo-overlay" onclick="cerrarDrawerMetodo(event)">
+        <aside class="drawer" id="drawer-metodo">
+            <header class="drawer-header">
+                <h2>Nuevo Método de Pago</h2>
+                <button class="btn-close" onclick="cerrarDrawerMetodo()"><i data-lucide="x"></i></button>
+            </header>
+
+            <div class="drawer-body">
+                <div id="drawer-metodo-alert" class="alert hidden"></div>
+
+                <form id="form-metodo-pago" class="form-vertical" onsubmit="guardarMetodoPago(event)">
+                    <div class="form-section">
+                        <h3>Datos del Método</h3>
+                        <div class="form-group">
+                            <label for="input-metodo-nombre">Nombre *</label>
+                            <input type="text" id="input-metodo-nombre" maxlength="100" placeholder="Ej: Transferencia, Efectivo, POS" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-metodo-descripcion">Descripción</label>
+                            <textarea id="input-metodo-descripcion" rows="4" maxlength="500" placeholder="Contexto opcional para el equipo administrativo..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="drawer-footer">
+                        <button type="button" class="btn btn-secondary" onclick="cerrarDrawerMetodo()">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar Método</button>
+                    </div>
+                </form>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../js/core/config.js" defer></script>
+    <script src="../../js/core/auth.js" defer></script>
+    <script src="../../js/core/http.js" defer></script>
+    <script src="../../js/shared/api.js" defer></script>
+    <script src="../../js/shared/modulos.js" defer></script>
+    <script src="../../js/shared/formatters.js" defer></script>
+    <script src="../../js/shared/alerts.js" defer></script>
+    <script src="js/pagos.permissions.js" defer></script>
+    <script src="js/pagos.state.js" defer></script>
+    <script src="js/pagos.columns.js" defer></script>
+    <script src="js/pagos.cobranza.js" defer></script>
+    <script src="js/pagos.evento.js" defer></script>
+    <script src="js/pagos.drawer.js" defer></script>
+    <script src="js/pagos.movimientos.js" defer></script>
+    <script src="js/pagos.metodos.js" defer></script>
+    <script src="js/pagos.js" defer></script>
+    <script src="../../js/shared/notificaciones-bell.js" defer></script>
+    <script src="../../js/shared/sidebar.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            requireAuth();
+            renderSidebar('pagos', 'Gestión de Eventos');
+        });
+    </script>
+</body>
+</html>
+

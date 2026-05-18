@@ -1,0 +1,468 @@
+/* ══════════════════════════════════════════════════════════
+   Módulo Inventario — Movements, Badges & Chips
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Movimiento context badge (per-product sub-tab) ──── */
+.mov-producto-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.5rem 0.85rem;
+    margin-bottom: 0.6rem;
+    border-radius: 10px;
+    background: rgba(13, 115, 185, 0.06);
+    border: 1px solid rgba(13, 115, 185, 0.14);
+    color: #0D73B9;
+    font-size: 0.82rem;
+    font-weight: 600;
+    animation: badgeFadeIn 0.25s ease;
+}
+
+.mov-producto-badge.hidden {
+    display: none;
+}
+
+.mov-producto-badge svg {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+}
+
+.mov-producto-badge strong {
+    color: var(--text);
+}
+
+@keyframes badgeFadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Action chip (inventory specific) ────────────────── */
+.action-chip--xs {
+    padding: 0.42rem 0.62rem;
+    font-size: 0.72rem;
+}
+
+.action-chip--info {
+    border-color: rgba(13, 115, 185, 0.16);
+    color: #0D73B9;
+    background: rgba(13, 115, 185, 0.06);
+}
+
+.action-chip--info:hover {
+    background: rgba(13, 115, 185, 0.12);
+}
+
+.event-link-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.32rem;
+}
+
+.event-chip-title {
+    color: var(--text);
+}
+
+.event-chip-detail {
+    font-size: 0.76rem;
+    color: var(--text-light);
+}
+
+.motivo-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.38rem;
+    max-width: 320px;
+}
+
+/* ── Origin badges ───────────────────────────────────── */
+.origin-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.28rem 0.55rem;
+    border-radius: 999px;
+    border: 1px solid var(--neutral-200);
+    background: var(--neutral-50);
+    color: var(--text);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+}
+
+.origin-badge--success {
+    background: var(--success-bg);
+    border-color: var(--success-border);
+    color: var(--success-text);
+}
+
+.origin-badge--info {
+    background: #EFF6FF;
+    border-color: #BFDBFE;
+    color: #1D4ED8;
+}
+
+.origin-badge--danger {
+    background: var(--danger-bg);
+    border-color: var(--danger-border);
+    color: var(--danger-text);
+}
+
+.origin-badge--warning {
+    background: var(--warning-bg);
+    border-color: var(--warning-border);
+    color: var(--warning-text);
+}
+
+.origin-badge--accent {
+    background: #F5F3FF;
+    border-color: #DDD6FE;
+    color: #6D28D9;
+}
+
+.motivo-copy {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: var(--text);
+    font-size: 0.83rem;
+    line-height: 1.45;
+}
+
+.motivo-copy.is-muted {
+    color: var(--text-light);
+}
+
+/* ══════════════════════════════════════════════════════════
+   Per‑product search / autocomplete control
+   ══════════════════════════════════════════════════════════ */
+
+.product-search-control {
+    position: relative;
+    margin-bottom: 0.75rem;
+}
+
+.product-search-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border: 2px solid var(--neutral-200);
+    border-radius: 12px;
+    background: #fff;
+    padding: 0 0.75rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-shadow: var(--shadow-sm);
+}
+
+.product-search-wrapper:focus-within {
+    border-color: var(--inventory-brand);
+    box-shadow: 0 0 0 3px rgba(var(--inventory-brand-rgb) / 0.12);
+}
+
+.product-search-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--text-light);
+    margin-right: 0.5rem;
+}
+
+.product-search-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.product-search-wrapper input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 0.7rem 0;
+    font-size: 0.9rem;
+    color: var(--text);
+    min-width: 0;
+}
+
+.product-search-wrapper input::placeholder {
+    color: var(--neutral-400);
+}
+
+.product-search-clear {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border: none;
+    border-radius: 50%;
+    background: var(--neutral-200);
+    color: var(--text-light);
+    cursor: pointer;
+    transition: background 0.15s;
+    margin-left: 0.35rem;
+}
+
+.product-search-clear:hover {
+    background: var(--neutral-300);
+    color: var(--text);
+}
+
+.product-search-clear svg {
+    width: 14px;
+    height: 14px;
+}
+
+.product-search-clear.hidden {
+    display: none;
+}
+
+/* ── Autocomplete dropdown ─────────────────────────────── */
+.product-search-results {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: #fff;
+    border: 1px solid var(--neutral-200);
+    border-radius: 12px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+    max-height: 340px;
+    overflow-y: auto;
+    padding: 0.35rem;
+}
+
+.product-search-results.hidden {
+    display: none;
+}
+
+.product-search-result {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.12s;
+    font-size: 0.84rem;
+}
+
+.product-search-result:hover,
+.product-search-result:focus-visible {
+    background: rgba(var(--inventory-brand-rgb) / 0.06);
+    outline: none;
+}
+
+.product-search-result-name {
+    flex: 1;
+    font-weight: 600;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.product-search-result-stock {
+    flex-shrink: 0;
+    font-size: 0.72rem;
+    color: var(--text-light);
+    white-space: nowrap;
+}
+
+/* ── Product change button (inside badge) ──────────────── */
+.product-change-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-left: auto;
+    padding: 0.3rem 0.55rem;
+    border: 1px solid rgba(13,115,185,0.16);
+    border-radius: 8px;
+    background: rgba(13,115,185,0.05);
+    color: #0D73B9;
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    white-space: nowrap;
+}
+
+.product-change-btn:hover {
+    background: rgba(13,115,185,0.12);
+}
+
+.product-change-btn svg {
+    width: 13px;
+    height: 13px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   Product suggestions (default empty state)
+   ══════════════════════════════════════════════════════════ */
+
+.product-suggestions {
+    margin-bottom: 1rem;
+    animation: suggestionsFadeIn 0.25s ease;
+}
+
+.product-suggestions.hidden {
+    display: none;
+}
+
+@keyframes suggestionsFadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.suggestions-header {
+    text-align: center;
+    padding: 1.5rem 1rem 0.75rem;
+}
+
+.suggestions-header svg {
+    width: 36px;
+    height: 36px;
+    color: var(--neutral-300);
+    margin-bottom: 0.5rem;
+}
+
+.suggestions-title {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--neutral-700);
+    margin-bottom: 0.3rem;
+}
+
+.suggestions-hint {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--text-light);
+    line-height: 1.45;
+    max-width: 360px;
+    margin: 0 auto;
+}
+
+.suggestion-chips {
+    padding: 0 0.25rem 1rem;
+}
+
+.suggestions-group {
+    margin-bottom: 0.85rem;
+}
+
+.suggestions-group:last-child {
+    margin-bottom: 0;
+}
+
+.suggestions-group-label {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+    padding: 0 0.4rem;
+}
+
+.suggestions-group-label svg {
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
+}
+
+.suggestions-group-label--warning {
+    color: var(--warning-text);
+}
+
+.suggestions-chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.suggestion-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--neutral-200);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--text);
+    font-size: 0.81rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    box-shadow: var(--shadow-sm);
+    white-space: nowrap;
+}
+
+.suggestion-chip:hover {
+    border-color: var(--inventory-brand);
+    color: var(--inventory-brand);
+    box-shadow: 0 4px 12px rgba(var(--inventory-brand-rgb) / 0.12);
+    transform: translateY(-1px);
+}
+
+.suggestion-chip--warning {
+    border-color: var(--warning-border);
+    background: linear-gradient(135deg, #FFF7ED, #FFF1E6);
+}
+
+.suggestion-chip--warning:hover {
+    border-color: var(--warning);
+    box-shadow: 0 4px 12px rgba(251,146,60,0.18);
+    color: var(--warning-text);
+}
+
+.suggestion-chip-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 200px;
+}
+
+.suggestions-empty {
+    text-align: center;
+    padding: 1rem;
+}
+
+/* ── Pagination info text (per‑product history) ─────── */
+.mov-pagination-info {
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--text-light);
+    padding: 0.3rem 0 0.1rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.mov-pagination-info.hidden {
+    display: none;
+}
+
+@media (max-width: 640px) {
+    .product-search-wrapper input {
+        font-size: 16px; /* prevent iOS zoom */
+    }
+    .suggestions-chip-row {
+        flex-direction: column;
+    }
+    .suggestion-chip {
+        width: 100%;
+        justify-content: center;
+    }
+}

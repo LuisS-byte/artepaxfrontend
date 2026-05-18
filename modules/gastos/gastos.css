@@ -1,0 +1,11 @@
+﻿/* ══════════════════════════════════════════════════════════
+   Módulo Gastos — Entry Point
+   ══════════════════════════════════════════════════════════ */
+
+@import "./css/gastos-summary.css";
+@import "./css/gastos-tables.css";
+@import "./css/gastos-drawer.css";
+@import "./css/gastos-context.css";
+@import "./css/gastos-cola.css";
+@import "./css/gastos-responsive.css";
+@import "./css/gastos-ux.css";

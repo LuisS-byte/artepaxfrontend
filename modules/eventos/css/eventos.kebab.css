@@ -1,0 +1,86 @@
+/* ── KEBAB MENU ────────────────────────────────────── */
+.kebab-wrapper {
+    position: relative;
+}
+
+.kebab-btn {
+    position: relative;
+    z-index: 2;
+}
+
+.kebab-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    z-index: 100;
+    min-width: 200px;
+    background: var(--neutral-0);
+    border: 1px solid var(--neutral-200);
+    border-radius: var(--rounded-md);
+    box-shadow: var(--shadow-lg);
+    padding: 4px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition: all 0.15s ease;
+}
+
+.kebab-menu.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.kebab-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 8px 12px;
+    border: none;
+    background: none;
+    border-radius: var(--rounded-sm);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--neutral-700);
+    cursor: pointer;
+    transition: background 0.1s;
+    text-align: left;
+}
+
+.kebab-item:hover {
+    background: var(--neutral-100);
+    color: var(--neutral-900);
+}
+
+.kebab-item svg {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    color: var(--neutral-500);
+}
+
+.kebab-item--primary {
+    color: var(--primary);
+}
+.kebab-item--primary svg {
+    color: var(--primary);
+}
+
+.kebab-item--warning {
+    color: var(--warning);
+}
+.kebab-item--warning svg {
+    color: var(--warning);
+}
+
+.kebab-item--danger {
+    color: var(--danger);
+}
+.kebab-item--danger svg {
+    color: var(--danger);
+}
+
+.kebab-item--danger:hover {
+    background: rgba(198, 40, 40, 0.08);
+}

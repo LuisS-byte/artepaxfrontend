@@ -1,0 +1,8 @@
+/* ══════════════════════════════════════════════════════════
+   Módulo Configuración — Entry Point
+   ══════════════════════════════════════════════════════════ */
+
+@import "./css/configuracion-layout.css";
+@import "./css/configuracion-toolbar.css";
+@import "./css/configuracion-settings.css";
+@import "./css/configuracion-responsive.css";

@@ -1,0 +1,50 @@
+/* ══════════════════════════════════════════════════════════
+   Configuración — Responsive
+   ══════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+    .config-search-bar {
+        flex-wrap: wrap;
+    }
+
+    .config-search-count {
+        margin-left: auto;
+    }
+
+    .setting-item {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+
+    .setting-item--modified {
+        padding: var(--spacing-md);
+        margin: 0 calc(var(--spacing-md) * -1);
+    }
+
+    .setting-right {
+        justify-content: flex-start;
+    }
+
+    .config-value-input,
+    .config-value-input[type="email"],
+    .config-value-input[type="tel"],
+    .config-value-input[type="text"],
+    select.config-value-input {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .input-with-unit {
+        width: 100%;
+    }
+
+    .config-toolbar {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .save-all-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

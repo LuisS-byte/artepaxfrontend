@@ -1,0 +1,374 @@
+/* ══════════════════════════════════════════════════════════
+   Decoraciones — Composición de Productos
+   ══════════════════════════════════════════════════════════ */
+
+.composition-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.composition-header p {
+    max-width: 38ch;
+}
+
+.composition-header h3 {
+    margin-bottom: 0.28rem !important;
+}
+
+.composition-header .btn svg {
+    width: 15px;
+    height: 15px;
+}
+
+.product-composition-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.product-composition-list:empty::before {
+    content: "Todavía no agregaste productos a esta plantilla.";
+    display: block;
+    padding: 0.9rem 1rem;
+    border: 1px dashed var(--neutral-300);
+    border-radius: 14px;
+    background: var(--neutral-25);
+    color: var(--text-light);
+    font-size: 0.82rem;
+}
+
+.composition-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 112px minmax(190px, 0.9fr) auto;
+    gap: var(--spacing-md);
+    align-items: end;
+    padding: 0.85rem;
+    border: 1px solid var(--neutral-200);
+    border-radius: 16px;
+    background: linear-gradient(180deg, #fff, #fcfcfc);
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.035);
+}
+
+.composition-row:hover {
+    border-color: rgba(31, 58, 95, 0.18);
+}
+
+.composition-row-topline {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.composition-row-index {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.28rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(21, 101, 192, 0.08);
+    color: var(--primary);
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.composition-row-summary {
+    font-size: 0.76rem;
+    line-height: 1.4;
+    color: var(--text-light);
+    text-align: right;
+}
+
+.composition-row-summary.is-success {
+    color: var(--success-text);
+}
+
+.composition-row-summary.is-warning {
+    color: var(--warning-text);
+}
+
+.composition-row-summary.is-danger {
+    color: var(--danger-text);
+}
+
+.composition-row-summary.is-neutral {
+    color: var(--text-light);
+}
+
+.composition-row:focus-within {
+    border-color: rgba(31, 58, 95, 0.26);
+    box-shadow: 0 0 0 4px rgba(31, 58, 95, 0.07);
+}
+
+.composition-autocomplete-field {
+    position: relative;
+}
+
+.composition-autocomplete-field .autocomplete-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--neutral-300);
+    border-radius: 12px;
+    background: var(--input-bg, #fff);
+    padding: 0 0.75rem;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.composition-autocomplete-field .autocomplete-input-wrapper:focus-within {
+    border-color: rgba(31, 58, 95, 0.5);
+    box-shadow: 0 0 0 4px rgba(31, 58, 95, 0.08);
+}
+
+.composition-autocomplete-field .autocomplete-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    color: var(--text-light);
+    opacity: 0.7;
+}
+
+.composition-autocomplete-field .autocomplete-icon svg,
+.composition-autocomplete-field .autocomplete-clear svg {
+    width: 15px;
+    height: 15px;
+}
+
+.composition-autocomplete-field .composition-producto-autocomplete {
+    flex: 1;
+    min-width: 0;
+    border: none !important;
+    outline: none;
+    background: transparent;
+    padding: 0.72rem 0 !important;
+    box-shadow: none !important;
+}
+
+.composition-autocomplete-field .autocomplete-clear {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: none;
+    background: var(--neutral-200);
+    color: var(--text-light);
+    cursor: pointer;
+    padding: 0;
+}
+
+.composition-autocomplete-field .autocomplete-clear.hidden {
+    display: none;
+}
+
+.composition-autocomplete-field .autocomplete-results {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    max-height: 240px;
+    overflow-y: auto;
+    border: 1px solid var(--neutral-200);
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    z-index: 30;
+}
+
+.composition-autocomplete-field .autocomplete-results.hidden {
+    display: none;
+}
+
+.composition-autocomplete-field .autocomplete-result {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.65rem 0.8rem;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 0.88rem;
+    color: var(--text);
+    text-align: left;
+    font-family: inherit;
+}
+
+.composition-autocomplete-field .autocomplete-result:hover,
+.composition-autocomplete-field .autocomplete-result--active {
+    background: rgba(21, 101, 192, 0.08);
+}
+
+.composition-autocomplete-field .autocomplete-result + .autocomplete-result {
+    border-top: 1px solid var(--neutral-100);
+}
+
+.composition-autocomplete-field .autocomplete-result-name {
+    font-weight: 600;
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.composition-autocomplete-field .autocomplete-result-meta,
+.composition-autocomplete-field .autocomplete-result-stock {
+    flex-shrink: 0;
+    font-size: 0.75rem;
+    color: var(--text-light);
+}
+
+.composition-autocomplete-field .autocomplete-empty {
+    padding: 0.7rem 0.85rem;
+    color: var(--text-light);
+    font-size: 0.82rem;
+}
+
+.composition-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.composition-actions .btn {
+    min-width: 88px;
+}
+
+.composition-stock {
+    padding: 0.7rem 0.8rem;
+    border-radius: 12px;
+    border: 1px solid var(--neutral-200);
+    background: #fafafa;
+    min-height: 78px;
+}
+
+.composition-stock strong {
+    display: block;
+    margin-bottom: 0.22rem;
+    font-size: 0.84rem;
+}
+
+.composition-stock small {
+    display: block;
+    color: var(--text-light);
+    line-height: 1.45;
+}
+
+.composition-stock.is-danger small,
+.composition-stock.is-warning small,
+.composition-stock.is-success small {
+    color: currentColor;
+    opacity: 0.82;
+}
+
+.composition-stock.is-danger {
+    background: var(--danger-bg);
+    border-color: var(--danger-border);
+    color: var(--danger-text);
+}
+
+.composition-stock.is-warning {
+    background: var(--warning-bg);
+    border-color: var(--warning-border);
+    color: var(--warning-text);
+}
+
+.composition-stock.is-success {
+    background: var(--success-bg);
+    border-color: var(--success-border);
+    color: var(--success-text);
+}
+
+.composition-summary {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 0.95rem;
+}
+
+.composition-summary-card,
+.composition-health {
+    padding: 0.8rem 0.9rem;
+    border-radius: 14px;
+    border: 1px solid var(--neutral-200);
+    background: #fff;
+}
+
+.composition-summary-card {
+    min-height: 78px;
+}
+
+.composition-summary-card span,
+.composition-health {
+    display: block;
+    color: var(--text-light);
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.composition-summary-card strong {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--primary);
+    font-size: 1.25rem;
+}
+
+.composition-health {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.3rem;
+    font-weight: 800;
+    text-align: left;
+}
+
+.composition-product-field,
+.composition-quantity-field {
+    margin-bottom: 0;
+}
+
+.composition-health.is-neutral {
+    background: #fafafa;
+    color: var(--text-light);
+}
+
+.composition-health.is-success {
+    background: var(--success-bg);
+    border-color: var(--success-border);
+    color: var(--success-text);
+}
+
+.composition-health.is-warning {
+    background: var(--warning-bg);
+    border-color: var(--warning-border);
+    color: var(--warning-text);
+}
+
+.composition-health.is-danger {
+    background: var(--danger-bg);
+    border-color: var(--danger-border);
+    color: var(--danger-text);
+}
+
+.composition-health strong {
+    font-size: 0.92rem;
+    line-height: 1.2;
+}
+
+.composition-health small {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    text-transform: none;
+    letter-spacing: normal;
+    opacity: 0.85;
+}

@@ -1,0 +1,278 @@
+/* ══════════════════════════════════════════════════════════
+   Documentos — Event Summary & Doc Gen Cards
+   ══════════════════════════════════════════════════════════ */
+
+.selector-card,
+.event-doc-summary,
+#documentos-container,
+#view-global .card,
+#view-plantillas .card {
+    border-radius: 20px;
+}
+
+.section-header.compact {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 1rem;
+}
+
+.section-header.compact h2 {
+    font-size: 1.05rem;
+}
+
+.section-note {
+    margin: 0.35rem 0 0;
+    color: var(--text-light);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+}
+
+.event-doc-summary {
+    margin: 0 0 var(--spacing-lg);
+    padding: 1.25rem 1.5rem;
+    background: #fff;
+    border: 1px solid var(--neutral-200);
+    box-shadow: var(--shadow-sm);
+}
+
+.event-doc-summary-grid {
+    display: grid;
+    grid-template-columns: minmax(240px, 1.1fr) minmax(260px, 0.9fr);
+    gap: 1rem;
+    align-items: center;
+}
+
+.summary-eyebrow {
+    display: inline-block;
+    margin-bottom: 0.4rem;
+    color: var(--primary);
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.event-doc-summary h2 {
+    margin: 0 0 0.25rem;
+    font-size: 1.25rem;
+}
+
+.event-doc-summary p {
+    margin: 0;
+    color: var(--text-light);
+}
+
+.summary-kpis {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--spacing-md);
+}
+
+.summary-kpi {
+    padding: 1rem;
+    border-radius: 14px;
+    border: 1px solid var(--neutral-200);
+    background: #fafafa;
+}
+
+.summary-kpi span {
+    display: block;
+    color: var(--text-light);
+    font-size: 0.76rem;
+    text-transform: uppercase;
+}
+
+.summary-kpi strong {
+    display: block;
+    margin-top: 0.3rem;
+    color: var(--primary);
+}
+
+.doc-generation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+}
+
+.doc-gen-card {
+    background: var(--neutral-0);
+    padding: var(--spacing-xl);
+    border-radius: var(--rounded-lg);
+    border: 1px solid var(--neutral-200);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xl);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s;
+}
+
+.doc-gen-card:hover {
+    transform: translateY(-2px);
+}
+
+.doc-icon {
+    font-size: 2.5rem;
+    background: var(--neutral-100);
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--rounded-md);
+    flex-shrink: 0;
+}
+
+.doc-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.doc-info h3 {
+    font-size: 1.125rem;
+    color: var(--neutral-900);
+    margin-bottom: var(--spacing-xs);
+}
+
+.doc-info p {
+    font-size: 0.875rem;
+    color: var(--neutral-500);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.doc-name-cell {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+/* ── Global view: active filters & results count ── */
+#active-filters-global {
+    margin-bottom: var(--spacing-lg);
+    border-bottom: 1px solid var(--neutral-100);
+    padding-bottom: 0.5rem;
+    gap: 8px;
+    display: flex;
+    flex-wrap: wrap;
+}
+#active-filters-global.hidden {
+    display: none;
+}
+
+#results-count-global {
+    font-size: 0.8125rem;
+    color: var(--neutral-500);
+    margin-bottom: 0.5rem;
+}
+#results-count-global.hidden {
+    display: none;
+}
+
+/* ══════════════════════════════════════════════════════════
+   UX Action Matrix — jerarquía visual por prioridad
+   ══════════════════════════════════════════════════════════ */
+
+/* PRIMARY — acción principal recomendada (borde primary + fondo sutil) */
+.doc-gen-card--primary {
+    border-color: var(--primary);
+    background: linear-gradient(135deg, #fff 0%, #fef2f3 100%);
+    box-shadow: 0 0 0 1px rgba(125, 22, 34, 0.07), var(--shadow-sm);
+}
+
+.doc-gen-card--primary .doc-icon {
+    background: #fde8ea;
+    color: var(--primary);
+}
+
+.doc-gen-card--primary:hover {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 1px rgba(125, 22, 34, 0.12), var(--shadow-md);
+}
+
+/* EXCLUSIVE — único disponible (más énfasis que primary) */
+.doc-gen-card--exclusive {
+    border-color: var(--primary);
+    background: linear-gradient(135deg, #fff 0%, #fef2f3 100%);
+    box-shadow: 0 0 0 2px rgba(125, 22, 34, 0.1), var(--shadow-sm);
+}
+
+.doc-gen-card--exclusive .doc-icon {
+    background: var(--primary);
+    color: #fff;
+}
+
+.doc-gen-card--exclusive:hover {
+    box-shadow: 0 0 0 2px rgba(125, 22, 34, 0.18), var(--shadow-md);
+}
+
+/* SECONDARY — acción secundaria/tardía (menor peso visual) */
+.doc-gen-card--secondary {
+    opacity: 0.82;
+    border-color: var(--neutral-200);
+    background: var(--neutral-50);
+}
+
+.doc-gen-card--secondary .doc-icon {
+    background: var(--neutral-200);
+    color: var(--neutral-500);
+}
+
+.doc-gen-card--secondary .doc-info h3 {
+    color: var(--neutral-600);
+}
+
+.doc-gen-card--secondary:hover {
+    opacity: 0.92;
+}
+
+/* EXISTS — documento ya generado (borde verde + tilde) */
+.doc-gen-card--exists {
+    border-color: var(--success, #16a34a);
+    background: #f0fdf4;
+    cursor: default;
+}
+
+.doc-gen-card--exists:hover {
+    transform: none;
+    box-shadow: var(--shadow-sm);
+}
+
+.doc-gen-card--exists .doc-icon,
+.doc-icon--exists {
+    background: #dcfce7;
+    color: var(--success, #16a34a);
+}
+
+.doc-gen-card--exists .doc-info p {
+    color: var(--success, #16a34a);
+}
+
+.doc-gen-card--exists .doc-info h3 {
+    color: #15803d;
+}
+
+.doc-exists-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--success, #16a34a);
+    font-weight: 500;
+}
+
+/* BLOCKED — completamente deshabilitado */
+.doc-gen-card--blocked {
+    opacity: 0.45;
+    cursor: not-allowed;
+    background: var(--neutral-50);
+}
+
+.doc-gen-card--blocked:hover {
+    transform: none;
+}
+
+.doc-gen-card--blocked .doc-icon {
+    background: var(--neutral-200);
+    color: var(--neutral-400);
+}

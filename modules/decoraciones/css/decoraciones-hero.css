@@ -1,0 +1,203 @@
+/* ══════════════════════════════════════════════════════════
+   Decoraciones — Hero & KPIs
+   ══════════════════════════════════════════════════════════ */
+
+.decor-hero {
+    display: grid;
+    grid-template-columns: minmax(300px, 1.15fr) minmax(260px, 0.85fr);
+    gap: 1.15rem;
+    margin-bottom: 1.35rem;
+}
+
+.decor-hero--compact {
+    align-items: stretch;
+}
+
+.decor-hero-copy,
+.decor-kpis {
+    border-radius: 20px;
+}
+
+.decor-hero-copy {
+    position: relative;
+    overflow: hidden;
+    padding: 1rem 1.15rem;
+    background:
+        radial-gradient(circle at top right, rgba(237, 108, 2, 0.16), transparent 36%),
+        linear-gradient(135deg, #ffffff 0%, #fff8f1 100%);
+    border: 1px solid rgba(237, 108, 2, 0.14);
+    box-shadow: 0 10px 30px rgba(31, 58, 95, 0.08);
+}
+
+.decor-hero-copy--kpi-only {
+    padding: 0.85rem 1rem;
+}
+
+.decor-hero-copy::after {
+    content: "";
+    position: absolute;
+    right: -42px;
+    bottom: -54px;
+    width: 150px;
+    height: 150px;
+    border: 1px solid rgba(237, 108, 2, 0.14);
+    border-radius: 999px;
+}
+
+.decor-hero-topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.6rem;
+}
+
+.decor-hero-topline--kpi {
+    margin-bottom: 0;
+}
+
+.decor-hero-main {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.decor-eyebrow {
+    display: inline-block;
+    margin-bottom: 0.55rem;
+    color: var(--primary);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.decor-hero-copy h2 {
+    margin: 0 0 0.45rem;
+    max-width: 760px;
+    font-size: clamp(1.15rem, 1rem + 0.65vw, 1.5rem);
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+}
+
+.decor-hero-copy p {
+    margin: 0;
+    max-width: 58ch;
+    color: var(--text-light);
+    line-height: 1.45;
+}
+
+.decor-hero-microstats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-top: 0.15rem;
+}
+
+.decor-hero-metric {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.36rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(31, 58, 95, 0.08);
+    color: var(--neutral-700);
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+.decor-hero-metric strong {
+    color: var(--primary);
+}
+
+.decor-hero-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.42rem 0.72rem;
+    border-radius: 999px;
+    border: 1px solid var(--neutral-200);
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--neutral-700);
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.decor-hero-status.is-success {
+    background: var(--success-bg);
+    border-color: var(--success-border);
+    color: var(--success-text);
+}
+
+.decor-hero-status.is-warning {
+    background: var(--warning-bg);
+    border-color: var(--warning-border);
+    color: var(--warning-text);
+}
+
+.decor-kpis {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.85rem;
+}
+
+.decor-kpi-card {
+    position: relative;
+    overflow: hidden;
+    padding: 0.9rem;
+    border-radius: 18px;
+    background: #fff;
+    border: 1px solid var(--neutral-200);
+    box-shadow: var(--shadow-sm);
+}
+
+.decor-kpi-card::after {
+    content: "";
+    position: absolute;
+    inset: auto 12px 12px auto;
+    width: 24px;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--neutral-200);
+}
+
+.decor-kpi-card.success::after { background: var(--success); }
+.decor-kpi-card.warning::after { background: var(--warning); }
+
+.decor-kpi-card.success {
+    background: var(--success-bg);
+    border-color: var(--success-border);
+}
+
+.decor-kpi-card.warning {
+    background: var(--warning-bg);
+    border-color: var(--warning-border);
+}
+
+.decor-kpi-label {
+    display: block;
+    margin-bottom: 0.3rem;
+    color: var(--text-light);
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+}
+
+.decor-kpi-value {
+    display: block;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1.1;
+}
+
+.decor-kpi-foot {
+    display: block;
+    margin-top: 0.35rem;
+    color: var(--text-light);
+    font-size: 0.8rem;
+}

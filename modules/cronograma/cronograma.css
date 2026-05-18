@@ -1,0 +1,14 @@
+/* ── CRONOGRAMA — CSS Aggregator ──────────────────────────── */
+/* Cada archivo cubre una responsabilidad específica.          */
+/* @import order matters: responsive.css MUST be last.         */
+/* NOTA: No usar @layer — los estilos del módulo necesitan    */
+/* prevalecer sobre global.css (sin layer).                    */
+
+@import url("./css/cronograma.layout.css");
+@import url("./css/cronograma.summary.css");
+@import url("./css/cronograma.drawers.css");
+@import url("./css/cronograma.table.css");
+@import url("./css/cronograma.badges.css");
+@import url("./css/cronograma.personal.css");
+@import url("./css/cronograma.queue.css");
+@import url("./css/cronograma.responsive.css");

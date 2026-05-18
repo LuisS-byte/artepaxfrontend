@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Artepax Fiesta</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+</head>
+<body>
+
+    <div class="login-container">
+        <main class="login-card">
+            <header class="logo">
+                <h1>Artepax <span>Fiesta</span></h1>
+                <p>Gestión de Eventos y Decoraciones</p>
+            </header>
+
+            <section class="login-content">
+                <p class="login-instruction">Acceso exclusivo para administradores del sistema.</p>
+                
+                <div id="error-msg" class="error-msg hidden"></div>
+                <div id="field-errors" class="hidden"></div>
+
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="email">Correo electrónico</label>
+                        <input type="email" id="email" name="email" class="input-field"
+                            placeholder="admin@artepax.com" required autocomplete="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" name="password" class="input-field"
+                            placeholder="••••••••" required autocomplete="current-password">
+                    </div>
+                    <button type="submit" id="btn-login" class="btn btn-primary btn-login">
+                        Iniciar Sesión
+                    </button>
+                </form>
+
+                <div class="divider"><span>O continúa con</span></div>
+
+                <div class="google-btn-wrapper">
+                    <!-- Google Identity Services -->
+                    <div id="g_id_onload"
+                        data-context="signin"
+                        data-ux_mode="popup"
+                        data-callback="handleGoogleLogin"
+                        data-auto_prompt="false">
+                    </div>
+
+                    <div class="g_id_signin"
+                        data-type="standard"
+                        data-shape="rectangular"
+                        data-theme="outline"
+                        data-text="signin_with"
+                        data-size="large"
+                        data-logo_alignment="left"
+                        data-width="320">
+                    </div>
+                </div>
+            </section>
+
+            <footer class="login-footer">
+                &copy; 2024 Artepax Fiesta. Todos los derechos reservados.
+            </footer>
+        </main>
+    </div>
+
+    <!-- App Scripts -->
+    <script src="js/core/config.js" defer></script>
+    <script src="js/core/http.js" defer></script>
+    <script src="js/shared/api.js" defer></script>
+    <script src="js/core/login.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (document.getElementById('g_id_onload')) {
+                document.getElementById('g_id_onload').setAttribute('data-client_id', window.APP_CONFIG.GOOGLE_CLIENT_ID || '');
+            }
+        });
+    </script>
+    <!-- Scripts de Google -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</body>
+</html>

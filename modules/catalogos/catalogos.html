@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogos | Artepax Fiesta</title>
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="catalogos.css">
+    <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+</head>
+<body>
+
+    <div class="app-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar-container"></aside>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-wrapper">
+            <!-- TOPBAR -->
+            <header class="topbar">
+                <div class="breadcrumbs">
+                    <a href="../../index.html">Inicio</a>
+                    <span class="separator">/</span>
+                    <span class="current">Catálogos de Configuración</span>
+                </div>
+                <div class="topbar-actions">
+                    <div class="user-info">
+                        <span class="user-name">Administrador</span>
+                        <div class="user-avatar">AD</div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <header class="module-header">
+                    <div class="header-info">
+                        <h1>Catálogos del Sistema</h1>
+                        <p>Administración y consulta de tipos de evento — Bodas, XV Años, Graduaciones y más.</p>
+                    </div>
+                </header>
+
+                <div id="alert-box" class="alert hidden"></div>
+
+                <section class="catalog-card">
+                    <header class="catalog-header">
+                        <div class="catalog-title">
+                            <h2>Tipos de Evento</h2>
+                            <p>Bodas, XV Años, Graduaciones, etc.</p>
+                        </div>
+                        <div class="catalog-header-actions">
+                            <div class="search-compact">
+                                <input type="search" id="search-tipos-evento" class="form-input" placeholder="Buscar tipo de evento…" aria-label="Buscar tipo de evento" autocomplete="off">
+                                <i data-lucide="search" class="search-icon"></i>
+                            </div>
+                            <button class="btn btn-primary btn-sm" onclick="abrirDrawerCrear()">+ Nuevo</button>
+                        </div>
+                    </header>
+                    <div class="table-wrapper">
+                        <table class="data-table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th class="col-estado-sm">Estado</th>
+                                    <th class="col-acciones">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-tipos-evento">
+                                <tr><td colspan="4" class="loading-state">Cargando...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- DRAWER: CREAR / EDITAR TIPO DE EVENTO -->
+    <div class="drawer-overlay" id="drawer-tipo-evento-overlay" onclick="cerrarDrawer(event)">
+        <aside class="drawer" id="drawer-tipo-evento">
+            <header class="drawer-header">
+                <h2 id="drawer-titulo">Nuevo Tipo de Evento</h2>
+                <button class="btn-close" onclick="cerrarDrawer()"><i data-lucide="x"></i></button>
+            </header>
+
+            <div class="drawer-body">
+                <div id="drawer-alert" class="alert hidden"></div>
+
+                <form id="form-tipo-evento" class="form-vertical" onsubmit="guardarTipoEvento(event)">
+                    <div class="form-section">
+                        <h3>Información del Tipo de Evento</h3>
+                        <div class="form-group">
+                            <label for="input-nombre">Nombre *</label>
+                            <input type="text" id="input-nombre" placeholder="Ej: Boda" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-descripcion">Descripción</label>
+                            <textarea id="input-descripcion" rows="3" placeholder="Breve descripción del tipo de evento..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="drawer-footer">
+                        <button type="button" class="btn btn-secondary" onclick="cerrarDrawer()">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="btn-guardar-tipo">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../js/core/config.js" defer></script>
+    <script src="../../js/core/auth.js" defer></script>
+    <script src="../../js/core/http.js" defer></script>
+    <script src="../../js/shared/api.js" defer></script>
+    <script src="../../js/shared/modulos.js" defer></script>
+    <script src="../../js/shared/formatters.js" defer></script>
+    <script src="../../js/shared/alerts.js" defer></script>
+    <script src="js/catalogos.state.js" defer></script>
+    <script src="js/catalogos.render.js" defer></script>
+    <script src="js/catalogos.actions.js" defer></script>
+    <script src="catalogos.js" defer></script>
+    <script src="../../js/shared/notificaciones-bell.js" defer></script>
+    <script src="../../js/shared/sidebar.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            requireAuth();
+            renderSidebar('catalogos', 'Gestión de Eventos');
+        });
+    </script>
+</body>
+</html>

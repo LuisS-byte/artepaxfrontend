@@ -1,0 +1,386 @@
+/* ══════════════════════════════════════════════════════════
+   Módulo Inventario — Drawers, Forms & Modal Animations
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Drawer Step Indicator ───────────────────────────── */
+.move-step-indicator {
+    padding: 0.65rem 0.75rem;
+    margin-bottom: 1.25rem;
+    border-radius: var(--rounded-lg);
+    background: var(--neutral-25);
+    border: 1px solid var(--neutral-200);
+}
+
+.move-step-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+}
+
+/* ── Step Circle ─────────────────────────────────────── */
+.move-step {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid var(--neutral-300);
+    background: var(--white);
+    color: var(--text-light);
+    font-size: 0.72rem;
+    font-weight: 700;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+    opacity: 0.55;
+}
+
+.move-step.active {
+    width: 34px;
+    height: 34px;
+    background: var(--inventory-brand);
+    border-color: var(--inventory-brand);
+    color: #fff;
+    opacity: 1;
+    font-size: 0.8rem;
+    box-shadow: 0 0 0 4px rgba(21, 101, 192, 0.15);
+}
+
+.move-step-number {
+    line-height: 1;
+}
+
+/* ── Completed steps (before active) ─────────────────── */
+.move-step-indicator[data-step-active="data"] .move-step[data-step="select"],
+.move-step-indicator[data-step-active="confirm"] .move-step[data-step="select"],
+.move-step-indicator[data-step-active="confirm"] .move-step[data-step="data"] {
+    background: var(--inventory-brand);
+    border-color: var(--inventory-brand);
+    color: #fff;
+    opacity: 0.8;
+}
+
+/* ── Connecting line ─────────────────────────────────── */
+.move-step-connector {
+    flex: 1;
+    height: 2px;
+    background: var(--neutral-300);
+    max-width: 48px;
+    transition: background 0.25s ease;
+}
+
+.move-step-indicator[data-step-active="data"] .move-step-connector:nth-child(2),
+.move-step-indicator[data-step-active="confirm"] .move-step-connector:nth-child(2),
+.move-step-indicator[data-step-active="confirm"] .move-step-connector:nth-child(4) {
+    background: var(--inventory-brand);
+    opacity: 0.8;
+}
+
+/* ── Active step label ────────────────────────────────── */
+.move-step-label {
+    text-align: center;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--inventory-brand);
+    margin-top: 0.45rem;
+    line-height: 1.3;
+}
+
+/* ── Form Section Cards (drawer) ─────────────────────── */
+.form-section-card {
+    padding: 1.05rem;
+    border-radius: var(--rounded-lg);
+    border: 1px solid var(--neutral-200);
+    background: var(--white);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 1rem;
+}
+
+.form-section-card h3 {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-light);
+    margin-bottom: 0.85rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--neutral-100);
+}
+
+/* ── Autocomplete Field (movement drawer) ────────────── */
+.autocomplete-field {
+    position: relative;
+    width: 100%;
+}
+
+.autocomplete-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--neutral-300);
+    border-radius: var(--rounded-md);
+    background: var(--input-bg);
+    padding: 0 0.75rem;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    position: relative;
+}
+
+.autocomplete-input-wrapper:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.12);
+}
+
+.autocomplete-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    color: var(--text-light);
+    opacity: 0.7;
+}
+
+.autocomplete-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.autocomplete-input-wrapper input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 0.65rem 0;
+    font-size: 0.9rem;
+    color: var(--text);
+    font-family: inherit;
+    min-width: 0;
+}
+
+.autocomplete-input-wrapper input::placeholder {
+    color: var(--text-light);
+    opacity: 0.6;
+}
+
+.autocomplete-clear {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: none;
+    background: var(--neutral-200);
+    color: var(--text-light);
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.15s ease;
+}
+
+.autocomplete-clear:hover {
+    background: var(--neutral-300);
+    color: var(--text);
+}
+
+.autocomplete-clear svg {
+    width: 14px;
+    height: 14px;
+}
+
+.autocomplete-clear.hidden {
+    display: none;
+}
+
+/* ── Results dropdown ───────────────────────────────── */
+.autocomplete-results {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    max-height: 240px;
+    overflow-y: auto;
+    border: 1px solid var(--neutral-200);
+    border-radius: var(--rounded-md);
+    background: var(--white);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    z-index: 50;
+}
+
+.autocomplete-results.hidden {
+    display: none;
+}
+
+.autocomplete-result {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.6rem 0.85rem;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 0.88rem;
+    color: var(--text);
+    text-align: left;
+    transition: background 0.12s ease;
+    font-family: inherit;
+}
+
+.autocomplete-result:hover,
+.autocomplete-result--active {
+    background: var(--primary-soft);
+}
+
+.autocomplete-result + .autocomplete-result {
+    border-top: 1px solid var(--neutral-100);
+}
+
+.autocomplete-result-name {
+    font-weight: 500;
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.autocomplete-result-stock {
+    flex-shrink: 0;
+    font-size: 0.75rem;
+    color: var(--text-light);
+    white-space: nowrap;
+}
+
+.autocomplete-result-meta {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.autocomplete-empty {
+    padding: 1rem 0.85rem;
+    text-align: center;
+    color: var(--text-light);
+    font-size: 0.84rem;
+}
+
+/* ── Confirmation summary panel ──────────────────────── */
+.confirm-summary {
+    border-color: #BFDBFE;
+    background: linear-gradient(180deg, #EFF6FF, #F8FAFC);
+}
+
+.confirm-summary h3 {
+    border-bottom-color: #BFDBFE;
+    color: var(--inventory-brand);
+}
+
+.confirm-summary-rows {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.45rem;
+}
+
+.confirm-summary-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-size: 0.88rem;
+    padding: 0.3rem 0;
+}
+
+.confirm-summary-row + .confirm-summary-row {
+    border-top: 1px dashed var(--neutral-200);
+    padding-top: 0.55rem;
+}
+
+.confirm-summary-label {
+    flex-shrink: 0;
+    color: var(--text-light);
+    font-size: 0.78rem;
+    min-width: 7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+}
+
+.confirm-summary-value {
+    font-weight: 600;
+    color: var(--text);
+    word-break: break-word;
+}
+
+.confirm-summary-value strong {
+    color: var(--inventory-brand);
+}
+
+.confirm-summary-impact {
+    margin-top: 0.5rem;
+    padding: 0.5rem 0.65rem;
+    border-radius: var(--rounded-sm);
+    background: rgba(21, 101, 192, 0.06);
+    font-size: 0.82rem;
+    color: var(--text-light);
+    line-height: 1.45;
+}
+
+.confirm-summary-impact strong {
+    color: var(--text);
+}
+
+/* ── Product drawer mode indicator ───────────────────── */
+.drawer-mode-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.drawer-mode-badge--create {
+    background: #EFF6FF;
+    color: var(--inventory-brand);
+    border: 1px solid #BFDBFE;
+}
+
+.drawer-mode-badge--edit {
+    background: #FFF7ED;
+    color: #C2410C;
+    border: 1px solid #FED7AA;
+}
+
+/* ── Inline note ─────────────────────────────────────── */
+.inline-note {
+    padding: var(--spacing-md);
+    border-radius: var(--rounded-md);
+    border: 1px solid #BFDBFE;
+    background: #EFF6FF;
+    color: #1E40AF;
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+/* ── Drawer slide-in ─────────────────────────────────── */
+.drawer-overlay.active .drawer {
+    animation: drawerSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes drawerSlideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* ── Modal scale-in ──────────────────────────────────── */
+.modal-overlay .modal-sm {
+    animation: modalScaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalScaleIn {
+    from { transform: scale(0.92); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notificaciones | Artepax Fiesta</title>
+
+    
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="notificaciones.css">
+    <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+</head>
+<body>
+
+    <div class="app-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar-container"></aside>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-wrapper">
+            <!-- TOPBAR -->
+            <header class="topbar">
+                <div class="breadcrumbs">
+                    <a href="../../index.html">Inicio</a>
+                    <span class="separator">/</span>
+                    <span class="current">Notificaciones</span>
+                </div>
+                <div class="topbar-actions">
+                    <div class="user-info">
+                        <span class="user-name">Administrador</span>
+                        <div class="user-avatar">AD</div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <header class="module-header">
+                    <div class="header-info">
+                        <h1>Notificaciones</h1>
+                        <p>Centro de alertas y avisos del sistema</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-outline btn-sm" id="btn-marcar-todas" onclick="marcarTodasLeidas()">
+                            <i data-lucide="check-circle"></i> Marcar todas como leídas
+                        </button>
+                        <button class="btn btn-primary btn-sm" onclick="cargarNotificaciones()">
+                            <i data-lucide="refresh-cw"></i> Actualizar
+                        </button>
+                    </div>
+                </header>
+
+            <!-- ALERT GLOBAL -->
+            <div id="alert-box" class="alert hidden"></div>
+
+            <!-- FILTROS -->
+            <div class="filter-bar card">
+                <div class="filter-group">
+                    <label class="filter-label">Estado</label>
+                    <select id="filter-estado-noti" class="input-field" onchange="filtrarNotificaciones()">
+                        <option value="">Todas</option>
+                        <option value="PENDIENTE">Pendientes</option>
+                        <option value="ENVIADA">Enviadas</option>
+                        <option value="LEIDA">Leídas</option>
+                        <option value="FALLIDA">Fallidas</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Tipo</label>
+                    <select id="filter-tipo-noti" class="input-field" onchange="filtrarNotificaciones()">
+                        <option value="">Todos los tipos</option>
+                    </select>
+                </div>
+                <div class="filter-group filter-group--search">
+                    <label class="filter-label">Buscar</label>
+                    <input type="text" id="search-noti" class="input-field" placeholder="Buscar en mensajes...">
+                </div>
+            </div>
+
+            <!-- STATS BAR -->
+            <div class="noti-stats-bar">
+                <div class="noti-stat">
+                    <span class="noti-stat-number" id="stat-total">—</span>
+                    <span class="noti-stat-label">Total</span>
+                </div>
+                <div class="noti-stat noti-stat--pending">
+                    <span class="noti-stat-number" id="stat-pendientes">—</span>
+                    <span class="noti-stat-label">Pendientes</span>
+                </div>
+                <div class="noti-stat noti-stat--read">
+                    <span class="noti-stat-number" id="stat-leidas">—</span>
+                    <span class="noti-stat-label">Leídas</span>
+                </div>
+            </div>
+
+            <!-- LISTA DE NOTIFICACIONES -->
+            <div class="card">
+                <div id="noti-list" class="noti-list">
+                    <div class="loading-state">
+                        <div class="spinner"></div>
+                        Cargando notificaciones...
+                    </div>
+                </div>
+                <div id="noti-pagination"></div>
+            </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- SCRIPTS (orden estricto: core → shared → módulo → requireAuth inmediato) -->
+    <script src="../../js/core/config.js" defer></script>
+    <script src="../../js/core/auth.js" defer></script>
+    <script src="../../js/core/http.js" defer></script>
+    <script src="../../js/shared/api.js" defer></script>
+    <script src="../../js/shared/modulos.js" defer></script>
+    <script src="../../js/shared/formatters.js" defer></script>
+    <script src="../../js/shared/alerts.js" defer></script>
+    <script src="js/notificaciones.state.js" defer></script>
+    <script src="js/notificaciones.helpers.js" defer></script>
+    <script src="js/notificaciones.render.js" defer></script>
+    <script src="js/notificaciones.api.js" defer></script>
+    <script src="js/notificaciones.actions.js" defer></script>
+    <script src="notificaciones.js" defer></script>
+    <script src="../../js/shared/notificaciones-bell.js" defer></script>
+    <script src="../../js/shared/sidebar.js" defer></script>
+    <!-- requireAuth() inmediato: corre justo después de todos los defer, antes del init -->
+    <script>requireAuth();</script>
+</body>
+</html>

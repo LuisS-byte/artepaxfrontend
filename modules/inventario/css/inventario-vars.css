@@ -1,0 +1,9 @@
+/* ══════════════════════════════════════════════════════════
+   Módulo Inventario — Design Tokens
+   ══════════════════════════════════════════════════════════ */
+
+:root {
+    --inventory-brand: #1565C0;
+    --inventory-brand-rgb: 21 101 192;
+    --inventory-brand-hover: #0D47A1;
+}

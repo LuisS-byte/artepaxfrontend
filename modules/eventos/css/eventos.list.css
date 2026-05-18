@@ -1,0 +1,391 @@
+/* ══════════════════════════════════════════════════════════
+   VISTA LISTA — MEJORAS DE DISEÑO
+   KPIs, filtros activos, jerarquía de tabla
+   ══════════════════════════════════════════════════════════ */
+
+/* ── SEARCH CLEAR ───────────────────────────────────── */
+.search-clear {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    border: none;
+    background: var(--neutral-200);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+}
+
+.search-clear:hover { background: var(--neutral-300); }
+.search-clear svg { width: 12px; height: 12px; }
+
+/* ── KPI SUMMARY GRID ──────────────────────────────────── */
+.kpi-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.kpi-toolbar-title {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--neutral-700);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.kpi-toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.kpi-date-filter {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.kpi-date-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--neutral-500);
+    white-space: nowrap;
+}
+
+input[type="date"].kpi-date-input {
+    padding: 6px 10px;
+    border: 1px solid var(--neutral-200);
+    border-radius: var(--rounded-sm);
+    font-size: 0.8125rem;
+    font-family: inherit;
+    background: var(--neutral-0);
+    color: var(--text);
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+input[type="date"].kpi-date-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.12);
+}
+
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.kpi-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--neutral-0);
+    border-radius: var(--rounded-md);
+    border: 1px solid var(--neutral-200);
+    cursor: pointer;
+    transition: all 0.18s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.kpi-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    border-radius: 0 2px 2px 0;
+    transition: width 0.2s ease;
+}
+
+.kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.07);
+}
+
+.kpi-card:hover::before {
+    width: 4px;
+}
+
+.kpi-card.active {
+    border-color: transparent;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.1);
+}
+
+.kpi-card.active::before {
+    width: 4px;
+}
+
+/* KPI card color variants */
+.kpi-card--total::before          { background: var(--primary); }
+.kpi-card--total .kpi-card-icon   { background: rgba(31, 58, 95, 0.08); color: var(--primary); }
+.kpi-card--total.active           { background: rgba(31, 58, 95, 0.04); border-color: rgba(31, 58, 95, 0.2); }
+
+.kpi-card--accion::before          { background: var(--event-programado); }
+.kpi-card--accion .kpi-card-icon   { background: rgba(21, 101, 192, 0.08); color: var(--event-programado); }
+.kpi-card--accion.active           { background: rgba(21, 101, 192, 0.04); border-color: rgba(21, 101, 192, 0.2); }
+
+.kpi-card--ejecucion::before          { background: var(--event-en-montaje); }
+.kpi-card--ejecucion .kpi-card-icon   { background: rgba(109, 40, 217, 0.08); color: var(--event-en-montaje); }
+.kpi-card--ejecucion.active           { background: rgba(109, 40, 217, 0.04); border-color: rgba(109, 40, 217, 0.2); }
+
+.kpi-card--pendiente-cobro::before          { background: var(--event-pendiente-cobro); }
+.kpi-card--pendiente-cobro .kpi-card-icon   { background: rgba(180, 83, 9, 0.08); color: var(--event-pendiente-cobro); }
+.kpi-card--pendiente-cobro.active           { background: rgba(180, 83, 9, 0.04); border-color: rgba(180, 83, 9, 0.2); }
+
+.kpi-card-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.kpi-card-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.kpi-card-body {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.kpi-card-value {
+    font-size: 1.25rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--neutral-900);
+    font-variant-numeric: tabular-nums;
+}
+
+.kpi-card-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: var(--neutral-500);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ── ACTIVE FILTER CHIPS ───────────────────────────────── */
+.active-filters {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 0 0 12px 0;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--neutral-100);
+}
+
+.active-filters-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--neutral-500);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-right: 4px;
+}
+
+.filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px 5px 12px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid var(--neutral-200);
+    background: var(--neutral-50);
+    color: var(--neutral-700);
+    cursor: default;
+    transition: all 0.15s ease;
+}
+
+.filter-chip-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: none;
+    background: var(--neutral-200);
+    color: var(--neutral-600);
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.12s ease;
+    line-height: 1;
+}
+
+.filter-chip-remove:hover {
+    background: var(--danger);
+    color: var(--neutral-0);
+}
+
+.filter-chip-remove svg {
+    width: 10px;
+    height: 10px;
+}
+
+.filter-chip--estado {
+    border-color: rgba(21, 101, 192, 0.2);
+    background: rgba(21, 101, 192, 0.06);
+    color: var(--accent);
+}
+
+.filter-chip--kpi {
+    border-color: rgba(31, 58, 95, 0.18);
+    background: rgba(31, 58, 95, 0.06);
+    color: var(--primary);
+}
+
+.filter-chip--search {
+    border-color: rgba(109, 40, 217, 0.2);
+    background: rgba(109, 40, 217, 0.06);
+    color: #6D28D9;
+}
+
+.filter-chip--fecha {
+    border-color: rgba(180, 83, 9, 0.2);
+    background: rgba(180, 83, 9, 0.06);
+    color: var(--event-pendiente-cobro, #B45309);
+}
+
+.filter-chip--clear {
+    background: none;
+    border: none;
+    color: var(--neutral-500);
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 5px 8px;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.15s ease;
+}
+
+.filter-chip--clear:hover {
+    color: var(--danger);
+}
+
+/* ── RESULTS COUNT ─────────────────────────────────────── */
+.results-count {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0 10px 0;
+    margin-bottom: 4px;
+}
+
+.results-count-text {
+    font-size: 0.8125rem;
+    color: var(--neutral-500);
+    font-weight: 500;
+}
+
+.results-count-text strong {
+    color: var(--neutral-900);
+    font-weight: 700;
+}
+
+/* ── KPI VALUE: animación count-up ─────────────────────── */
+@keyframes kpiValueIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.kpi-card-value {
+    animation: kpiValueIn 0.3s ease-out;
+}
+
+/* ── KPI CARD: active ring pulse ───────────────────────── */
+.kpi-card.active::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: var(--rounded-md);
+    border: 2px solid transparent;
+    pointer-events: none;
+}
+
+/* ── RESPONSIVE: KPI grid ──────────────────────────────── */
+@media (max-width: 1100px) {
+    .kpi-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .kpi-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .kpi-toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .kpi-toolbar-right {
+        width: 100%;
+    }
+
+    .kpi-date-filter {
+        flex: 1;
+    }
+
+    input[type="date"].kpi-date-input {
+        width: 100%;
+    }
+
+    .kpi-card {
+        padding: 10px 12px;
+        gap: 10px;
+    }
+
+    .kpi-card-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .kpi-card-icon svg {
+        width: 15px;
+        height: 15px;
+    }
+
+    .kpi-card-value {
+        font-size: 1.1rem;
+    }
+
+    .kpi-card-label {
+        font-size: 0.625rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .kpi-grid {
+        grid-template-columns: 1fr;
+    }
+}

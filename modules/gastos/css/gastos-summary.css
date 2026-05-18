@@ -1,0 +1,191 @@
+/* ══════════════════════════════════════════════════════════
+   Gastos — Event Summary & Finance Cards
+   ══════════════════════════════════════════════════════════ */
+
+.event-summary-card {
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    border-radius: 18px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(247,248,250,0.96) 100%);
+    padding: var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
+}
+
+.event-summary-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(280px, 1fr);
+    gap: var(--spacing-xl);
+    align-items: start;
+}
+
+.event-summary-grid h2 {
+    margin-top: var(--spacing-md);
+    font-size: 1.45rem;
+}
+
+.event-summary-grid p {
+    margin-top: var(--spacing-sm);
+    color: var(--neutral-700);
+}
+
+.summary-kpis {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-md);
+}
+
+.summary-kpi {
+    padding: 14px;
+    border-radius: 16px;
+    background: var(--white);
+    border: 1px solid var(--neutral-200);
+}
+
+.summary-kpi span {
+    display: block;
+    font-size: 0.76rem;
+    color: var(--neutral-500);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.summary-kpi strong {
+    display: block;
+    margin-top: 6px;
+    font-size: 1rem;
+    color: var(--neutral-900);
+}
+
+.finance-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.finance-card {
+    background: var(--neutral-0);
+    padding: var(--spacing-xl);
+    border-radius: var(--rounded-lg);
+    border: 1px solid var(--neutral-200);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+}
+
+.finance-card h3 {
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--neutral-500);
+    margin-bottom: var(--spacing-sm);
+}
+
+.finance-card .amount {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.finance-card.success {
+    border-color: #A5D6A7;
+    background: #F1F8E9;
+}
+
+.finance-card.success .amount { color: var(--success); }
+
+.finance-card.warning {
+    border-color: #FFCC80;
+    background: #FFF3E0;
+}
+
+.finance-card.warning .amount { color: var(--warning); }
+
+.finance-card.accent-soft {
+    border-color: rgba(21,101,192,0.18);
+    background: rgba(21,101,192,0.06);
+}
+
+.finance-card.accent-soft .amount { color: var(--accent); }
+
+.event-summary-actions {
+    margin-top: var(--spacing-lg);
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+}
+
+.event-link-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.event-state-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   Progress Bar — Desembolsado vs Proyectado
+   ══════════════════════════════════════════════════════════ */
+
+.progress-bar-container {
+    margin-top: var(--spacing-xl);
+    padding: var(--spacing-lg);
+    border-radius: 12px;
+    background: var(--neutral-0, #fff);
+    border: 1px solid var(--neutral-200);
+}
+
+.progress-bar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+.progress-bar-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--neutral-700);
+}
+
+.progress-bar-percent {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--neutral-900);
+}
+
+.progress-bar-track {
+    width: 100%;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--neutral-200);
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 400ms ease;
+    background: linear-gradient(90deg, var(--success, #2E7D32) 0%, #66BB6A 100%);
+}
+
+.progress-bar-fill.is-empty {
+    background: var(--neutral-300, #CBD5E1);
+}
+
+.progress-bar-fill.is-warning {
+    background: linear-gradient(90deg, var(--warning, #ED6C02) 0%, #FFA726 100%);
+}
+
+.progress-bar-fill.is-ok {
+    background: linear-gradient(90deg, var(--success, #2E7D32) 0%, #66BB6A 100%);
+}
+
+.progress-bar-container.hidden {
+    display: none;
+}

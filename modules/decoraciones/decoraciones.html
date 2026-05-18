@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decoraciones | Artepax Fiesta</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="decoraciones.css">
+    <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+</head>
+<body>
+
+    <div class="app-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar-container"></aside>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-wrapper">
+            <!-- TOPBAR -->
+            <header class="topbar">
+                <div class="breadcrumbs">
+                    <a href="../../index.html">Inicio</a>
+                    <span class="separator">/</span>
+                    <span class="current">Decoraciones</span>
+                </div>
+                <div class="topbar-actions">
+                    <div class="user-info">
+                        <span class="user-name">Administrador</span>
+                        <div class="user-avatar">AD</div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <header class="module-header">
+                    <div class="header-info">
+                        <h1>Catálogo de Decoraciones</h1>
+                        <p>Plantillas operativas para eventos, con composición validada contra disponibilidad real.</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" onclick="abrirDrawerCrear()">
+                            <span class="icon">+</span> Nueva Decoración
+                        </button>
+                    </div>
+                </header>
+
+                <section class="decor-hero decor-hero--compact">
+                    <div class="decor-hero-copy decor-hero-copy--kpi-only">
+                        <div class="decor-hero-topline decor-hero-topline--kpi">
+                            <div>
+                                <span class="decor-eyebrow">Panel operativo</span>
+                                <div class="decor-hero-microstats">
+                                    <span class="decor-hero-metric"><strong id="hero-total-decoraciones">0</strong> plantillas</span>
+                                    <span class="decor-hero-metric"><strong id="hero-activas-decoraciones">0</strong> activas</span>
+                                    <span class="decor-hero-metric"><strong id="hero-riesgo-decoraciones">0</strong> con alertas</span>
+                                </div>
+                            </div>
+                            <span class="decor-hero-status" id="decor-stock-sync-status">Listo para validar stock operativo</span>
+                        </div>
+                    </div>
+                    <div class="decor-kpis">
+                        <article class="decor-kpi-card">
+                            <span class="decor-kpi-label">Total</span>
+                            <strong class="decor-kpi-value" id="kpi-total-decoraciones">0</strong>
+                            <span class="decor-kpi-foot">Plantillas registradas</span>
+                        </article>
+                        <article class="decor-kpi-card success">
+                            <span class="decor-kpi-label">Activas</span>
+                            <strong class="decor-kpi-value" id="kpi-activas-decoraciones">0</strong>
+                            <span class="decor-kpi-foot">Disponibles para eventos</span>
+                        </article>
+                        <article class="decor-kpi-card warning">
+                            <span class="decor-kpi-label">Inactivas</span>
+                            <strong class="decor-kpi-value" id="kpi-inactivas-decoraciones">0</strong>
+                            <span class="decor-kpi-foot">Fuera de operación nueva</span>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- FILTERS & GRID -->
+                <section class="content-section">
+                    <div class="filter-bar-decor">
+                        <div class="filter-headline">
+                            <div>
+                                <span class="filter-eyebrow">Vista de trabajo</span>
+                                <strong id="decoraciones-result-count">0 plantillas visibles</strong>
+                            </div>
+                            <div class="view-options" role="tablist" aria-label="Cambiar vista del catálogo">
+                                <button class="btn-view active" id="btn-view-grid" onclick="cambiarVista('grid')">
+                                    <i data-lucide="layout-grid"></i> Cuadrícula
+                                </button>
+                                <button class="btn-view" id="btn-view-table" onclick="cambiarVista('table')">
+                                    <i data-lucide="list"></i> Lista
+                                </button>
+                            </div>
+                        </div>
+                        <div class="filter-cluster">
+                            <div class="search-box decor-search-box">
+                                <span class="search-icon"><i data-lucide="search"></i></span>
+                                <input type="text" id="search-input" placeholder="Buscar por nombre o descripción...">
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label" for="filter-estado">Estado</label>
+                                <select id="filter-estado" class="input-field" onchange="cargarDecoraciones()">
+                                    <option value="">Todos</option>
+                                    <option value="ACTIVO">Activas</option>
+                                    <option value="INACTIVO">Inactivas</option>
+                                </select>
+                            </div>
+                            <div class="filter-result-count" id="decoraciones-view-summary">Compará disponibilidad y composición por modelo.</div>
+                        </div>
+                    </div>
+
+                    <div id="alert-box" class="alert hidden"></div>
+
+                    <!-- GRID VIEW -->
+                    <div id="grid-decoraciones" class="decor-grid">
+                        <!-- Cargado vía JS -->
+                    </div>
+
+                    <!-- TABLE VIEW (Hidden by default) -->
+                    <div id="table-decoraciones-wrapper" class="card hidden">
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                     <tr>
+                                         <th class="col-id">ID</th>
+                                         <th>Nombre</th>
+                                         <th>Precio</th>
+                                         <th>Estado</th>
+                                         <th>Productos</th>
+                                          <th>Composición</th>
+                                         <th class="col-estado text-right">Acciones</th>
+                                     </tr>
+                                </thead>
+                                <tbody id="tabla-decoraciones">
+                                    <!-- Cargado vía JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- DRAWER CREAR / EDITAR (step-based) -->
+    <div class="drawer-overlay" id="drawer-decoracion-overlay" onclick="cerrarDrawer(event)">
+        <aside class="drawer" id="drawer-decoracion">
+            <header class="drawer-header">
+                <div>
+                    <h2 id="drawer-titulo">Nueva Decoración</h2>
+                    <p class="drawer-subtitle" id="drawer-subtitulo">Configurá la plantilla paso a paso, validando composición y disponibilidad.</p>
+                </div>
+                <button class="btn-close" onclick="cerrarDrawer()"><i data-lucide="x"></i></button>
+            </header>
+
+            <div class="drawer-body">
+                <div id="drawer-alert" class="alert hidden"></div>
+
+                <form id="form-decoracion" class="form-vertical" onsubmit="guardarDecoracion(event)">
+                    <div class="drawer-context-bar">
+                        <span class="drawer-context-chip" id="drawer-mode-chip">Alta nueva</span>
+                        <span class="drawer-context-chip muted">Composición validada antes de guardar</span>
+                    </div>
+
+                    <!-- STEP INDICATOR -->
+                    <div class="decor-step-indicator" id="decor-step-indicator">
+                        <div class="decor-step-row">
+                            <span class="decor-step active" data-step="1">
+                                <span class="decor-step-num">1</span>
+                                <span class="decor-step-label">Datos básicos</span>
+                            </span>
+                            <span class="decor-step-connector"></span>
+                            <span class="decor-step" data-step="2">
+                                <span class="decor-step-num">2</span>
+                                <span class="decor-step-label">Compatibilidad</span>
+                            </span>
+                            <span class="decor-step-connector"></span>
+                            <span class="decor-step" data-step="3">
+                                <span class="decor-step-num">3</span>
+                                <span class="decor-step-label">Composición y precio</span>
+                            </span>
+                            <span class="decor-step-connector"></span>
+                            <span class="decor-step" data-step="4">
+                                <span class="decor-step-num">4</span>
+                                <span class="decor-step-label">Revisión</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- ══ STEP 1: Datos básicos ════════════════════ -->
+                    <div class="decor-step-content" data-step="1">
+                        <div class="form-section">
+                            <h3>Datos básicos</h3>
+                            <p class="form-section-helper">Definí el nombre, descripción y estado de la plantilla.</p>
+                            <div class="form-group">
+                                <label for="input-nombre">Nombre del Modelo *</label>
+                                <input type="text" id="input-nombre" placeholder="Ej: Arco Orgánico Elegante" required>
+                            </div>
+                            <div class="form-group" style="margin-top: 0.85rem;">
+                                <label for="select-estado">Estado *</label>
+                                <select id="select-estado" required>
+                                    <option value="ACTIVO">ACTIVO</option>
+                                    <option value="INACTIVO">INACTIVO</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3>Descripción y Contenido</h3>
+                            <div class="form-group">
+                                <label for="input-descripcion">Descripción General</label>
+                                <textarea id="input-descripcion" rows="4" placeholder="Describe los materiales, colores y dimensiones..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ══ STEP 2: Compatibilidad ══════════════════ -->
+                    <div class="decor-step-content hidden" data-step="2">
+                        <div class="form-section">
+                            <h3>Compatibilidad con tipos de evento</h3>
+                            <p class="form-section-helper">Seleccioná los tipos de evento para los que esta decoración está disponible. Si no seleccionás ninguno, no aparecerá en el formulario de eventos.</p>
+                            <div class="tipo-evento-search">
+                                <i data-lucide="search" class="tipo-evento-search-icon"></i>
+                                <input type="text" id="tipo-evento-filtro" class="tipo-evento-search-input" placeholder="Buscar tipo de evento..." autocomplete="off">
+                            </div>
+                            <div class="tipo-evento-checkbox-grid" id="tipos-evento-checkbox-container">
+                                <span class="text-light" style="font-size:0.82rem;">Cargando tipos de evento...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ══ STEP 3: Composición + Precio + Rentabilidad ═══ -->
+                    <div class="decor-step-content hidden" data-step="3">
+                        <div id="decoracion-stock-alert" class="alert hidden"></div>
+
+                        <div class="form-section">
+                            <div class="composition-header">
+                                <div>
+                                    <h3>Composición de Productos</h3>
+                                    <p class="text-sm">Armá la composición con productos activos. El sistema valida stock, costo y rentabilidad estimada automáticamente.</p>
+                                </div>
+                                <button type="button" class="btn btn-outline btn-sm" onclick="agregarProductoDecoracion()"><i data-lucide="plus"></i> Producto</button>
+                            </div>
+                            <div class="composition-summary">
+                                <div class="composition-summary-card">
+                                    <span>Tipos</span>
+                                    <strong id="composicion-total-tipos">0</strong>
+                                </div>
+                                <div class="composition-summary-card">
+                                    <span>Unidades</span>
+                                    <strong id="composicion-total-unidades">0</strong>
+                                </div>
+                                <div class="composition-summary-card">
+                                    <span>Alertas</span>
+                                    <strong id="composicion-total-riesgo">0</strong>
+                                </div>
+                                <div class="composition-health is-neutral" id="composicion-salud">
+                                    <strong id="composicion-salud-titulo">Sin composición</strong>
+                                    <small id="composicion-salud-detalle">Agregá productos activos para validar la plantilla.</small>
+                                </div>
+                            </div>
+                            <div id="productos-decoracion-lista" class="product-composition-list"></div>
+                        </div>
+
+                        <div class="form-section decor-business-section">
+                            <div class="decor-business-card">
+                                <div class="decor-business-copy">
+                                    <span class="decor-business-label">Precio y rentabilidad</span>
+                                    <p class="form-section-helper" style="margin: 0 0 0.55rem;">Definí el precio de venta y comparalo contra el costo estimado de materiales.</p>
+                                    <div class="form-group" style="margin-bottom: 0.45rem;">
+                                        <label for="input-precio">Precio de venta (USD) *</label>
+                                        <div class="input-with-symbol">
+                                            <span class="symbol">$</span>
+                                            <input type="number" id="input-precio" min="0.01" step="0.01" placeholder="0.00" required>
+                                        </div>
+                                        <div class="price-validation" id="price-validation">
+                                            <span class="price-validation-dot is-muted" id="price-validation-dot"></span>
+                                            <span class="price-validation-text" id="price-validation-text">Esperando precio y composición</span>
+                                        </div>
+                                    </div>
+                                    <strong id="decor-business-title">Definí precio y composición</strong>
+                                    <p id="decor-business-copy">Usá este resumen para evitar cargar una decoración con precio por debajo del costo estimado de materiales.</p>
+                                </div>
+                                <div class="decor-business-metrics">
+                                    <div class="decor-business-metric">
+                                        <span>Costo estimado</span>
+                                        <strong id="decor-costo-estimado">$0.00</strong>
+                                    </div>
+                                    <div class="decor-business-metric">
+                                        <span>Margen estimado</span>
+                                        <strong id="decor-margen-estimado">$0.00</strong>
+                                    </div>
+                                    <div class="decor-business-health is-neutral" id="decor-rentabilidad-estado">
+                                        Esperando datos
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="inline-note hidden" id="precio-warning-note">
+                            Cambiar el precio de esta decoración actualiza la plantilla, pero no modifica eventos ya creados con ese modelo.
+                        </div>
+                    </div>
+
+                    <!-- ══ STEP 4: Revisión final ══════════════════ -->
+                    <div class="decor-step-content hidden" data-step="4">
+                        <div id="decor-resumen-container" class="decor-resumen-card">
+                            <!-- Generado por JS -->
+                        </div>
+                    </div>
+
+                    <!-- Feedback row (visible en todos los pasos) -->
+                    <div class="drawer-feedback-row">
+                        <span class="drawer-feedback-copy" id="drawer-feedback-copy-text">Completá los datos básicos para continuar.</span>
+                        <span class="drawer-feedback-status is-neutral" id="drawer-feedback-status">Paso 1 de 4</span>
+                    </div>
+
+                    <!-- Footer dinámico con navegación de pasos -->
+                    <div class="drawer-footer" id="decor-drawer-footer">
+                        <div class="drawer-footer-meta">
+                            <strong id="drawer-footer-title">Datos básicos</strong>
+                            <span id="drawer-footer-copy">Completá nombre y estado del modelo.</span>
+                        </div>
+                        <div class="drawer-footer-actions">
+                            <button type="button" class="btn btn-secondary" id="btn-decor-atras" onclick="decorPasoAnterior()" hidden>
+                                <i data-lucide="chevron-left" style="width:14px;height:14px"></i> Atrás
+                            </button>
+                            <button type="button" class="btn btn-secondary" onclick="cerrarDrawer()" id="btn-decor-cancelar">Cancelar</button>
+                            <button type="button" class="btn btn-primary" id="btn-decor-siguiente" onclick="decorSiguientePaso()">
+                                Siguiente <i data-lucide="chevron-right" style="width:14px;height:14px"></i>
+                            </button>
+                            <button type="submit" class="btn btn-primary hidden" id="btn-guardar">Guardar Modelo</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </aside>
+    </div>
+
+    <!-- MODAL CONFIRMACIÓN ELIMINAR -->
+    <div class="modal-overlay" id="modal-eliminar">
+        <div class="modal modal-sm">
+            <header class="modal-header">
+                <h2 id="modal-accion-titulo">¿Cambiar estado del modelo?</h2>
+                <button class="modal-close" onclick="cerrarModalEliminar()"><i data-lucide="x"></i></button>
+            </header>
+            <div class="modal-body">
+                <p id="modal-accion-mensaje">Estás por actualizar el estado del modelo <strong id="nombre-eliminar"></strong>.</p>
+                <p class="text-sm" id="modal-accion-ayuda" style="margin-top: 8px;">Confirmá la acción para actualizar la disponibilidad operativa de esta decoración.</p>
+            </div>
+            <footer class="modal-footer">
+                <button class="btn btn-secondary" onclick="cerrarModalEliminar()">Cancelar</button>
+                <button class="btn btn-danger" id="btn-confirmar-accion-decoracion" onclick="confirmarEliminar()">Confirmar</button>
+            </footer>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-detalle-decoracion">
+        <div class="modal modal-lg">
+            <header class="modal-header">
+                <div>
+                    <h2 id="detalle-decoracion-titulo">Detalle de decoración</h2>
+                    <span class="modal-header-sub" id="detalle-decoracion-subtitle"></span>
+                </div>
+                <button class="modal-close" onclick="cerrarModalDetalle()"><i data-lucide="x"></i></button>
+            </header>
+            <div class="modal-body" id="detalle-decoracion-body"></div>
+            <footer class="modal-footer">
+                <div class="modal-footer-left">
+                    <span class="text-muted" style="font-size:0.78rem;" id="detalle-decoracion-id-label"></span>
+                </div>
+                <div class="modal-footer-right">
+                    <button class="btn btn-primary" id="btn-detalle-editar" onclick="abrirDrawerEditarDesdeDetalle()">Editar</button>
+                    <button class="btn btn-secondary" onclick="cerrarModalDetalle()">Cerrar</button>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../js/core/config.js" defer></script>
+    <script src="../../js/core/auth.js" defer></script>
+    <script src="../../js/core/http.js" defer></script>
+    <script src="../../js/shared/api.js" defer></script>
+    <script src="../../js/shared/modulos.js" defer></script>
+    <script src="../../js/shared/formatters.js" defer></script>
+    <script src="../../js/shared/alerts.js" defer></script>
+    <script src="js/decoraciones.state.js" defer></script>
+    <script src="js/decoraciones.helpers.js" defer></script>
+    <script src="js/decoraciones.api.js" defer></script>
+    <script src="js/decoraciones.render.js" defer></script>
+    <script src="js/decoraciones.composition.js" defer></script>
+    <script src="js/decoraciones.actions.js" defer></script>
+    <script src="decoraciones.js" defer></script>
+    <script src="../../js/shared/notificaciones-bell.js" defer></script>
+    <script src="../../js/shared/sidebar.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            requireAuth();
+            renderSidebar('decoraciones', 'Gestión de Eventos');
+        });
+    </script>
+</body>
+</html>

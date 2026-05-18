@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración | Artepax Fiesta</title>
+    
+    
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="configuracion.css">
+    <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+</head>
+<body>
+
+    <div class="app-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar-container"></aside>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-wrapper">
+            <!-- TOPBAR -->
+            <header class="topbar">
+                <div class="breadcrumbs">
+                    <a href="../../index.html">Inicio</a>
+                    <span class="separator">/</span>
+                    <span class="current">Configuración</span>
+                </div>
+                <div class="topbar-actions">
+                    <div class="user-info">
+                        <span class="user-name" id="topbar-user-name">Administrador</span>
+                        <div class="user-avatar" id="topbar-user-avatar">AD</div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <header class="module-header">
+                    <div class="header-info">
+                        <h1>Configuración del Sistema</h1>
+                        <p>Parámetros generales del sistema.</p>
+                    </div>
+                </header>
+
+                <div id="alert-box" class="alert hidden"></div>
+
+                <!-- TOOLBAR GUARDAR TODO -->
+                <div id="config-toolbar" class="config-toolbar">
+                    <span class="config-toolbar-text">
+                        <span class="save-all-count">0</span> cambio(s) pendiente(s)
+                    </span>
+                    <button class="btn btn-primary save-all-btn" onclick="guardarTodo()" disabled>
+                        <i data-lucide="save"></i> Guardar todo
+                    </button>
+                </div>
+
+                <!-- BUSCADOR DE SETTINGS -->
+                <div class="config-search-bar">
+                    <span class="config-search-icon"><i data-lucide="search"></i></span>
+                    <input type="search" id="config-search-input" class="config-search-input" placeholder="Buscar configuración por nombre o clave..." autocomplete="off">
+                    <span id="config-search-count" class="config-search-count hidden"></span>
+                </div>
+
+                <div class="config-grid">
+                    <!-- SECCIÓN: CONFIGURACIÓN GLOBAL -->
+                    <section class="config-card config-card--full">
+                        <header class="config-header">
+                            <i data-lucide="settings"></i>
+                            <h2>Configuración del Sistema</h2>
+                        </header>
+                        <div class="config-body">
+                            <div id="config-global-list" class="config-list">
+                                <div class="loading-state">Cargando configuración global...</div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../js/core/config.js" defer></script>
+    <script src="../../js/core/auth.js" defer></script>
+    <script src="../../js/core/http.js" defer></script>
+    <script src="../../js/shared/api.js" defer></script>
+    <script src="../../js/shared/modulos.js" defer></script>
+    <script src="../../js/shared/formatters.js" defer></script>
+    <script src="../../js/shared/alerts.js" defer></script>
+    <script src="js/configuracion.state.js" defer></script>
+    <script src="js/configuracion.meta.js" defer></script>
+    <script src="js/configuracion.validators.js" defer></script>
+    <script src="js/configuracion.render.js" defer></script>
+    <script src="js/configuracion.actions.js" defer></script>
+    <script src="configuracion.js" defer></script>
+    <script src="../../js/shared/notificaciones-bell.js" defer></script>
+    <script src="../../js/shared/sidebar.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            requireAuth();
+            renderSidebar('configuracion', 'Configuración del Sistema');
+        });
+    </script>
+</body>
+</html>

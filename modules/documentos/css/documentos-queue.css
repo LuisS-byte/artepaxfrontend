@@ -1,0 +1,381 @@
+/* ══════════════════════════════════════════════════════════
+   DOCUMENTOS — Cola de eventos tipo workspace
+   Queue items, filter chips, contextual KPIs y banners.
+   Inspirado en patrones de pagos-queue.css / pagos-cards.css
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Workspace layout ─────────────────────────────────── */
+
+.doc-workspace {
+    display: grid;
+    grid-template-columns: minmax(300px, 360px) minmax(0, 1fr);
+    gap: var(--spacing-xl);
+    align-items: start;
+}
+
+.doc-queue-panel,
+.doc-detail-panel {
+    min-width: 0;
+}
+
+.doc-queue-panel {
+    position: sticky;
+    top: var(--spacing-lg);
+    max-height: calc(100vh - 180px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.doc-queue-list {
+    flex: 1;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+/* ── Filter chips ─────────────────────────────────────── */
+
+.doc-filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-lg);
+}
+
+.doc-chip {
+    border: 1px solid var(--neutral-200);
+    background: var(--neutral-0);
+    color: var(--neutral-700);
+    border-radius: 999px;
+    padding: 0.3rem 1rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.doc-chip:hover,
+.doc-chip.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--white);
+}
+
+/* ── Queue counter (simplified stats) ──────────────────── */
+
+.doc-queue-stats {
+    margin-top: var(--spacing-sm);
+    padding: var(--spacing-sm) 0 var(--spacing-sm);
+    border-bottom: 1px solid var(--neutral-100);
+    min-height: 32px;
+}
+
+.doc-queue-counter {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.8125rem;
+    color: var(--neutral-500);
+}
+
+.doc-queue-counter-value {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--neutral-700);
+    min-width: 18px;
+    text-align: right;
+}
+
+.doc-queue-counter-label {
+    font-weight: 400;
+}
+
+/* ── Queue header ────────────────────────────────────── */
+
+.doc-queue-header h2 {
+    margin: 0;
+}
+
+/* ── Search shell ─────────────────────────────────────── */
+
+.doc-search-shell {
+    margin-top: 14px;
+}
+
+.doc-search-shell .input-field {
+    width: 100%;
+}
+
+/* ── Queue items ──────────────────────────────────────── */
+
+.doc-queue-item {
+    width: 100%;
+    text-align: left;
+    border: 1px solid var(--neutral-200);
+    background: var(--neutral-0);
+    border-radius: var(--rounded-lg);
+    padding: 14px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    margin-bottom: 10px;
+}
+
+.doc-queue-item:hover,
+.doc-queue-item.active {
+    border-color: rgba(125, 22, 34, 0.35);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+.doc-queue-item.active {
+    border-color: var(--primary);
+    background: linear-gradient(135deg, #fff 0%, #fff5f5 100%);
+}
+
+.doc-queue-item-top {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    align-items: flex-start;
+}
+
+.doc-queue-item-top strong {
+    display: block;
+    color: var(--text);
+    font-size: 0.92rem;
+}
+
+.doc-queue-id {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-light);
+    margin-top: 0.15rem;
+}
+
+.doc-queue-metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs) var(--spacing-sm);
+    margin-top: 10px;
+    font-size: 0.78rem;
+    color: var(--neutral-600);
+}
+
+.doc-queue-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    align-items: center;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--neutral-100);
+}
+
+.doc-queue-helper {
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.doc-queue-helper.warning { color: var(--warning-text); }
+.doc-queue-helper.success { color: var(--success-text); }
+.doc-queue-helper.muted   { color: var(--neutral-400); }
+
+.doc-queue-cta {
+    font-size: 0.75rem;
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.doc-queue-empty {
+    padding: var(--spacing-xl);
+    text-align: center;
+    color: var(--neutral-400);
+    font-size: 0.87rem;
+}
+
+/* ── Detail header ────────────────────────────────────── */
+
+.doc-detail-header {
+    margin-bottom: var(--spacing-xl);
+}
+
+.doc-detail-header-main {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    align-items: flex-start;
+}
+
+.doc-detail-kicker {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.25rem;
+}
+
+.doc-detail-header h2 {
+    margin: 0 0 0.2rem;
+    font-size: 1.2rem;
+}
+
+.doc-detail-subtitle {
+    margin: var(--spacing-xs) 0 0;
+    color: var(--neutral-600);
+    font-size: 0.84rem;
+}
+
+.doc-detail-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+}
+
+.doc-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.85rem;
+    border-radius: 999px;
+    background: var(--neutral-50);
+    border: 1px solid var(--neutral-200);
+    color: var(--neutral-700);
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.doc-pill--warning {
+    background: var(--warning-bg);
+    border-color: var(--warning-border);
+    color: var(--warning-text);
+}
+
+.doc-pill--success {
+    background: var(--success-bg);
+    border-color: var(--success-border);
+    color: var(--success-text);
+}
+
+.doc-pill--danger {
+    background: var(--danger-bg);
+    border-color: var(--danger-border);
+    color: var(--danger-text);
+}
+
+.doc-pill--info {
+    background: rgba(21, 101, 192, 0.06);
+    border-color: rgba(21, 101, 192, 0.2);
+    color: var(--info, #1565C0);
+}
+
+/* ── Contextual KPIs grid ─────────────────────────────── */
+
+.doc-contextual-kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+.doc-contextual-kpi {
+    background: var(--neutral-0);
+    border: 1px solid var(--neutral-200);
+    border-radius: var(--rounded-lg);
+    padding: var(--spacing-lg) var(--spacing-xl);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+}
+
+.doc-contextual-kpi--warning {
+    background: var(--warning-bg);
+    border-color: var(--warning-border);
+}
+
+.doc-contextual-kpi--success {
+    background: var(--success-bg);
+    border-color: var(--success-border);
+}
+
+.doc-contextual-kpi--danger {
+    background: var(--danger-bg);
+    border-color: var(--danger-border);
+}
+
+.doc-contextual-kpi-label {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-light);
+    margin-bottom: 0.2rem;
+}
+
+.doc-contextual-kpi-value {
+    display: block;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.doc-contextual-kpi--warning .doc-contextual-kpi-value { color: var(--warning); }
+.doc-contextual-kpi--success .doc-contextual-kpi-value { color: var(--success); }
+.doc-contextual-kpi--danger .doc-contextual-kpi-value  { color: var(--danger); }
+
+/* ── Contextual banner ────────────────────────────────── */
+
+.doc-banner {
+    border-radius: var(--rounded-md);
+    border: 1px solid var(--neutral-200);
+    background: var(--neutral-50);
+    color: var(--neutral-700);
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-size: 0.92rem;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.doc-banner i {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.doc-banner--warning  { background: var(--warning-bg);  border-color: var(--warning-border);  color: var(--warning-text); }
+.doc-banner--success  { background: var(--success-bg);  border-color: var(--success-border);  color: var(--success-text); }
+.doc-banner--danger   { background: var(--danger-bg);   border-color: var(--danger-border);   color: var(--danger-text); }
+.doc-banner--info     { background: rgba(21,101,192,0.06); border-color: rgba(21,101,192,0.2); color: var(--info, #1565C0); }
+
+/* ── Empty state ──────────────────────────────────────── */
+
+.doc-empty-state {
+    min-height: 280px;
+}
+
+/* ── Responsive ───────────────────────────────────────── */
+
+@media (max-width: 1100px) {
+    .doc-workspace {
+        grid-template-columns: 1fr;
+    }
+
+    .doc-queue-panel {
+        position: static;
+        max-height: none;
+    }
+
+    .doc-queue-list {
+        max-height: 320px;
+        overflow-y: auto;
+    }
+}
+
+@media (max-width: 640px) {
+    .doc-contextual-kpis {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

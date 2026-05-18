@@ -1,0 +1,218 @@
+/* ── FIX TABLA EVENTOS: ESTADO / ACCIONES ───────────── */
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+#tabla-eventos-table {
+    width: 100%;
+    min-width: 950px;
+}
+
+.tabla-eventos-col-id { width: 56px; }
+/* ID más sutil */
+#tabla-eventos-table .col-id {
+    font-size: 0.7rem;
+    color: var(--neutral-400);
+    font-weight: 500;
+}
+#tabla-eventos-table td:first-child span {
+    font-size: 0.7rem;
+    color: var(--neutral-400);
+}
+.tabla-eventos-col-cliente { width: 200px; }
+.tabla-eventos-col-fecha { width: 150px; }
+.tabla-eventos-col-ubicacion { width: 170px; }
+.tabla-eventos-col-decoracion { width: 160px; }
+.tabla-eventos-col-estado { width: 130px; }
+.tabla-eventos-col-acciones { width: 200px; }
+
+#tabla-eventos-table td,
+#tabla-eventos-table th {
+    padding: 10px 12px;
+    vertical-align: middle;
+}
+
+.data-table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+#tabla-eventos td:last-child {
+    white-space: normal;
+    vertical-align: middle;
+}
+
+.table-cell-text {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.acciones-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 6px;
+    flex-wrap: nowrap;
+    min-width: max-content;
+}
+
+/* Botones de acción en tabla — refinados */
+.acciones-wrapper .btn-sm {
+    height: 32px;
+    padding: 0 12px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: box-shadow 0.15s ease, transform 0.15s ease, filter 0.15s ease;
+}
+
+.acciones-wrapper .btn-sm:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.15);
+}
+
+.acciones-wrapper .btn-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+}
+
+/* Colores semánticos refinados por tipo de acción */
+.acciones-wrapper .btn-primary {
+    background: var(--accent, #1565C0);
+    border-color: var(--accent, #1565C0);
+}
+
+.acciones-wrapper .btn-success {
+    background: #1B8A3B;
+    border-color: #1B8A3B;
+}
+
+.acciones-wrapper .btn-warning {
+    background: #B45309;
+    border-color: #B45309;
+}
+
+/* Iconos semánticos por tipo de acción */
+.acciones-wrapper .btn-primary::before {
+    content: '\25B6';
+    font-size: 0.55rem;
+    display: inline-block;
+}
+
+.acciones-wrapper .btn-success::before {
+    content: '\2713';
+    font-weight: 700;
+    font-size: 0.7rem;
+    display: inline-block;
+}
+
+.acciones-wrapper .btn-warning::before {
+    content: '\2605';
+    font-size: 0.6rem;
+    display: inline-block;
+    color: rgba(255,255,255,0.7);
+}
+
+.acciones-wrapper .btn-outline::before {
+    content: '\2197';
+    font-size: 0.65rem;
+    display: inline-block;
+}
+
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: 1px solid var(--neutral-200);
+    border-radius: var(--rounded-sm);
+    background: var(--neutral-0);
+    color: var(--neutral-600);
+    cursor: pointer;
+    transition: all 0.15s;
+    flex-shrink: 0;
+}
+
+/* ── REFINAMIENTO TABLA ─────────────────────────────── */
+.data-table strong {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.data-table small {
+    font-size: 0.75rem;
+}
+
+/* ── ZEBRA STRIPES: legibilidad en filas densas ──────── */
+#tabla-eventos tbody tr:nth-child(even) {
+    background: rgba(148, 163, 184, 0.04);
+}
+
+/* ── SKELETON LOADING ───────────────────────────────── */
+/* ── TABLE ROW: fade-in ─────────────────────────────── */
+.data-table tbody tr {
+    animation: rowFadeIn 0.3s ease-out;
+}
+
+@keyframes rowFadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── TABLE ROW: BORDE IZQ POR ESTADO ───────────────────── */
+#tabla-eventos tr {
+    transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+#tabla-eventos tr td:first-child {
+    position: relative;
+}
+
+#tabla-eventos tr td:first-child::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 4px;
+    bottom: 4px;
+    width: 3px;
+    border-radius: 0 3px 3px 0;
+    opacity: 0.35;
+    transition: opacity 0.2s ease;
+}
+
+#tabla-eventos tr:hover td:first-child::before {
+    opacity: 1;
+}
+
+/* Colores de borde por estado */
+#tabla-eventos tr.row--COTIZACION td:first-child::before            { background: var(--event-cotizacion); }
+#tabla-eventos tr.row--PROGRAMADO td:first-child::before            { background: var(--event-programado); }
+#tabla-eventos tr.row--CONFIRMADO td:first-child::before            { background: var(--event-confirmado); }
+#tabla-eventos tr.row--EN_MONTAJE td:first-child::before            { background: var(--event-en-montaje); }
+#tabla-eventos tr.row--PENDIENTE_COBRO td:first-child::before       { background: var(--event-pendiente-cobro); }
+#tabla-eventos tr.row--FINALIZADO td:first-child::before            { background: var(--event-finalizado); }
+#tabla-eventos tr.row--CANCELACION_PENDIENTE td:first-child::before { background: var(--event-cancelacion-pendiente); }
+#tabla-eventos tr.row--CANCELADO td:first-child::before             { background: var(--event-cancelado); }
+
+/* Hover más limpio en filas */
+#tabla-eventos tr:hover {
+    background: rgba(31, 58, 95, 0.04);
+}
+
+/* ── TABLE HEADER: sticky ──────────────────────────────── */
+.data-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: var(--neutral-25);
+}

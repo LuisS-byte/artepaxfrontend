@@ -1,0 +1,25 @@
+/* ══════════════════════════════════════════════════════════
+   Módulo Decoraciones — Entry Point
+   ══════════════════════════════════════════════════════════ */
+
+@import "./css/decoraciones-hero.css";
+@import "./css/decoraciones-filters.css";
+@import "./css/decoraciones-cards.css";
+@import "./css/decoraciones-forms.css";
+@import "./css/decoraciones-composition.css";
+@import "./css/decoraciones-detail.css";
+@import "./css/decoraciones-responsive.css";
+
+/* ── Drawer override: más ancho para composición ──────── */
+#drawer-decoracion-overlay .drawer {
+    max-width: 780px;
+}
+
+/* ── Utilidades ───────────────────────────────────────── */
+.text-danger { color: var(--danger); }
+.text-sm { font-size: 0.8125rem; }
+
+#grid-decoraciones.hidden,
+#table-decoraciones-wrapper.hidden {
+    display: none;
+}

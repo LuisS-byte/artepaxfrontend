@@ -1,0 +1,30 @@
+/* ── CRONOGRAMA — Layout del módulo ───────────────── */
+
+/* Layout principal: cola de eventos + contenido */
+.cronograma-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: var(--spacing-xl);
+    align-items: start;
+}
+
+/* Área del contenido principal (junto a cola) */
+.crono-main {
+    min-width: 0;
+}
+
+/* Drawer de actividad/personal */
+.cronograma-drawer {
+    max-width: 520px;
+}
+
+/* Ajuste de gap para section-header del módulo */
+.cronograma-section-header {
+    gap: var(--spacing-lg);
+}
+
+/* Nota secundaria */
+.section-note {
+    color: var(--neutral-500);
+    font-size: 0.82rem;
+}

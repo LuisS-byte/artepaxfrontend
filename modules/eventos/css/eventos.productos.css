@@ -1,0 +1,131 @@
+/* ── PRODUCTOS DEL EVENTO ─────────────────────────── */
+
+.data-table-sm td,
+.data-table-sm th {
+    padding: 8px 12px;
+    font-size: 0.8125rem;
+}
+
+.producto-nombre {
+    font-weight: 500;
+    color: var(--neutral-900);
+}
+
+.producto-origen-badge {
+    display: inline-block;
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    background: var(--info);
+    color: var(--neutral-0);
+    margin-left: 0.5rem;
+    vertical-align: middle;
+}
+
+/* Badges de estado de reserva */
+.reserva-badge {
+    display: inline-block;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+.reserva-badge--cotizado {
+    background: rgba(100,116,139,0.12);
+    color: var(--neutral-700);
+}
+
+.reserva-badge--activa {
+    background: rgba(46,125,50,0.12);
+    color: var(--success);
+}
+
+.reserva-badge--consumida {
+    background: rgba(21,101,192,0.12);
+    color: var(--info);
+}
+
+.reserva-badge--liberada {
+    background: rgba(198,40,40,0.12);
+    color: var(--danger);
+}
+
+/* ── VALIDACIÓN STOCK (PROGRAMAR) ──────────────────── */
+.stock-val-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.stock-val-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: rgba(198, 40, 40, 0.1);
+    color: var(--danger);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+}
+
+.stock-val-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.stock-val-header h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0 0 0.35rem;
+}
+
+.stock-val-header p {
+    font-size: 0.875rem;
+    color: var(--text-light);
+    margin: 0;
+}
+
+.stock-val-table {
+    margin-top: 0.5rem;
+}
+
+.stock-val-table td,
+.stock-val-table th {
+    padding: 10px 14px;
+    font-size: 0.8125rem;
+}
+
+.stock-val-ok td {
+    background: rgba(46, 125, 50, 0.03);
+}
+
+.stock-val-fail td {
+    background: rgba(198, 40, 40, 0.04);
+}
+
+/* ── Resumen de stock verificado (en modal de confirmar) ── */
+.stock-verificado-resumen {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.65rem 0.85rem;
+    border-radius: 10px;
+    background: rgba(46, 125, 50, 0.06);
+    border: 1px solid rgba(46, 125, 50, 0.15);
+    font-size: 0.82rem;
+    color: var(--text);
+    line-height: 1.4;
+}
+
+.stock-verificado-resumen svg {
+    width: 18px;
+    height: 18px;
+    color: var(--success);
+    flex-shrink: 0;
+}

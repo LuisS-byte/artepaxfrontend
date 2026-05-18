@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auditoría | Artepax Fiesta</title>
+
+    
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="auditoria.css">
+    <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+</head>
+<body>
+
+    <div class="app-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar-container"></aside>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-wrapper">
+            <!-- TOPBAR -->
+            <header class="topbar">
+                <div class="breadcrumbs">
+                    <a href="../../index.html">Inicio</a>
+                    <span class="separator">/</span>
+                    <span class="current">Auditoría</span>
+                </div>
+                <div class="topbar-actions">
+                    <div class="user-info">
+                        <span class="user-name">Administrador</span>
+                        <div class="user-avatar">AD</div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <header class="module-header">
+                    <div class="header-info">
+                        <h1>Auditoría</h1>
+                        <p>Registro de cambios del sistema (máx. 100 registros por consulta)</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-outline btn-sm" onclick="AuditoriaActions.exportarCSV()">
+                            <i data-lucide="file-down"></i> CSV
+                        </button>
+                        <button class="btn btn-primary btn-sm" onclick="cargarAuditoria()">
+                            <i data-lucide="refresh-cw"></i> Actualizar
+                        </button>
+                    </div>
+                </header>
+
+            <!-- ALERT GLOBAL -->
+            <div id="alert-box" class="alert hidden"></div>
+
+            <!-- FILTROS -->
+            <div class="filter-bar card">
+                <div class="filter-group">
+                    <label class="filter-label">Tabla afectada</label>
+                    <select id="filter-tabla" class="input-field" onchange="onFiltroTablaChange()">
+                        <option value="">Todas las tablas</option>
+                        <option value="evento">evento</option>
+                        <option value="cliente">cliente</option>
+                        <option value="pago">pago</option>
+                        <option value="gasto_evento">gasto_evento</option>
+                        <option value="cronograma">cronograma</option>
+                        <option value="decoracion">decoracion</option>
+                        <option value="producto">producto</option>
+                        <option value="movimiento_inventario">movimiento_inventario</option>
+                    </select>
+                </div>
+                <div class="filter-group" id="grupo-registro" style="display:none">
+                    <label class="filter-label">ID de registro</label>
+                    <input type="number" id="input-registro-id" class="input-field" placeholder="Ej: 42"
+                           min="1" oninput="onFiltroRegistroChange()">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Acción</label>
+                    <select id="filter-accion" class="input-field" onchange="filtrarLocal()">
+                        <option value="">Todas las acciones</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Buscar</label>
+                    <input type="text" id="search-audit" class="input-field"
+                           placeholder="Buscar en descripción o usuario..." oninput="filtrarLocal()">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Desde</label>
+                    <input type="date" id="filter-fecha-desde" class="input-field" onchange="AuditoriaActions.onFechaChange()">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Hasta</label>
+                    <input type="date" id="filter-fecha-hasta" class="input-field" onchange="AuditoriaActions.onFechaChange()">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Tamaño página</label>
+                    <select id="select-tamanio" class="input-field" onchange="cargarAuditoria()">
+                        <option value="20">20</option>
+                        <option value="50" selected>50</option>
+                        <option value="100">100 (máx)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- TABLA -->
+            <div class="card">
+                <div class="table-wrapper">
+                    <table class="data-table" id="tabla-auditoria">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Fecha</th>
+                                <th>Usuario ID</th>
+                                <th>Acción</th>
+                                <th>Tabla</th>
+                                <th>Registro</th>
+                                <th>Descripción</th>
+                                <th>Detalle</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-auditoria">
+                            <tr>
+                                <td colspan="8" class="loading-state">
+                                    <div class="spinner"></div> Cargando registros...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="paginacion-auditoria"></div>
+            </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- MODAL DETALLE -->
+    <div class="modal-overlay" id="modal-detalle-overlay" onclick="cerrarModalDetalle(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Detalle del registro de auditoría</h3>
+                <button class="modal-close" onclick="cerrarModalDetalle()">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-detalle-body">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="cerrarModalDetalle()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="../../js/core/config.js" defer></script>
+    <script src="../../js/core/auth.js" defer></script>
+    <script src="../../js/core/http.js" defer></script>
+    <script src="../../js/shared/api.js" defer></script>
+    <script src="../../js/shared/modulos.js" defer></script>
+    <script src="../../js/shared/formatters.js" defer></script>
+    <script src="../../js/shared/alerts.js" defer></script>
+    <script src="js/auditoria.state.js" defer></script>
+    <script src="js/auditoria.helpers.js" defer></script>
+    <script src="js/auditoria.render.js" defer></script>
+    <script src="js/auditoria.api.js" defer></script>
+    <script src="js/auditoria.actions.js" defer></script>
+    <script src="auditoria.js" defer></script>
+    <script src="../../js/shared/notificaciones-bell.js" defer></script>
+    <script src="../../js/shared/sidebar.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            requireAuth();
+            renderSidebar('auditoria', 'Gestión de Eventos');
+        });
+    </script>
+</body>
+</html>
